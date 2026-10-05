@@ -1,0 +1,17 @@
+{
+  "etapa": 3,
+  "digestWebhook": "http://localhost:5678/webhook/segundo-cerebro-local-digestao-v1",
+  "model": "google/gemini-3.1-flash-lite",
+  "pollIntervalMs": 1500,
+  "stableForMs": 1500,
+  "requestTimeoutMs": 180000,
+  "maxTextCharacters": 120000,
+  "maxFileBytes": 512000,
+  "atlasWebhook": "http://localhost:5678/webhook/segundo-cerebro-local-atlas-v1",
+  "knowledgeThreshold": 0.8,
+  "diaryWebhook": "http://localhost:5678/webhook/segundo-cerebro-local-diario-v1",
+  "continuityThreshold": 0.8,
+  "aspectThreshold": 0.8,
+  "maxGroupCharacters": 120000,
+  "n8nBaseUrl": "http://localhost:5678"
+}

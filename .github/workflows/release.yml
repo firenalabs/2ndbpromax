@@ -1,0 +1,29 @@
+name: Publicar versão
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm test
+      - run: npm run preparar-atualizacao
+      - run: npm run gerar-release
+      - name: Pacotes para instalação e edição manual de n8n
+        run: |
+          git archive --format=zip --output=dist/Sistema-Completo.zip HEAD
+          cd 'Atualizações/Atualizacao atual/Colar no n8n'
+          zip -r ../../../dist/Codes-n8n.zip .
+      - name: Publicar release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag="v$(node -p "require('./package.json').version")"
+          gh release create "$tag" dist/atualizacao.json dist/Sistema-Completo.zip dist/Codes-n8n.zip --target "$GITHUB_SHA" --title "$tag" --notes-file NOTAS-DA-VERSAO.md

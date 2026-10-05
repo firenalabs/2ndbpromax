@@ -1,0 +1,22 @@
+{
+  "name": "segundo-cerebro-local",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "start": "node sistema/iniciar.mjs",
+    "lote": "node sistema/iniciar.mjs --lote",
+    "tentar-novamente": "node sistema/iniciar.mjs --tentar-novamente",
+    "status": "node sistema/iniciar.mjs --status",
+    "test": "node --test --experimental-test-isolation=none sistema/testes/*.test.mjs",
+    "gerar-workflow": "node sistema/gerar-workflow.mjs",
+    "gerar-workflow-atlas": "node sistema/gerar-workflow-atlas.mjs",
+    "gerar-workflow-diario": "node sistema/gerar-workflow-diario.mjs",
+    "preparar-atualizacao": "node sistema/preparar-atualizacao.mjs",
+    "atualizar": "node sistema/iniciar.mjs --atualizar",
+    "gerar-release": "node sistema/gerar-release.mjs"
+  },
+  "version": "1.0.0"
+}
