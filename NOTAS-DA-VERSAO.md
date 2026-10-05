@@ -1,7 +1,5 @@
-O menu agora tem **9. Atualizar sistema**, com download pelo GitHub e cópia do código anterior. Configuração e dados do cliente são preservados. Node.js 22 ou superior; não exige Git instalado.
+Correção do iniciador do Windows: limpa o código de erro anterior antes de acessar a pasta, aceita caminhos de rede com pushd e deixa de atribuir qualquer falha de acesso ao ZIP. Mensagens de erro mostram a pasta e distinguem acesso negado de cópia incompleta.
 
-**Primeira instalação / cópias anteriores à opção 9:** baixe Sistema-Completo.zip, extraia (ou mescle na pasta existente) e abra iniciar.bat / iniciar.sh. O ZIP não contém configuração particular ou dados. Em instalação nova, a opção 6 configura o n8n.
+**Como atualizar:** opção 9 do iniciador, depois feche e abra novamente. Se o iniciar.bat antigo não abrir, baixe Sistema-Completo.zip e substitua somente iniciar.bat na pasta do cliente; depois abra-o e use a opção 9. Também pode mesclar o ZIP completo na pasta existente, substituindo arquivos sem apagar dados.
 
-**Próximas versões:** opção 9 no iniciador; reinicie após atualizar. O código anterior fica em Atualizações/Backups.
-
-**n8n:** permanece manual. O pacote Codes-n8n.zip contém os quatro Codes de 01/02a com segmentação para transcrições e validação por dados, sem bloqueio por versão. Se já aplicou esses Codes, não precisa atualizá-los nesta versão. Agents de conteúdo continuam separados em 03 e acionados pela opção 8.
+**n8n:** nenhuma alteração necessária nesta versão. Configuração e dados dos clientes são preservados.
