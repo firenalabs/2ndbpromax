@@ -42,7 +42,7 @@ function validateDigest(digest, source) {
 const source = $('Validar entrada e adicionar SEGs').first().json;
 try {
   const response = $input.first().json;
-  if (response.error) throw new Error('O Agent não conseguiu concluir a digestão.');
+  if (response.error) throw new Error(typeof response.error === 'string' ? response.error : response.error.message);
   let result = response.output;
   if (typeof result === 'string') result = JSON.parse(result);
   const digest = {
@@ -50,7 +50,7 @@ try {
     updatedAt: new Date().toISOString(), schemaVersion: 1,
     originalText: source.text, segmentedText: source.segmentedText,
     segmentation: source.segmentation, keytopics: result?.keytopics,
-    processing: { promptVersion: 'keytopics-codex-v2', model: 'google/gemini-3.1-flash-lite' }
+    processing: { promptVersion: 'keytopics-markdown-v1', model: 'google/gemini-3.1-flash-lite' }
   };
   validateDigest(digest, { id: source.sourceId, digestId: source.digestId, text: source.text });
   return [{ json: digest }];

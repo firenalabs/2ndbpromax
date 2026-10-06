@@ -46,3 +46,7 @@ Os testes utilizam pastas temporárias descartáveis. Os arquivos reais do usuá
 Segmentação v2: frases naturais com subdivisão de trechos acima de 50 palavras em blocos equilibrados. Validador confere o formato/dados, sem rejeitar por rótulo de versão; posições UTF-16 continuam obrigatórias. O gerador 01 inclui validação com diagnóstico específico e retorno direto ao computador; não inclui Agent de correção. Definição completa em workflows/01-digestao.importar.json; Codes individuais disponíveis para atualização sem substituir nodes customizados.
 
 `preparar-atualizacao.mjs` gera a entrega a partir dos arquivos locais: separa programa sem dados/configuração dos Codes 01/02a para colar manualmente. O comando CLI regenera as definições a partir dos geradores e sincroniza somente jsCode das exportações. Não chama o n8n. `prepareUpdate(root)` é testado com configurações/estados privados e simulação de mesclagem em cliente existente.
+
+## KeyTopics em Markdown
+
+O Agent identifica tópicos e retorna `## [SEG_00008] Título` seguido de linhas `- Bulletpoint`. `keytopics-markdown.mjs` fornece o Code de estruturação determinística do 01. Não há Output Parser nem segundo Agent. O Code conserva IDs e conteúdo; a validação da digestão continua checando SEGs e ordem. O pacote manual contém um Code adicional e regras de formato para acrescentar ao prompt customizado.

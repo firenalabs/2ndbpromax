@@ -13,7 +13,7 @@ test('entrega copia somente programa, preserva dados e separa Codes de n8n',asyn
  for(const name of ['configuracao.json','estado.json','diario.json','executor.lock']) await writeFile(join(root,'sistema',name),'dados privados');
  const result=await prepareUpdate(root),client=join(result.base,'Copiar para o cliente');
  assert.deepEqual(await readdir(join(client,'sistema')),['README.md','diario.mjs']);
- assert.equal((await readdir(join(result.base,'Colar no n8n'))).filter(n=>n.endsWith('.js')).length,4);
+ assert.equal((await readdir(join(result.base,'Colar no n8n'))).filter(n=>n.endsWith('.js')).length,5);
  // Simulate merge in an existing client, then run preparation again.
  const customer=join(root,'cliente');await mkdir(join(customer,'sistema'),{recursive:true});
  await writeFile(join(customer,'sistema','configuracao.json'),'configuração do cliente');

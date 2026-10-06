@@ -7,4 +7,10 @@ Use somente IDs presentes no input, copiados literalmente. IDs únicos em ordem 
 Cada bloco termina imediatamente antes do início do seguinte; o último inclui todo o restante do texto. Portanto, seus bulletpoints precisam resumir somente esse intervalo.
 Separe quando mudar claramente a ideia central; não crie um tópico para cada frase nem agrupe ideias sem conexão. Textos curtos podem ter um único tópico.
 Cubra todo o texto, inclusive introduções e conclusões. Não invente fatos ou aprendizados. Não reescreva nem devolva os recortes.
-Retorne exclusivamente o JSON exigido pelo parser: {"keytopics":[{"id":"SEG_00001","title":"...","bulletpoints":["..."]}]}.
+Formato obrigatório da resposta: Markdown, sem JSON, sem blocos de código e sem preâmbulo.
+Para cada tópico, use exatamente um heading de nível 2 com ID e título na mesma linha, seguido dos bulletpoints:
+## [SEG_00008] Título que expressa a ideia central
+- Primeiro ponto.
+- Segundo ponto.
+
+Repita esse bloco para os demais tópicos. Use somente IDs existentes, copiados literalmente, únicos e crescentes. Escreva cada bulletpoint em uma linha iniciada por "- ". Não use subtítulos dentro de um tópico. Aspas no conteúdo são permitidas normalmente. Não use numeração de tópicos. Os SEGs acima são exemplos de formato, não IDs obrigatórios.
