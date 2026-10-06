@@ -29,7 +29,6 @@ function validateDigest(digest, source) {
   digest.keytopics.forEach((topic, index) => {
     const position = ids.get(topic?.id);
     if (position === undefined) throw new Error(`KeyTopic ${index + 1}: ID ${JSON.stringify(topic?.id)} inexistente; copie um SEG do texto segmentado.`);
-    if (index === 0 && position !== 0) throw new Error(`O primeiro KeyTopic começa em ${topic.id}, mas precisa começar em ${segments[0].id} para incluir a introdução.`);
     if (position <= lastIndex) throw new Error(`KeyTopic ${index + 1}: ${topic.id} está repetido ou fora de ordem após ${digest.keytopics[index - 1].id}; use IDs únicos e crescentes.`);
     if (typeof topic.title !== 'string' || !topic.title.trim()
       || !Array.isArray(topic.bulletpoints) || !topic.bulletpoints.length

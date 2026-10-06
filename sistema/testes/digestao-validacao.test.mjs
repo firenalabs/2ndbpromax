@@ -12,7 +12,6 @@ function runValidator(source,keytopics,index=5){
 }
 const topic=id=>({id,title:'Ideia',bulletpoints:['Uma ideia do texto.']});
 for(const [label,ids,pattern] of [
- ['primeiro SEG ausente',['SEG_00002'],/primeiro KeyTopic.*SEG_00002.*SEG_00001/],
  ['ID inexistente',['SEG_00001','SEG_99999'],/inexistente/],
  ['ID duplicado',['SEG_00001','SEG_00001'],/repetido ou fora de ordem/],
  ['fora de ordem',['SEG_00001','SEG_00003','SEG_00002'],/repetido ou fora de ordem/],
@@ -22,4 +21,16 @@ for(const [label,ids,pattern] of [
  const corrected=runValidator(source,['SEG_00001','SEG_00003'].map(topic));
  assert.equal(corrected.ok,true);assert.equal(corrected.originalText,source.text);
  assert.equal(corrected.sourceId,sourceId);
+});
+
+test('aceita primeiro tópico posterior e preserva a introdução nos recortes',async()=>{
+ const {buildBlocks}=await import('../contratos-atlas.mjs');
+ const source=fixture(),digest=runValidator(source,['SEG_00002','SEG_00003'].map(topic));
+ assert.equal(digest.ok,true);assert.equal(digest.keytopics[0].id,'SEG_00002');
+ const blocks=buildBlocks(digest);assert.equal(blocks[0].start,0);
+ assert.equal(blocks[0].segmentId,'SEG_00002');
+ assert.equal(blocks[0].text,'Introdução ao podcast. Uma primeira ideia. ');
+ assert.equal(blocks.map(b=>b.text).join(''),source.text);
+ const single=runValidator(source,['SEG_00003'].map(topic));
+ assert.equal(buildBlocks(single)[0].text,source.text);
 });

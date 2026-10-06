@@ -30,10 +30,10 @@ test('aceita um único tópico para texto curto', () => {
   assert.equal(validateDigest(digest, source), digest);
 });
 
-test('rejeita SEG inventado, repetido, fora de ordem ou primeiro tópico incompleto', () => {
+test('rejeita SEG inventado, repetido ou fora de ordem', () => {
   const { source, digest } = fixture('Primeira frase. Segunda frase. Terceira frase.');
   const base = digest.keytopics[0];
-  for (const ids of [['SEG_99999'], ['SEG_00002'], ['SEG_00001', 'SEG_00001'], ['SEG_00001', 'SEG_00003', 'SEG_00002']]) {
+  for (const ids of [['SEG_99999'], ['SEG_00001', 'SEG_00001'], ['SEG_00001', 'SEG_00003', 'SEG_00002']]) {
     assert.throws(() => validateDigest({ ...digest, keytopics: ids.map(id => ({ ...base, id })) }, source));
   }
 });
