@@ -96,7 +96,8 @@ export function createZettelRoot(context, path) {
 
 export function zettelFilename(note) {
   const title = note.title.normalize('NFC').replace(/[\u0000-\u001f\u007f/\\:*?"<>|]/g, '-').replace(/[. ]+$/g, '').trim() || 'Nota';
-  const prefix = `${note.address} - `;
+  if (!Number.isInteger(note.wordCount) || note.wordCount < 0) throw new Error('Quantidade de palavras da nota inválida.');
+  const prefix = `${note.address} - ${note.wordCount} ${note.wordCount === 1 ? 'palavra' : 'palavras'} - `;
   if (Buffer.byteLength(prefix + '.md', 'utf8') > 220) throw new Error('Endereço longo demais para o nome do arquivo.');
   let safe = '';
   for (const c of title) { if (Buffer.byteLength(prefix + safe + c + '.md', 'utf8') > 240) break; safe += c; }

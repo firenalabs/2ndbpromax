@@ -176,11 +176,12 @@ export class AtlasProcessor {
   async attach(block) {
     const note = this.atlas.notes.find(n => n.id === block.id);
     if (!note || note.categoryId !== block.categoryId || note.address !== block.address || note.parentNoteId !== block.parentNoteId) throw new Error('Posição da nota inconsistente.');
-    const name = zettelFilename(note);
+    const wordCount = (block.text.match(/\S+/gu) ?? []).length;
+    const name = zettelFilename({ ...note, wordCount });
     await writeFile(join(this.folder, 'Notas', name), block.text, 'utf8');
     if (note.noteFile && note.noteFile !== name) await unlink(join(this.folder, 'Notas', note.noteFile)).catch(e => { if (e.code !== 'ENOENT') throw e; });
     if (note.legacyNoteFile && note.legacyNoteFile !== name) await unlink(join(this.folder, 'Notas', note.legacyNoteFile)).catch(e => { if (e.code !== 'ENOENT') throw e; });
-    if (note.noteFile !== name || note.legacyNoteFile) { note.noteFile = name; delete note.legacyNoteFile; await this.save(); }
+    if (note.noteFile !== name || note.legacyNoteFile || note.wordCount !== wordCount) { note.wordCount = wordCount; note.noteFile = name; delete note.legacyNoteFile; await this.save(); }
   }
 
   async render() {

@@ -235,9 +235,9 @@ test('endereços de irmãos, letras após Z e múltiplos níveis são sequenciai
   assert.equal(sibling.block.address,'A.1.B');
 });
 
-test('nome da nota contém somente endereço e título e cabe no Windows/Linux', () => {
-  assert.equal(zettelFilename({address:'A.1',title:'A distinção entre artistas e especialistas'}),'A.1 - A distinção entre artistas e especialistas.md');
-  const name=zettelFilename({address:'B.2.A',title:'Tema / com: símbolos? 🧠 '.repeat(20)});
+test('nome da nota contém endereço, contagem e título e cabe no Windows/Linux', () => {
+  assert.equal(zettelFilename({address:'A.1',wordCount:150,title:'A distinção entre artistas e especialistas'}),'A.1 - 150 palavras - A distinção entre artistas e especialistas.md');
+  const name=zettelFilename({address:'B.2.A',wordCount:250,title:'Tema / com: símbolos? 🧠 '.repeat(20)});
   assert.ok(Buffer.byteLength(name)<255);assert.ok(!/[\\/:*?"<>|]/.test(name));assert.ok(!name.includes('\uFFFD'));
 });
 
@@ -253,8 +253,32 @@ test('migra árvore antiga conservando recortes, backup e IDs; índice só tem t
   const atlas=new AtlasProcessor(root,config,{request:()=>{throw new Error('Sem IA para migrar');},log(){}});
   await atlas.initialize();await atlas.initialize();
   assert.equal(atlas.atlas.id,'atlas-id');assert.equal(atlas.atlas.categories.length,1);assert.equal(atlas.atlas.notes[0].id,block.id);assert.equal(atlas.atlas.notes[0].address,'A.1');
-  assert.equal(await readFile(join(root,'Atlas','Notas','A.1 - Uma ideia útil.md'),'utf8'),block.text);
+  assert.equal(await readFile(join(root,'Atlas','Notas','A.1 - 4 palavras - Uma ideia útil.md'),'utf8'),block.text);
   assert.equal(await readFile(join(root,'Atlas','Atlas de Conhecimento.md'),'utf8'),'# A. Marketing\n\n## A.1 Uma ideia útil\n');
   assert.equal(JSON.parse(await readFile(join(root,'Atlas','Backup anterior ao Zettelkasten','atlas.json'),'utf8')).schemaVersion,1);
-  assert.deepEqual(await readdir(join(root,'Atlas','Notas')),['A.1 - Uma ideia útil.md']);
+  assert.deepEqual(await readdir(join(root,'Atlas','Notas')),['A.1 - 4 palavras - Uma ideia útil.md']);
+});
+
+
+test('conta palavras do recorte e renomeia nota existente ao iniciar sem IA ou duplicação', async t => {
+  let calls = 0;
+  const { root, atlas } = await setup(t, async (_, options) => {
+    calls++; return jsonResponse(processPayload(JSON.parse(options.body)));
+  });
+  const text = '  Olá,\t mundo!\n\nMais uma ideia.  ';
+  await atlas.run(makeDigest('word-count', text, false));
+  const saved = atlas.atlas.notes[0];
+  assert.equal(saved.wordCount, 5);
+  assert.equal(saved.noteFile, 'A.1 - 5 palavras - Uma ideia útil.md');
+  assert.equal(await readFile(join(root, 'Atlas', 'Notas', saved.noteFile), 'utf8'), text);
+  const index = await readFile(join(root, 'Atlas', 'Atlas de Conhecimento.md'), 'utf8');
+  const oldName = 'A.1 - Uma ideia útil.md';
+  await import('node:fs/promises').then(({ rename }) => rename(join(root, 'Atlas', 'Notas', saved.noteFile), join(root, 'Atlas', 'Notas', oldName)));
+  saved.noteFile = oldName; delete saved.wordCount; await atlas.save();
+  await atlas.initialize(); await atlas.initialize();
+  assert.equal(calls, 1);
+  assert.equal(atlas.atlas.notes[0].wordCount, 5);
+  assert.deepEqual(await readdir(join(root, 'Atlas', 'Notas')), ['A.1 - 5 palavras - Uma ideia útil.md']);
+  assert.equal(await readFile(join(root, 'Atlas', 'Notas', atlas.atlas.notes[0].noteFile), 'utf8'), text);
+  assert.equal(await readFile(join(root, 'Atlas', 'Atlas de Conhecimento.md'), 'utf8'), index);
 });

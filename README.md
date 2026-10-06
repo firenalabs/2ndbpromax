@@ -61,7 +61,7 @@ O grupo do Diário só fecha quando o Jev identifica que um novo texto não cont
 
 SEGs são âncoras determinísticas: frases curtas ou blocos de até 50 palavras para trechos longos sem pontuação. O Agent escolhe os cortes por ideia; o programa confere posições, IDs e original intacto. Versões de digestão/segmentação são metadados, sem bloqueio por número/nome.
 
-Notas do Atlas usam endereços como A.1, A.1.A e A.1.A.1. Só categorias raiz são criadas; nos demais níveis, o Jev compara títulos de notas. Notas contêm apenas o recorte integral; o índice contém apenas categorias e títulos.
+Notas do Atlas usam endereços como A.1, A.1.A e A.1.A.1. Só categorias raiz são criadas; nos demais níveis, o Jev compara títulos de notas. Os arquivos seguem `A.2 - 150 palavras - Título.md`, contando palavras do recorte. Notas existentes recebem o novo nome ao iniciar após atualizar. Notas contêm apenas o recorte integral; o índice contém apenas categorias e títulos.
 
 A opção 8 chama o workflow 03 somente para grupos fechados ainda pendentes. Até 150 palavras não gera conteúdo; as outras faixas são 151–600, 601–1499 e 1500+. O payload é o mesmo finalize do Diário. Nenhuma correção automática de KeyTopics está configurada.
 
