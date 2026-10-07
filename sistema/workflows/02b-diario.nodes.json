@@ -1334,7 +1334,7 @@
     "parameters": {
       "mode": "runOnceForAllItems",
       "language": "javaScript",
-      "jsCode": "function combineFinalization(items) {\n  if (!items.length || !items[0].aspects) throw new Error('Finalização sem resultados de aspectos.');\n  const first = items[0];\n  const errors = Object.assign({}, ...items.map(item => item.errors ?? {}));\n  const victory = items.find(item => item.aspect === 'victory');\n  return { ok: true, aspects: first.aspects, diary: first.diary ?? null,\n    achievements: victory?.achievements ?? [], errors,\n    activeRoutes: Object.keys(first.aspects.flags).filter(key => first.aspects.flags[key]),\n    actionResults: items.filter(item => item.aspect !== 'none').map(item => ({ aspect: item.aspect, status: item.errors?.brag && item.aspect === 'victory' ? 'failed' : item.aspect === 'victory' ? 'completed' : 'no_behavior' })) };\n}\nreturn [{json:combineFinalization($input.all().map(item=>item.json))}];"
+      "jsCode": "function combineFinalization(items) {\n  if (!items.length || !items[0].aspects) throw new Error('Finalização sem resultados de aspectos.');\n  const first = items[0];\n  const errors = Object.assign({}, ...items.map(item => item.errors ?? {}));\n  const victory = items.find(item => item.aspect === 'victory');\n  return { ok: true, generatedContents:first.generatedContents??[], generatedContentErrors:first.generatedContentErrors??[], aspects: first.aspects, diary: first.diary ?? null,\n    achievements: victory?.achievements ?? [], errors,\n    activeRoutes: Object.keys(first.aspects.flags).filter(key => first.aspects.flags[key]),\n    actionResults: items.filter(item => item.aspect !== 'none').map(item => ({ aspect: item.aspect, status: item.errors?.brag && item.aspect === 'victory' ? 'failed' : item.aspect === 'victory' ? 'completed' : 'no_behavior' })) };\n}\nreturn [{json:combineFinalization($input.all().map(item=>item.json))}];"
     },
     "position": [
       2260,
@@ -1406,5 +1406,416 @@
     "output": [],
     "extra": {},
     "factory": "node"
+  },
+  {
+    "parameters": {
+      "content": "## Diário e Conquistas\ncompare: verifica se o próximo input continua a ideia anterior.\n\nfinalize: UMA chamada para os seis aspectos, Diário e ações true. O retorno ao computador acontece somente no final, para salvar os arquivos.\n\nVitória chama o Brag. O loop aguarda todas as ações ativas. Falhas de Diário/Brag são informadas separadamente no JSON completo.",
+      "height": 280,
+      "width": 720,
+      "color": 5
+    },
+    "id": "fe473437-4584-4982-aa95-55050b6e8f97",
+    "name": "Sticky Note 0a16bcc8",
+    "type": "n8n-nodes-base.stickyNote",
+    "typeVersion": 1,
+    "position": [
+      -160,
+      -224
+    ]
+  },
+  {
+    "parameters": {
+      "options": {
+        "responseCode": "={{ $json.ok === false ? 422 : 200 }}",
+        "enableStreaming": false
+      }
+    },
+    "id": "3327f047-ccaa-4001-8043-9d23e5365b59",
+    "name": "Retornar resultado ao computador2",
+    "type": "n8n-nodes-base.respondToWebhook",
+    "typeVersion": 1.5,
+    "position": [
+      240,
+      432
+    ]
+  },
+  {
+    "id": "auto-diario-0",
+    "name": "Contar palavras para conteúdo — Diário",
+    "type": "n8n-nodes-base.code",
+    "typeVersion": 2,
+    "parameters": {
+      "mode": "runOnceForAllItems",
+      "jsCode": "const context=$input.first().json;\nconst text=context.text;\nreturn [{json:{text,referenceId:context.groupId,contentTitle:'Conteúdo do Diário',contentSourceIds:context.sourceIds,sourceWordCount:(text.match(/\\S+/g)??[]).length}}];"
+    },
+    "position": [
+      4000,
+      1936
+    ]
+  },
+  {
+    "id": "auto-diario-1",
+    "name": "Rotear conteúdo por palavras — Diário",
+    "type": "n8n-nodes-base.switch",
+    "typeVersion": 3.4,
+    "parameters": {
+      "mode": "rules",
+      "rules": {
+        "values": [
+          {
+            "renameOutput": true,
+            "outputKey": "0–150 palavras",
+            "conditions": {
+              "options": {
+                "caseSensitive": false,
+                "leftValue": "",
+                "typeValidation": "strict",
+                "version": 3
+              },
+              "combinator": "and",
+              "conditions": [
+                {
+                  "leftValue": "={{ $json.sourceWordCount }}",
+                  "rightValue": 0,
+                  "operator": {
+                    "type": "number",
+                    "operation": "gte"
+                  }
+                },
+                {
+                  "leftValue": "={{ $json.sourceWordCount }}",
+                  "rightValue": 150,
+                  "operator": {
+                    "type": "number",
+                    "operation": "lte"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "renameOutput": true,
+            "outputKey": "151–600 palavras",
+            "conditions": {
+              "options": {
+                "caseSensitive": false,
+                "leftValue": "",
+                "typeValidation": "strict",
+                "version": 3
+              },
+              "combinator": "and",
+              "conditions": [
+                {
+                  "leftValue": "={{ $json.sourceWordCount }}",
+                  "rightValue": 151,
+                  "operator": {
+                    "type": "number",
+                    "operation": "gte"
+                  }
+                },
+                {
+                  "leftValue": "={{ $json.sourceWordCount }}",
+                  "rightValue": 600,
+                  "operator": {
+                    "type": "number",
+                    "operation": "lte"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "renameOutput": true,
+            "outputKey": "601–1499 palavras",
+            "conditions": {
+              "options": {
+                "caseSensitive": false,
+                "leftValue": "",
+                "typeValidation": "strict",
+                "version": 3
+              },
+              "combinator": "and",
+              "conditions": [
+                {
+                  "leftValue": "={{ $json.sourceWordCount }}",
+                  "rightValue": 601,
+                  "operator": {
+                    "type": "number",
+                    "operation": "gte"
+                  }
+                },
+                {
+                  "leftValue": "={{ $json.sourceWordCount }}",
+                  "rightValue": 1499,
+                  "operator": {
+                    "type": "number",
+                    "operation": "lte"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "renameOutput": true,
+            "outputKey": "1500+ palavras",
+            "conditions": {
+              "options": {
+                "caseSensitive": false,
+                "leftValue": "",
+                "typeValidation": "strict",
+                "version": 3
+              },
+              "combinator": "and",
+              "conditions": [
+                {
+                  "leftValue": "={{ $json.sourceWordCount }}",
+                  "rightValue": 1500,
+                  "operator": {
+                    "type": "number",
+                    "operation": "gte"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "options": {
+        "fallbackOutput": "extra",
+        "renameFallbackOutput": "Sem faixa — continuar",
+        "allMatchingOutputs": false
+      }
+    },
+    "position": [
+      4260,
+      1936
+    ]
+  },
+  {
+    "id": "auto-diario-2",
+    "name": "Agent: Conteúdo Diário — 0–150",
+    "type": "@n8n/n8n-nodes-langchain.agent",
+    "typeVersion": 3.1,
+    "parameters": {
+      "promptType": "define",
+      "text": "={{ $json.text }}",
+      "hasOutputParser": false,
+      "options": {
+        "systemMessage": "[CRIADO POR CODEX — conteúdo automático diario — 0–150]\nProduza um conteúdo em português baseado no texto recebido, preservando os fatos. Comece com um título Markdown (# Título). Retorne o conteúdo em Markdown. Esta configuração inicial pode ser personalizada.",
+        "maxIterations": 2
+      }
+    },
+    "position": [
+      4560,
+      1936
+    ],
+    "onError": "continueRegularOutput",
+    "notes": "Personalize livremente o prompt e o modelo. Não precisa de Output Parser. O Code seguinte estrutura o resultado."
+  },
+  {
+    "id": "auto-diario-3",
+    "name": "OpenRouter — Conteúdo Diário 0–150",
+    "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+    "typeVersion": 1,
+    "parameters": {
+      "model": "google/gemini-3.1-flash-lite",
+      "options": {
+        "maxTokens": 4096,
+        "temperature": 0.1,
+        "timeout": 120000,
+        "maxRetries": 1
+      }
+    },
+    "position": [
+      4560,
+      2036
+    ],
+    "credentials": {
+      "openRouterApi": {
+        "name": "OpenRouter account"
+      }
+    }
+  },
+  {
+    "id": "auto-diario-4",
+    "name": "Agent: Conteúdo Diário — 151–600",
+    "type": "@n8n/n8n-nodes-langchain.agent",
+    "typeVersion": 3.1,
+    "parameters": {
+      "promptType": "define",
+      "text": "={{ $json.text }}",
+      "hasOutputParser": false,
+      "options": {
+        "systemMessage": "[CRIADO POR CODEX — conteúdo automático diario — 151–600]\nProduza um conteúdo em português baseado no texto recebido, preservando os fatos. Comece com um título Markdown (# Título). Retorne o conteúdo em Markdown. Esta configuração inicial pode ser personalizada.",
+        "maxIterations": 2
+      }
+    },
+    "position": [
+      4560,
+      2156
+    ],
+    "onError": "continueRegularOutput",
+    "notes": "Personalize livremente o prompt e o modelo. Não precisa de Output Parser. O Code seguinte estrutura o resultado."
+  },
+  {
+    "id": "auto-diario-5",
+    "name": "OpenRouter — Conteúdo Diário 151–600",
+    "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+    "typeVersion": 1,
+    "parameters": {
+      "model": "google/gemini-3.1-flash-lite",
+      "options": {
+        "maxTokens": 4096,
+        "temperature": 0.1,
+        "timeout": 120000,
+        "maxRetries": 1
+      }
+    },
+    "position": [
+      4560,
+      2256
+    ],
+    "credentials": {
+      "openRouterApi": {
+        "name": "OpenRouter account"
+      }
+    }
+  },
+  {
+    "id": "auto-diario-6",
+    "name": "Agent: Conteúdo Diário — 601–1499",
+    "type": "@n8n/n8n-nodes-langchain.agent",
+    "typeVersion": 3.1,
+    "parameters": {
+      "promptType": "define",
+      "text": "={{ $json.text }}",
+      "hasOutputParser": false,
+      "options": {
+        "systemMessage": "[CRIADO POR CODEX — conteúdo automático diario — 601–1499]\nProduza um conteúdo em português baseado no texto recebido, preservando os fatos. Comece com um título Markdown (# Título). Retorne o conteúdo em Markdown. Esta configuração inicial pode ser personalizada.",
+        "maxIterations": 2
+      }
+    },
+    "position": [
+      4560,
+      2376
+    ],
+    "onError": "continueRegularOutput",
+    "notes": "Personalize livremente o prompt e o modelo. Não precisa de Output Parser. O Code seguinte estrutura o resultado."
+  },
+  {
+    "id": "auto-diario-7",
+    "name": "OpenRouter — Conteúdo Diário 601–1499",
+    "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+    "typeVersion": 1,
+    "parameters": {
+      "model": "google/gemini-3.1-flash-lite",
+      "options": {
+        "maxTokens": 4096,
+        "temperature": 0.1,
+        "timeout": 120000,
+        "maxRetries": 1
+      }
+    },
+    "position": [
+      4560,
+      2476
+    ],
+    "credentials": {
+      "openRouterApi": {
+        "name": "OpenRouter account"
+      }
+    }
+  },
+  {
+    "id": "auto-diario-8",
+    "name": "Agent: Conteúdo Diário — 1500+",
+    "type": "@n8n/n8n-nodes-langchain.agent",
+    "typeVersion": 3.1,
+    "parameters": {
+      "promptType": "define",
+      "text": "={{ $json.text }}",
+      "hasOutputParser": false,
+      "options": {
+        "systemMessage": "[CRIADO POR CODEX — conteúdo automático diario — 1500+]\nProduza um conteúdo em português baseado no texto recebido, preservando os fatos. Comece com um título Markdown (# Título). Retorne o conteúdo em Markdown. Esta configuração inicial pode ser personalizada.",
+        "maxIterations": 2
+      }
+    },
+    "position": [
+      4560,
+      2596
+    ],
+    "onError": "continueRegularOutput",
+    "notes": "Personalize livremente o prompt e o modelo. Não precisa de Output Parser. O Code seguinte estrutura o resultado."
+  },
+  {
+    "id": "auto-diario-9",
+    "name": "OpenRouter — Conteúdo Diário 1500+",
+    "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+    "typeVersion": 1,
+    "parameters": {
+      "model": "google/gemini-3.1-flash-lite",
+      "options": {
+        "maxTokens": 4096,
+        "temperature": 0.1,
+        "timeout": 120000,
+        "maxRetries": 1
+      }
+    },
+    "position": [
+      4560,
+      2696
+    ],
+    "credentials": {
+      "openRouterApi": {
+        "name": "OpenRouter account"
+      }
+    }
+  },
+  {
+    "id": "auto-diario-10",
+    "name": "Estruturar conteúdo gerado — Diário",
+    "type": "n8n-nodes-base.code",
+    "typeVersion": 2,
+    "parameters": {
+      "mode": "runOnceForAllItems",
+      "jsCode": "function structureAutomaticContent(value, context, origin) {\n  if (value.error) return { generatedContents: [], generatedContentErrors: [{ origin, referenceId: context.referenceId, message: String(value.error.message ?? value.error) }] };\n  if (value.output === undefined) return { generatedContents: [], generatedContentErrors: [] }; // Switch fallback: continue normally.\n  const body = typeof value.output === 'string' ? value.output.trim() : JSON.stringify(value.output, null, 2);\n  if (!body) return { generatedContents: [], generatedContentErrors: [{ origin, referenceId: context.referenceId, message: 'Agent retornou conteúdo vazio.' }] };\n  const now = new Date().toISOString();\n  const title = (body.match(/^#{1,6}\\s+(.+)$/m)?.[1] ?? context.contentTitle ?? 'Conteúdo gerado').slice(0, 150).trim();\n  return { generatedContents: [{ schemaVersion: 1, origin, referenceId: context.referenceId, sourceIds: context.contentSourceIds,\n    createdAt: now, updatedAt: now, title, body, sourceWordCount: context.sourceWordCount,\n    wordCount: (body.match(/\\S+/g) ?? []).length }], generatedContentErrors: [] };\n}\nconst context=$(\"Contar palavras para conteúdo — Diário\").item.json;\nreturn [{json:structureAutomaticContent($input.first().json,context,\"diario\")}];"
+    },
+    "position": [
+      4900,
+      2266
+    ]
+  },
+  {
+    "id": "auto-diario-11",
+    "name": "Reunir fluxo e conteúdo — Diário",
+    "type": "n8n-nodes-base.merge",
+    "typeVersion": 3.2,
+    "parameters": {
+      "mode": "combine",
+      "combineBy": "combineByPosition",
+      "numberInputs": 2,
+      "options": {}
+    },
+    "position": [
+      4180,
+      -176
+    ],
+    "notes": "Aguarda o caminho original e a geração de conteúdo. Falhas do novo Agent chegam como generatedContentErrors, sem impedir a continuidade."
+  },
+  {
+    "id": "auto-diario-12",
+    "name": "Guia — Conteúdos Diário",
+    "type": "n8n-nodes-base.stickyNote",
+    "typeVersion": 1,
+    "parameters": {
+      "content": "## Conteúdos Gerados — Diário\nRamificação automática após Respostas Jev válidas? = true.\nContagem → faixa → um Agent → estruturação em JS → reunião com o fluxo original.\nPersonalize as condições do Switch e cada Agent/modelo separadamente. Sem faixa ou erro do Agent: continuar. O computador salva .md e .json em Conteúdos Gerados, na mesma resposta do fluxo.",
+      "width": 1320,
+      "height": 240,
+      "color": 6
+    },
+    "position": [
+      3940,
+      1656
+    ]
   }
 ]

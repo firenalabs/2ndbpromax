@@ -1,3 +1,4 @@
+import { saveAutomaticContents } from './conteudos-automaticos.mjs';
 import { randomUUID } from 'node:crypto';
 import { mkdir, writeFile, cp, unlink } from 'node:fs/promises';
 import { join } from 'node:path';
@@ -165,6 +166,7 @@ export class AtlasProcessor {
         const index = existing.findIndex(b => b.id === block.id);
         existing[index] = block; await this.saveBlock(block);
       }
+      await saveAutomaticContents(this.root, result, 'atlas', pending.map(b => ({ id:b.id, text:b.text, sourceIds:[b.sourceId], createdAt:b.createdAt })), this.log);
       failures = result.errors ?? [];
     }
     await this.render();

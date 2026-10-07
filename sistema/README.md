@@ -50,3 +50,7 @@ Segmentação v2: frases naturais com subdivisão de trechos acima de 50 palavra
 ## KeyTopics em Markdown
 
 O Agent identifica tópicos e retorna `## [SEG_00008] Título` seguido de linhas `- Bulletpoint`. `keytopics-markdown.mjs` fornece o Code de estruturação determinística do 01. Não há Output Parser nem segundo Agent. O Code conserva IDs e conteúdo; a validação da digestão continua checando SEGs e ordem. O pacote manual contém um Code adicional e regras de formato para acrescentar ao prompt customizado.
+
+## Conteúdos automáticos (1.0.5)
+
+`estender-workflows-conteudos.mjs` acrescenta as ramificações aos JSONs importáveis de 02a e 02b durante `preparar-atualizacao`. Os SDKs são os modelos de base; para importar o fluxo completo atualizado, use os arquivos `.importar.json`. Os novos Agents retornam Markdown livre; `conteudos-automaticos.mjs` estrutura e grava os resultados recebidos em `generatedContents`. `generatedContentErrors` é independente dos erros do Atlas/Diário. O Merge aguarda original + conteúdo antes de continuar, sem nova chamada HTTP do computador. Faixas iniciais: 0–150, 151–600, 601–1499, 1500+. Cada Agent possui modelo próprio. O caminho manual 03 continua separado. IDs de arquivo são estáveis por origem e referência, com fonte e contagens conferidas localmente.

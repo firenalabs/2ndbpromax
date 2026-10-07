@@ -28,7 +28,7 @@ export async function prepareUpdate(root) {
   const { keytopicsMarkdownInstructions } = await import('./keytopics-markdown.mjs');
   await writeFile(join(n8n, '01 - Formato Markdown KeyTopics.txt'), keytopicsMarkdownInstructions + '\n');
   await copyFile(join(root, 'sistema', 'workflows', 'keytopics.prompt.txt'), join(n8n, '01 - Prompt KeyTopics.txt'));
-  await writeFile(join(n8n, 'LEIA-ME.txt'), 'Abra cada arquivo .js, copie todo o conteúdo e cole no Code com o mesmo nome no workflow indicado (01 ou 02a). Publique os dois workflows depois de colar. Não precisa importar o workflow inteiro. Os Codes são completos; confira customizações locais antes de substituir. No 01, remova Schema — KeyTopics e Agent: Estruturar KeyTopics, se existir. Desative Require Specific Output Format no Agent: KeyTopics. Adicione um Code chamado Estruturar KeyTopics em JavaScript entre Agent: KeyTopics e Validar e montar digestão. Copie para ele o Code correspondente. Acrescente apenas as regras de formato Markdown do arquivo 01 - Formato Markdown KeyTopics.txt ao prompt atual, preservando suas instruções de análise e o modelo. 02b e 03 não mudam nesta atualização.\n');
+  await writeFile(join(n8n, 'LEIA-ME.txt'), 'Abra cada arquivo .js, copie todo o conteúdo e cole no Code com o mesmo nome no workflow indicado (01 ou 02a). Publique os dois workflows depois de colar. Não precisa importar o workflow inteiro. Os Codes são completos; confira customizações locais antes de substituir. No 01, remova Schema — KeyTopics e Agent: Estruturar KeyTopics, se existir. Desative Require Specific Output Format no Agent: KeyTopics. Adicione um Code chamado Estruturar KeyTopics em JavaScript entre Agent: KeyTopics e Validar e montar digestão. Copie para ele o Code correspondente. Acrescente apenas as regras de formato Markdown do arquivo 01 - Formato Markdown KeyTopics.txt ao prompt atual, preservando suas instruções de análise e o modelo. Para as ramificações automáticas de 02a e 02b, siga CONTEUDOS-AUTOMATICOS.txt e os JSONs completos incluídos. O 03 permanece independente.\n');
   await writeFile(join(base, 'LEIA-ME.txt'), 'CLIENTE: pare o programa. Copie o CONTEÚDO de "Copiar para o cliente" para a raiz de cada cliente, onde está iniciar.bat. Mescle as pastas e substitua os arquivos. Não apague a pasta sistema. Reinicie e use opção 3 para retomar erros. Configuração, histórico e resultados não estão neste pacote.\n\nN8N: "Colar no n8n" contém Codes completos, nomeados pelos nodes. Aplique manualmente e publique.\n\nPRÓXIMAS ATUALIZAÇÕES: execute preparar-atualizacao.bat ou ./preparar-atualizacao.sh na cópia de desenvolvimento. A mesma pasta será atualizada com o código atual. Envie a pasta Copiar para o cliente ao sócio.\n');
   await writeFile(join(base, 'arquivos-do-programa.json'), JSON.stringify(files, null, 2) + '\n');
   return { base, files };
@@ -38,6 +38,7 @@ const root = fileURLToPath(new URL('../', import.meta.url));
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   await import('./gerar-workflow.mjs');
   await import('./gerar-workflow-atlas.mjs');
+  await import('./gerar-workflow-diario.mjs');
   // Keep full imports and standalone Codes in sync, without replacing custom prompts/models.
   for (const prefix of ['01-digestao', '02a-atlas']) {
     const directory = join(root, 'sistema', 'workflows');
@@ -73,6 +74,10 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
     const specs = JSON.parse(await readFile(join(directory, prefix + '.nodes.json'), 'utf8'));
     await writeFile(join(directory, output), specs.find(n => n.name === name).parameters.jsCode + '\n');
   }
+  const { extendLocalWorkflows } = await import('./estender-workflows-conteudos.mjs');
+  await extendLocalWorkflows(root);
   const result = await prepareUpdate(root);
+  for (const prefix of ['02a-atlas','02b-diario']) await copyFile(join(root,'sistema','workflows',prefix+'.importar.json'),join(result.base,'Colar no n8n',prefix+'.importar.json'));
+  await writeFile(join(result.base,'Colar no n8n','CONTEUDOS-AUTOMATICOS.txt'),'02a e 02b agora possuem ramificações de conteúdo automático. Os JSONs .importar.json incluem o fluxo completo. Para preservar customizações de produção, copie apenas os nodes Contar palavras, Rotear conteúdo por palavras, quatro Agents e seus modelos, Estruturar conteúdo gerado e Reunir fluxo e conteúdo. Conecte a nova ramificação à saída true de Conhecimento aceito? (02a) ou Respostas Jev válidas? (02b). O Merge recebe o caminho original em input 1 e conteúdo em input 2, e continua no caminho original. Atualize também os Codes de conclusão conforme os JSONs. Publique. O modelo/credential de cada novo node deve ser configurado no n8n de produção. Atualize cada computador com a opção 9.\n');
   console.log('\nAtualização pronta em: ' + result.base + '\nCopie a pasta "Copiar para o cliente" para enviar ao sócio. Os Codes ficam em "Colar no n8n".');
 }

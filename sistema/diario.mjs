@@ -1,3 +1,4 @@
+import { saveAutomaticContents } from './conteudos-automaticos.mjs';
 import { randomUUID } from 'node:crypto';
 import { mkdir, writeFile, unlink } from 'node:fs/promises';
 import { join } from 'node:path';
@@ -139,6 +140,7 @@ export class DiaryProcessor {
         try {
           if (group.fullText.length > this.config.maxGroupCharacters) throw new Error(`O grupo excede o limite de ${this.config.maxGroupCharacters} caracteres do protótipo. Seus textos completos foram conservados em Diário/Grupos; nenhum trecho foi truncado.`);
           const result = await this.call(payload);
+          await saveAutomaticContents(this.root, result, 'diario', [{ id:group.id, text:group.fullText, sourceIds:group.sourceIds, createdAt:group.createdAt }], this.log);
           errors = result.errors ?? {};
           group.aspects = validateAspects(result.aspects, this.config.aspectThreshold);
           if (result.diary && !group.diaryOutput) group.diaryOutput = validateDiaryOutput(result.diary);

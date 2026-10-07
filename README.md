@@ -1,6 +1,6 @@
 # 2ndBrainProMax — segundo cérebro local
 
-Coloque textos `.txt` em **Entrada**. O programa preserva os originais, identifica ideias, organiza o **Atlas de Conhecimento** e reúne textos consecutivos para gerar **Diário** e **Conquistas**. **Conteúdos Gerados** são acionados manualmente.
+Coloque textos `.txt` em **Entrada**. O programa preserva os originais, identifica ideias, organiza o **Atlas de Conhecimento** e reúne textos consecutivos para gerar **Diário** e **Conquistas**. **Conteúdos Gerados** podem ser produzidos automaticamente pelo Atlas e pelo Diário, além da opção manual 8.
 
 ## Instalar
 
@@ -49,7 +49,7 @@ O n8n permanece sob atualização manual do responsável. Cada Release informa s
 | Atlas | Atlas de Conhecimento.md com categorias/títulos; Notas com recortes integrais |
 | Diário | Registros concluídos; Grupo em andamento.md mostra o que aguarda continuidade |
 | Conquistas | Brag Document das vitórias identificadas |
-| Conteúdos Gerados | Textos gerados pela opção 8, em Markdown/JSON |
+| Conteúdos Gerados | Conteúdos automáticos do Atlas/Diário e manuais da opção 8, em Markdown/JSON |
 | Erros | Explicação das falhas e pendências |
 | sistema | Código e configuração; não precisa editar para usar |
 
@@ -78,3 +78,5 @@ Configuração particular, dados dos clientes, bloqueios e arquivos temporários
 Node.js 22+, até 512 KB por input e 120.000 caracteres por texto/grupo para chamadas ao n8n. Grupos maiores são conservados e ficam pendentes; não são truncados. Falhas conservam o original; use opção 3 após resolver a causa.
 
 A opção 7 apaga os dados daquela cópia, incluindo a Entrada e grupo aberto, após confirmação digitando LIMPAR. Código e configuração são mantidos. Essa limpeza não apaga workflows/históricos do n8n.
+
+Conteúdos automáticos: os workflows 02a e 02b podem gerar conteúdo por faixa de palavras na mesma execução. Os arquivos ficam em **Conteúdos Gerados**, identificados por Atlas ou Diário. Personalize os Switches e os Agents no n8n. A opção 8 continua sendo geração manual independente.

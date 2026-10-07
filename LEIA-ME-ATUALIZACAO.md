@@ -12,7 +12,7 @@ Atualizações do programa não alteram o servidor. Leia as notas da Release. Se
 
 Nesta primeira Release, os Codes são **01 — Validar entrada e adicionar SEGs**, **01 — Validar e montar digestão**, **02a — Validar pedido do Atlas** e **02a — Cortar texto deterministicamente**. Eles incluem segmentação de transcrições sem pontuação e validam os dados sem bloqueio pelo nome de versão. Se já aplicou esses Codes, não precisa repetir.
 
-Preserve suas customizações de produção ao substituir a lógica de um Code. O prompt KeyTopics é uma referência; não precisa substituir um prompt customizado. 02b/03 permanecem separados e a geração de conteúdo continua manual pela opção 8.
+Preserve suas customizações de produção ao substituir a lógica de um Code. O prompt KeyTopics é uma referência; não precisa substituir um prompt customizado. O 03 permanece independente para a opção 8; 02a e 02b possuem geração automática adicional na versão 1.0.5.
 
 Se ainda houver nodes de correção de KeyTopics da entrega antiga, remova **Digestão válida?**, **Agent: Corrigir KeyTopics** e **Validar digestão corrigida**. Conecte **Validar e montar digestão** diretamente ao retorno ao computador. O sistema atual não tenta corrigir automaticamente os KeyTopics.
 
@@ -23,3 +23,5 @@ Altere código/geradores, incremente version no package.json, atualize NOTAS-DA-
 Somente Releases estáveis são instaladas. Versões antigas não substituem versões novas. O pacote de atualização aceita somente arquivos de programa e verifica seus hashes; configuração e registros locais não são destinos permitidos.
 
 A alternativa manual continua disponível: preparar-atualizacao.bat / ./preparar-atualizacao.sh gera **Atualizações/Atualizacao atual/Copiar para o cliente** e **Colar no n8n**.
+
+Na versão 1.0.5, atualize também o n8n de produção manualmente: o pacote Codes-n8n.zip inclui os workflows 02a/02b com ramificações automáticas e o arquivo CONTEUDOS-AUTOMATICOS.txt. Transfira os novos nodes, ligações e Codes de conclusão, preservando seus prompts e modelos existentes. No computador, a opção 9 atualiza o salvamento em Conteúdos Gerados. Pare e reinicie o iniciador após atualizar.
