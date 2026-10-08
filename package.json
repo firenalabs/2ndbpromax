@@ -18,5 +18,5 @@
     "atualizar": "node sistema/iniciar.mjs --atualizar",
     "gerar-release": "node sistema/gerar-release.mjs"
   },
-  "version": "1.0.6"
+  "version": "1.0.7"
 }

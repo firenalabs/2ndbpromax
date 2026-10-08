@@ -27,16 +27,23 @@ export async function saveAutomaticContents(root, result, origin, sources, log =
         || typeof content.title !== 'string' || !content.title.trim()) throw new Error('Conteúdo automático inválido ou sem origem correspondente.');
       const contentKey = typeof content.contentKey === 'string' && content.contentKey.trim()
         ? content.contentKey.trim() : null;
-      const id = createHash('sha256').update(`${origin}:${source.id}${contentKey ? ':' + contentKey : ''}`).digest('hex').slice(0, 24);
-      const record = { ...content, id, schemaVersion: 1, sourceIds: source.sourceIds,
+      const networks = ['LinkedIn', 'Twitter', 'Instagram'];
+      if (content.socialNetwork !== undefined && !networks.includes(content.socialNetwork)) throw new Error('Rede social inválida.');
+      const network = content.socialNetwork;
+      const destination = network ? join(directory, network) : directory;
+      const identity = `${origin}:${source.id}${contentKey ? ':' + contentKey : ''}${network ? ':network:' + network : ''}`;
+      const id = createHash('sha256').update(identity).digest('hex').slice(0, 24);
+      const record = { ...content, id, schemaVersion: network ? 2 : 1, sourceIds: source.sourceIds,
         sourceWordCount: (source.text.match(/\S+/g) ?? []).length, wordCount: (content.body.match(/\S+/g) ?? []).length };
       if (!Number.isFinite(Date.parse(record.createdAt))) record.createdAt = new Date().toISOString();
       record.updatedAt = new Date().toISOString();
       // Stable filenames avoid duplicates when an execution is retried.
       const name = readableName(origin === 'atlas' ? 'Atlas' : 'Diário', source.createdAt ?? record.createdAt, id);
-      await mkdir(directory, { recursive: true });
-      await writeJson(join(directory, name + '.json'), record);
-      await writeFile(join(directory, name + '.md'), record.body + '\n', 'utf8');
+      await mkdir(destination, { recursive: true });
+      await writeJson(join(destination, name + '.json'), record);
+      const heading = network ? `# ${record.title}\n\nRede social: ${network}\nFormato: ${record.format ?? 'post'}\nTipo: ${record.contentType ?? 'conteúdo'}\n${record.subtitle ? '\n' + record.subtitle + '\n' : ''}\n` : '';
+      const decisions = network && record.jevDecisions?.length ? '\n\n## Avaliações Jev\n\n' + record.jevDecisions.map(d => `- ${d.key}: ${d.probability ?? 'indisponível'}; limiar ${d.threshold}; ${d.error ? 'erro: ' + d.error : d.accepted ? 'aceito' : 'não selecionado'}${d.partIndex !== null && d.partIndex !== undefined ? '; bloco ' + (d.partIndex + 1) : ''}`).join('\n') + '\n' : '';
+      await writeFile(join(destination, name + '.md'), heading + record.body + decisions + '\n', 'utf8');
       log(`Conteúdo ${origin} salvo: ${record.title}`);
     } catch (error) { log(`Não foi possível salvar conteúdo ${origin}: ${error.message}`); }
   }

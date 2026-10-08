@@ -9,9 +9,10 @@
   "maxFileBytes": 512000,
   "atlasWebhook": "http://localhost:5678/webhook/segundo-cerebro-local-atlas-v1",
   "knowledgeThreshold": 0.8,
-  "diaryWebhook": "http://localhost:5678/webhook/segundo-cerebro-local-diario-v1",
+  "diaryWebhook": "http://localhost:5678/webhook/segundo-cerebro-local-diario-social-v2",
   "continuityThreshold": 0.8,
   "aspectThreshold": 0.8,
   "maxGroupCharacters": 120000,
-  "n8nBaseUrl": "http://localhost:5678"
+  "n8nBaseUrl": "http://localhost:5678",
+  "diaryRequestTimeoutMs": 1800000
 }

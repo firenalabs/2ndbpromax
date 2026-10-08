@@ -1,6 +1,6 @@
 # Atualizar o sistema
 
-Na versão **1.0.6**, cada conteúdo com `contentKey` próprio é salvo em arquivos distintos, mesmo quando vários tweets pertencem ao mesmo grupo. Atualize pela opção 9 e reinicie o programa. Esta correção não requer alterações no workflow do n8n que já retorna esses itens; preserve seus prompts e modelos personalizados.
+Na versão **1.0.7**, posts do novo Diário são salvos em **Conteúdos Gerados/LinkedIn**, **Twitter** e **Instagram**, com rede, formato, blocos textuais e avaliações Jev. Atualize pela opção 9 e reinicie. O workflow original permanece intacto. O novo workflow precisa ser publicado no n8n e seu webhook configurado nos clientes; a atualização automática preserva a configuração existente.
 
 ## Para o sócio
 

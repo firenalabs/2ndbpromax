@@ -1,0 +1,1851 @@
+{
+  "name": "PARA INCORPORAR",
+  "nodes": [
+    {
+      "parameters": {
+        "jsCode": "const context=$input.first().json;\nconst text=context.text;\nreturn [{json:{text,texto:text,referenceId:context.groupId,contentTitle:'Conteúdo do Diário',contentSourceIds:context.sourceIds,sourceWordCount:(text.match(/\\S+/g)??[]).length}}];"
+      },
+      "id": "38274791-f475-4803-8e5d-76b1c446b151",
+      "name": "Contar palavras para conteúdo — Diário1",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -848,
+        2336
+      ]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.sourceWordCount }}",
+                    "rightValue": 100,
+                    "operator": {
+                      "type": "number",
+                      "operation": "lte"
+                    },
+                    "id": "89ac3867-1470-4c0a-906f-2b2effdd37b2"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Até 100"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.sourceWordCount }}",
+                    "rightValue": 200,
+                    "operator": {
+                      "type": "number",
+                      "operation": "lte"
+                    },
+                    "id": "09c95194-4276-4dfb-899a-eaae5d4e14e2"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Até 200"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "4d4db3d7-924b-40a3-a1b2-95db7839ce42",
+                    "leftValue": "={{ $json.sourceWordCount }}",
+                    "rightValue": 400,
+                    "operator": {
+                      "type": "number",
+                      "operation": "lte"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Até 400"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "25821477-5701-42d0-9485-eef6af604910",
+                    "leftValue": "={{ $json.sourceWordCount }}",
+                    "rightValue": 800,
+                    "operator": {
+                      "type": "number",
+                      "operation": "lte"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Até 800"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "1ffb6647-54e1-48a0-ad9b-01cd59e76669",
+                    "leftValue": "={{ $json.sourceWordCount }}",
+                    "rightValue": 1600,
+                    "operator": {
+                      "type": "number",
+                      "operation": "lte"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Até 1600"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "d86eb954-c9b8-42f1-b71e-7ed893fe03ad",
+                    "leftValue": "={{ $json.sourceWordCount }}",
+                    "rightValue": 3200,
+                    "operator": {
+                      "type": "number",
+                      "operation": "lte"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Até 3200"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "8f720fb2-39d0-4d24-8748-b8962986c547",
+                    "leftValue": "={{ $json.sourceWordCount }}",
+                    "rightValue": 3200,
+                    "operator": {
+                      "type": "number",
+                      "operation": "gt"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Mais que 3200"
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra",
+          "renameFallbackOutput": "Acima do último limite",
+          "allMatchingOutputs": false
+        }
+      },
+      "id": "291ce110-8698-4748-8038-c15e075afae9",
+      "name": "Rotear conteúdo por palavras — Diário1",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        -480,
+        2576
+      ],
+      "notes": "Edite apenas os três números à direita das regras, em ordem crescente. Cada regra significa: quantidade de palavras menor ou igual ao limite. A primeira regra correspondente vence. Acima do último limite, o quarto Agent executa automaticamente."
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.texto }}",
+        "options": {
+          "systemMessage": "=quero transformar o input em até dois tweets curtos, como se fossem pensamentos rápidos, utilizando uma lógica MECE. quais são os possíveis ângulos?\n\nretorne somente o(s) angulo(s), em uma frase curta de um único período, sem adjetivação excessiva. jamais use travessões. \n\nestrutura:\n\n[angulo 1]\n\n---\n\n[angulo 2]"
+        }
+      },
+      "id": "c6e214f5-3555-48cf-9bd6-3d7fcfd14093",
+      "name": "Angulos para até 2 tweets",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -160,
+        256
+      ],
+      "onError": "continueRegularOutput",
+      "notes": "Personalize livremente o prompt e o modelo. Não precisa de Output Parser. O Code seguinte estrutura o resultado."
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.texto }}",
+        "options": {
+          "systemMessage": "=quero transformar o input em até três tweets curtos, como se fossem pensamentos rápidos, utilizando uma lógica MECE. quais são os possíveis ângulos?\n\nretorne somente o(s) angulo(s), em uma frase curta de um único período, sem adjetivação excessiva. jamais use travessões. \n\nestrutura:\n\n[angulo 1]\n\n---\n\n[angulo 2]\n\n---\n\n[angulo 3]"
+        }
+      },
+      "id": "276dfa21-4cd1-451d-8191-2d47c037a20a",
+      "name": "Angulos para até 3 tweets",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -160,
+        448
+      ],
+      "onError": "continueRegularOutput",
+      "notes": "Personalize livremente o prompt e o modelo. Não precisa de Output Parser. O Code seguinte estrutura o resultado."
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.texto }}",
+        "options": {
+          "systemMessage": "=quero transformar o input em até 4 tweets curtos, como se fossem pensamentos rápidos, utilizando uma lógica MECE. quais são os possíveis ângulos?\n\nretorne somente o(s) angulo(s), em uma frase curta de um único período, sem adjetivação excessiva. jamais use travessões. \n\nestrutura:\n\n[angulo 1]\n\n---\n\n[angulo 2]\n\n---\n\n[angulo 3, se houver]\n\n---\n\n[angulo 4, se houver]"
+        }
+      },
+      "id": "12770fcf-68ae-4b3b-89d2-6fac95504a02",
+      "name": "Angulos para até 4 tweets",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -160,
+        640
+      ],
+      "onError": "continueRegularOutput",
+      "notes": "Personalize livremente o prompt e o modelo. Não precisa de Output Parser. O Code seguinte estrutura o resultado."
+    },
+    {
+      "parameters": {
+        "jsCode": "function splitDiaryAngles(value, context) {\n  const fail = message => [{ ...context, error: { message } }];\n  if (value.error) return fail(String(value.error.message ?? value.error));\n  let output = value.output;\n  if (typeof output === 'string') {\n    const trimmed = output.trim().replace(/^```(?:json)?\\s*\\n?([\\s\\S]*?)\\n?```$/i, '$1').trim();\n    try { output = JSON.parse(trimmed); } catch { output = trimmed.split(/^\\s*---+\\s*$/m); }\n  }\n  const angles = Array.isArray(output) ? output : output?.angles ?? output?.angulos;\n  if (!Array.isArray(angles) || !angles.length || angles.some(angle => typeof angle !== 'string' || !angle.trim())) {\n    return fail('O Agent de ângulos não retornou uma lista válida de ângulos.');\n  }\n  return angles.map((angle, index) => ({ ...context, angle: angle.trim(), tweetIndex: index + 1,\n    texto: `${context.text}\\n\\nÂngulo deste item: ${angle.trim()}`, error: null }));\n}\nconst context=$('Contar palavras para conteúdo — Diário1').first().json;\nreturn $input.all().flatMap((item,index)=>splitDiaryAngles(item.json,context).map(json=>({json,pairedItem:{item:index}})));"
+      },
+      "id": "832a7f00-d654-402c-b2d2-256a7fd604b5",
+      "name": "Edit Fields",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        256,
+        688
+      ],
+      "notes": "Separa a resposta dos Agents de ângulos pelo separador --- já usado nos prompts. Um item por ângulo. O nome atende à referência existente do Agent Tweets/Stories, sem alterar sua configuração."
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ Boolean($json.error) }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              },
+              "id": "1df8195e-4b01-4c88-b608-ef396abeaa06"
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "f7b72005-e388-42c7-aacf-21b5533a8328",
+      "name": "Falha ao gerar ângulos?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        480,
+        720
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.texto }}",
+        "options": {
+          "systemMessage": "=quero transformar o input em até 8 tweets curtos, como se fossem pensamentos rápidos, utilizando uma lógica MECE. quais são os possíveis ângulos?\n\nretorne somente o(s) angulo(s), em uma frase curta de um único período, sem adjetivação excessiva. jamais use travessões. \n\nestrutura:\n\n[angulo 1]\n\n---\n\n[angulo 2]\n\n---\n\n[angulo 3, se houver]\n\n---\n\n[angulo 4, se houver]\n\n---\n\n[angulo 5, se houver]\n\n---\n\n[angulo 6, se houver]\n\n---\n\n[angulo 7, se houver]\n\n---\n\n[angulo 8, se houver]"
+        }
+      },
+      "id": "b625c4ec-1ea4-4cb3-a160-07d2f2737e3c",
+      "name": "Angulos para até 8 tweets",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -160,
+        832
+      ],
+      "onError": "continueRegularOutput",
+      "notes": "Personalize livremente o prompt e o modelo. Não precisa de Output Parser. O Code seguinte estrutura o resultado."
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.texto }}",
+        "options": {
+          "systemMessage": "=Transforme o pensamento que eu trouxe no input em um tweet curto, que inicia um diálogo com os seguidores e busca a interação ativa dele, através de uma pergunta, compartilhamento de boas práticas, pedido de opinião ou pedido feedback, como se fosse uma conversa casual.\n\n## Tom de voz:\ninformal, como se estivesse conversando com um amigo inteligente durante um café\n\n## Vocabulário \nAbreviações comuns de redes sociais (vc, oq, pra, pro, pros)\n\n## Mecânica de escrita\n\nQuebras de linha, uso de listas curtas sem marcador formais e blocos delimitados por emojis\n\nnunca use negrito\n\n## Estrutura das frases\n\nTente simular o mesmo do input\n\n## Nunca faça\n\n- nunca use linguagem acadêmica, sisuda ou excessivamente formal\n- nao escreva blocos maciços de texto sem quebras visuais ou emojis\n- nunca use negrito\n- nunca use travessões (\"—\")\n"
+        }
+      },
+      "id": "ca85e7db-5c23-40f1-bb37-b5b99eae0310",
+      "name": "Interação com seguidores",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        192,
+        1680
+      ],
+      "onError": "continueRegularOutput",
+      "notes": "Personalize livremente o prompt e o modelo. Não precisa de Output Parser. O Code seguinte estrutura o resultado."
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.texto }}",
+        "options": {
+          "systemMessage": "=Transforme o pensamento que eu trouxe no input em até 3 tweets curtos e completamente autônomos e independentes entre si (numa lógica MECE), que inicia um diálogo com os seguidores e busca a interação ativa dele, através de uma pergunta, compartilhamento de boas práticas, pedido de opinião ou pedido feedback, como se fosse uma conversa casual\n\n## Tom de voz:\ninformal, como se estivesse conversando com um amigo inteligente durante um café\n\n## Vocabulário \nAbreviações comuns de redes sociais (vc, oq, pra, pro, pros)\n\n## Mecânica de escrita\n\nQuebras de linha, uso de listas curtas sem marcador formais e blocos delimitados por emojis\n\nnunca use negrito\n\n## Estrutura das frases\n\nTente simular o mesmo do input\n\n## Nunca faça\n\n- nunca use linguagem acadêmica, sisuda ou excessivamente formal\n- nao escreva blocos maciços de texto sem quebras visuais ou emojis\n- nunca use negrito\n- nunca use travessões (\"—\")\n\n## Saída\n\nRetorne apenas os tweets, na estrutura:\n\n[primeiro tweet]\n\n---\n\n[segundo tweet, se houver]\n\n---\n\n[terceiro tweet, se houver]"
+        }
+      },
+      "id": "620676e1-1773-43fd-b22e-258fe5630ffc",
+      "name": "Interação com seguidores (até 3)",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        192,
+        1856
+      ],
+      "onError": "continueRegularOutput",
+      "notes": "Personalize livremente o prompt e o modelo. Não precisa de Output Parser. O Code seguinte estrutura o resultado."
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.cut }}",
+        "options": {
+          "systemMessage": "=Você é um ghostwriter e receberá como input um texto e deverá escrever uma conclusão para ele, no mesmo tom de voz do autor.\n\nValorize o pathos e o ethos. Amplifique os pontos principais da argumentação lógica, dessa vez de forma mais emotiva, expondo os sentimentos bons e os temores que foram discutidos, para que fiquem claros pra audiencia.\n\nPor fim, recapitule os pontos principais em frases simples e objetivas, para tornar tudo claro, acessível, repetível e memorável e conclua.",
+          "maxIterations": 3,
+          "enableStreaming": false,
+          "batching": {
+            "batchSize": 10,
+            "delayBetweenBatches": 0
+          }
+        }
+      },
+      "id": "5fafc6a1-73c2-44d3-8c2a-4773bfcb7b06",
+      "name": "SOFT CTA PARA O PROPRIO TEXTO",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        1328,
+        6592
+      ],
+      "notes": "Processa até 10 cortes simultaneamente usando o batching nativo do AI Agent."
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.texto }}",
+        "options": {
+          "systemMessage": "=## IDENTIDADE E PAPEL\nVocê é um copywriter especializado em escrever a copy de carrosséis, seguindo a estrutura abaixo indicada. O primeiro slide já está pronto e foi dado no input, e, sua função é escrever o restante dos slides.\n\nAdapte o <texto-base> do input, preservando a intenção original, com linguagem simples e progressão narrativa. \n\n## REGRAS DE OURO\n\n- Escreva para adultos, mas use o 4º ano do ensino fundamental como referência de simplicidade da linguagem\n\n- Preserve a personalidade do autor e a primeira pessoa quando presentes\n\n- Você pode reescrever, reorganizar e condensar, mas procure manter o tom de voz original.\n\n- Não invente dados, resultados, depoimentos, exemplos ou argumentos\n\n- Nunca use travessões\n\n{{ $json.system_prompt }}\n\n## INSTRUÇÕES DE ESCRITA\n\n- O primeiro slide já está pronto; comece a partir do segundo\n\n- Produza até 9 slides, com no máximo 50 palavras por slide\n\n- Títulos são opcionais, mas, se utilizados, devem possuir no máximo 8 palavras\n\n- Desenvolva uma ideia principal por slide e avance o raciocínio entre eles\n\n- Destaque, quando útil, até dois trechos curtos em negrito por bloco.\n\n\n## SAÍDA OBRIGATÓRIA\n\nEntregue somente o texto de cada slide do carrossel.\nSepare cada slide com uma linha contendo exclusivamente três hífens.\n\nExemplo:\n\n```\n[Texto do segundo slide]\n\n---\n\n[Texto do terceiro slide]\n\n---\n\n[Texto do quarto slide]\n\n(...)\n```\n"
+        }
+      },
+      "id": "c73ded16-cc7d-44ef-93b5-c291804666c1",
+      "name": "carrossel - linguagem flesch 8-9 ano",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        1072,
+        4256
+      ],
+      "onError": "continueRegularOutput",
+      "notes": "Personalize livremente o prompt e o modelo. Não precisa de Output Parser. O Code seguinte estrutura o resultado."
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json['transcrição original'] }}",
+        "options": {
+          "systemMessage": "=Você vai receber como input uma transcrição. Numa lógica MECE, quais são os possiveis grandes angulos para se criar conteudos long-form?\n\nretorne somente o(s) angulo(s), em uma frase curta de um único período, sem adjetivação excessiva. jamais use travessões. \n\nestrutura:\n\n[angulo 1]\n\n---\n\n[angulo 2]\n\n---\n\n[angulo 3, se houver]\n\n---\n\n[angulo 4, se houver]\n\n(...)"
+        }
+      },
+      "id": "ad2c39c6-5fb4-452f-b441-eb6253fbb32c",
+      "name": "Angulos para até 2 posts M",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        592,
+        5216
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json['transcrição original'] }}",
+        "options": {
+          "systemMessage": "=Você vai receber como input uma transcrição. Numa lógica MECE, quais são os possiveis grandes angulos para se criar conteudos long-form?\n\nretorne somente o(s) angulo(s), em uma frase curta de um único período, sem adjetivação excessiva. jamais use travessões. \n\nestrutura:\n\n[angulo 1]\n\n---\n\n[angulo 2]\n\n---\n\n[angulo 3, se houver]\n\n---\n\n[angulo 4, se houver]\n\n(...)"
+        }
+      },
+      "id": "efcb14cd-c015-4b32-b654-b384d1933de1",
+      "name": "Angulos para até 3 posts M",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        608,
+        5440
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json['transcrição original'] }}",
+        "options": {
+          "systemMessage": "=Você vai receber como input uma transcrição. Numa lógica MECE, quais são os possiveis grandes angulos para se criar conteudos long-form?\n\nretorne somente o(s) angulo(s), em uma frase curta de um único período, sem adjetivação excessiva. jamais use travessões. \n\nestrutura:\n\n[angulo 1]\n\n---\n\n[angulo 2]\n\n---\n\n[angulo 3, se houver]\n\n---\n\n[angulo 4, se houver]\n\n(...)"
+        }
+      },
+      "id": "0fe6d96c-734d-4c99-8e27-abb9e7595934",
+      "name": "Angulos para long-form 3200+",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        320,
+        6784
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "function splitDiaryAngles(value, context) {\n  const fail = message => [{ ...context, error: { message } }];\n  if (value.error) return fail(String(value.error.message ?? value.error));\n  let output = value.output;\n  if (typeof output === 'string') {\n    const trimmed = output.trim().replace(/^```(?:json)?\\s*\\n?([\\s\\S]*?)\\n?```$/i, '$1').trim();\n    try { output = JSON.parse(trimmed); } catch { output = trimmed.split(/^\\s*---+\\s*$/m); }\n  }\n  const angles = Array.isArray(output) ? output : output?.angles ?? output?.angulos;\n  if (!Array.isArray(angles) || !angles.length || angles.some(angle => typeof angle !== 'string' || !angle.trim())) {\n    return fail('O Agent de ângulos não retornou uma lista válida de ângulos.');\n  }\n  return angles.map((angle, index) => ({ ...context, angle: angle.trim(), tweetIndex: index + 1,\n    texto: `${context.text}\\n\\nÂngulo deste item: ${angle.trim()}`, error: null }));\n}\nconst context=$('Contar palavras para conteúdo — Diário1').first().json;\nreturn $input.all().flatMap((item,index)=>splitDiaryAngles(item.json,context).map(json=>({json,pairedItem:{item:index}})));"
+      },
+      "id": "75d07f43-bba6-44b2-a22d-bbc652cbba5a",
+      "name": "Edit Fields1",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        992,
+        5488
+      ],
+      "notes": "Separa a resposta dos Agents de ângulos pelo separador --- já usado nos prompts. Um item por ângulo. O nome atende à referência existente do Agent Tweets/Stories, sem alterar sua configuração."
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ Boolean($json.error) }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              },
+              "id": "1df8195e-4b01-4c88-b608-ef396abeaa06"
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "089b1db4-b23c-4cb1-872d-adafd24c6fd8",
+      "name": "Falha ao gerar ângulos?1",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1200,
+        5632
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json['transcrição original'] }}",
+        "options": {
+          "systemMessage": "=Você vai receber como input uma transcrição. Numa lógica MECE, quais são os possiveis grandes angulos para se criar conteudos long-form?\n\nretorne somente o(s) angulo(s), em uma frase curta de um único período, sem adjetivação excessiva. jamais use travessões. \n\nestrutura:\n\n[angulo 1]\n\n---\n\n[angulo 2]\n\n---\n\n[angulo 3, se houver]\n\n---\n\n[angulo 4, se houver]\n\n(...)"
+        }
+      },
+      "id": "1d707767-f930-4a56-aca2-6d3eef36a0c0",
+      "name": "Angulos x posts 3200+",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        608,
+        5632
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://openrouter.ai/api/alpha/decisions",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "openRouterApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ {\n  model: \"typesafe/jev-1.13\",\n  state: { text: $(\"Validar pedido do Diário\").first().json.text },\n  questions: {\n  \"victory\": {\n    \"type\": \"noul\",\n    \"instructions\": \"O texto relata uma vitória ou conquista concreta de que o autor participou?\",\n    \"criteria\": {\n      \"true\": \"Há resultado alcançado, entrega concluída, reconhecimento recebido, habilidade aprendida ou conquista pessoal concreta do autor. O resultado já aconteceu, ainda que pequeno.\",\n      \"false\": \"Há somente plano, hipótese, tarefa ainda sem resultado ou conquista exclusivamente de outra pessoa.\"\n    }\n  }\n}\n} }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 60000
+        }
+      },
+      "id": "37398f01-2d14-4a4b-a83d-19268193b81b",
+      "name": "Jev — Storytelling carrossel",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        624,
+        3984
+      ],
+      "onError": "continueRegularOutput",
+      "notes": "Personalize a pergunta e os critérios deste aspecto no corpo JSON. Preserve a chave victory e o tipo noul, usados para reunir as respostas."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://openrouter.ai/api/alpha/decisions",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "openRouterApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ {\n  model: \"typesafe/jev-1.13\",\n  state: { text: $(\"Validar pedido do Diário\").first().json.text },\n  questions: {\n  \"victory\": {\n    \"type\": \"noul\",\n    \"instructions\": \"O texto relata uma vitória ou conquista concreta de que o autor participou?\",\n    \"criteria\": {\n      \"true\": \"Há resultado alcançado, entrega concluída, reconhecimento recebido, habilidade aprendida ou conquista pessoal concreta do autor. O resultado já aconteceu, ainda que pequeno.\",\n      \"false\": \"Há somente plano, hipótese, tarefa ainda sem resultado ou conquista exclusivamente de outra pessoa.\"\n    }\n  }\n}\n} }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 60000
+        }
+      },
+      "id": "88a0cc21-4060-49d8-94a6-1eca01f625c9",
+      "name": "Jev — Lista carrossel1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1088,
+        3984
+      ],
+      "onError": "continueRegularOutput",
+      "notes": "Personalize a pergunta e os critérios deste aspecto no corpo JSON. Preserve a chave victory e o tipo noul, usados para reunir as respostas."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://openrouter.ai/api/alpha/decisions",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "openRouterApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ {\n  model: \"typesafe/jev-1.13\",\n  state: { text: $(\"Validar pedido do Diário\").first().json.text },\n  questions: {\n  \"victory\": {\n    \"type\": \"noul\",\n    \"instructions\": \"O texto relata uma vitória ou conquista concreta de que o autor participou?\",\n    \"criteria\": {\n      \"true\": \"Há resultado alcançado, entrega concluída, reconhecimento recebido, habilidade aprendida ou conquista pessoal concreta do autor. O resultado já aconteceu, ainda que pequeno.\",\n      \"false\": \"Há somente plano, hipótese, tarefa ainda sem resultado ou conquista exclusivamente de outra pessoa.\"\n    }\n  }\n}\n} }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 60000
+        }
+      },
+      "id": "d9da8673-87d2-41cd-abe0-efd2e6dc33a7",
+      "name": "Jev — Checklist carrossel",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        848,
+        4000
+      ],
+      "onError": "continueRegularOutput",
+      "notes": "Personalize a pergunta e os critérios deste aspecto no corpo JSON. Preserve a chave victory e o tipo noul, usados para reunir as respostas."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://openrouter.ai/api/alpha/decisions",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "openRouterApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ {\n  model: \"typesafe/jev-1.13\",\n  state: { text: $(\"Validar pedido do Diário\").first().json.text },\n  questions: {\n  \"victory\": {\n    \"type\": \"noul\",\n    \"instructions\": \"O texto relata uma vitória ou conquista concreta de que o autor participou?\",\n    \"criteria\": {\n      \"true\": \"Há resultado alcançado, entrega concluída, reconhecimento recebido, habilidade aprendida ou conquista pessoal concreta do autor. O resultado já aconteceu, ainda que pequeno.\",\n      \"false\": \"Há somente plano, hipótese, tarefa ainda sem resultado ou conquista exclusivamente de outra pessoa.\"\n    }\n  }\n}\n} }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 60000
+        }
+      },
+      "id": "3801f0be-12fe-4e9d-9c6e-8f27dcd73ed9",
+      "name": "Jev — tutorial/how-to carrossel",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        320,
+        3984
+      ],
+      "onError": "continueRegularOutput",
+      "notes": "Personalize a pergunta e os critérios deste aspecto no corpo JSON. Preserve a chave victory e o tipo noul, usados para reunir as respostas."
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.texto }}",
+        "options": {
+          "systemMessage": "=Escreva uma legenda para Instagram a partir do texto-base e do contexto fornecidos. Priorize fidelidade, clareza e utilidade.\n\n**Estrutura**\n\n1. Abra com o insight mais útil do texto, de forma direta e específica. Entregue a ideia principal na primeira frase, sem suspense ou pergunta retórica.\n2. Desenvolva essa ideia: explique o motivo, o mecanismo ou a consequência prática usando informações do texto-base. A legenda deve fazer sentido mesmo para quem não viu a postagem.\n3. Integre naturalmente o assunto principal e os termos específicos que o público poderia usar para pesquisá-lo no Instagram ou no Google. Use palavras-chave para esclarecer o conteúdo, sem listas, repetição artificial ou assuntos adicionais.\n\n**Escrita**\n\n- Preserve o tom de voz e a perspectiva do autor.\n- Use linguagem simples para adultos, frases claras e parágrafos curtos.\n- Não crie um ângulo novo, apenas retome o conteúdo com outras palavras.\n- Não invente fatos, argumentos, números, exemplos, experiências ou resultados.\n- Use no máximo 220 palavras, sem tamanho mínimo. O limite técnico é 250 palavras; mantenha essa margem e conclua naturalmente antes dele.\n- Nunca use travessões\n\nEntregue apenas a legenda final, sem títulos, hashtags, travessões, negrito ou comentários sobre o processo."
+        }
+      },
+      "id": "bddcc83a-36ac-4861-9224-c427bc03ab30",
+      "name": "Legenda completa instagram",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        1600,
+        4144
+      ],
+      "onError": "continueRegularOutput",
+      "notes": "Personalize livremente o prompt e o modelo. Não precisa de Output Parser. O Code seguinte estrutura o resultado."
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.texto }}",
+        "options": {
+          "systemMessage": "=Transforme o input em um tweet curto do dia a dia, como se fosse um pensamento rápido, casual, com o ângulo \"{{ $('Edit Fields').item.json.angle }}\"\n\n## Tom de voz:\ninformal, como se estivesse conversando com um amigo inteligente durante um café\n\n## Vocabulário \nAbreviações comuns de redes sociais (vc, oq, pra, pro, pros)\n\n## Mecânica de escrita\n\nQuebras de linha, uso de listas curtas sem marcador formais e blocos delimitados por emojis\n\nnunca use negrito\n\n## Estrutura das frases\n\nTente simular o mesmo do input\n\n## Nunca faça\n\n- nunca use linguagem acadêmica, sisuda ou excessivamente formal\n- nao escreva blocos maciços de texto sem quebras visuais ou emojis\n- nunca use negrito\n- nunca use travessões (\"—\")\n"
+        }
+      },
+      "id": "6d1f0485-08fa-4e85-8a69-bb9dbf0439ca",
+      "name": "Tweets/Stories com angulo",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        736,
+        784
+      ],
+      "onError": "continueRegularOutput",
+      "notes": "Personalize livremente o prompt e o modelo. Não precisa de Output Parser. O Code seguinte estrutura o resultado."
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.texto }}",
+        "options": {
+          "systemMessage": "=## IDENTIDADE E PAPEL\nVocê é um copywriter especializado em escrever a copy de carrosséis, seguindo a estrutura abaixo indicada. O primeiro slide já está pronto e foi dado no input, e, sua função é escrever o restante dos slides.\n\nAdapte o <texto-base> do input, preservando a intenção original, com linguagem simples e progressão narrativa. \n\n## REGRAS DE OURO\n\n- Escreva para adultos, mas use o 4º ano do ensino fundamental como referência de simplicidade da linguagem\n\n- Preserve a personalidade do autor e a primeira pessoa quando presentes\n\n- Você pode reescrever, reorganizar e condensar, mas procure manter o tom de voz original.\n\n- Não invente dados, resultados, depoimentos, exemplos ou argumentos\n\n- Nunca use travessões\n\n{{ $json.system_prompt }}\n\n## INSTRUÇÕES DE ESCRITA\n\n- O primeiro slide já está pronto; comece a partir do segundo\n\n- Produza até 9 slides, com no máximo 50 palavras por slide\n\n- Títulos são opcionais, mas, se utilizados, devem possuir no máximo 8 palavras\n\n- Desenvolva uma ideia principal por slide e avance o raciocínio entre eles\n\n- Destaque, quando útil, até dois trechos curtos em negrito por bloco.\n\n\n## SAÍDA OBRIGATÓRIA\n\nEntregue somente o texto de cada slide do carrossel.\nSepare cada slide com uma linha contendo exclusivamente três hífens.\n\nExemplo:\n\n```\n[Texto do segundo slide]\n\n---\n\n[Texto do terceiro slide]\n\n---\n\n[Texto do quarto slide]\n\n(...)\n```\n"
+        }
+      },
+      "id": "92e0b1e1-3de6-4701-a9ec-a589c1553b11",
+      "name": "carrossel - linguagem flesch 8-9 ano1",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        240,
+        4272
+      ],
+      "onError": "continueRegularOutput",
+      "notes": "Personalize livremente o prompt e o modelo. Não precisa de Output Parser. O Code seguinte estrutura o resultado."
+    },
+    {
+      "parameters": {
+        "content": "## CARROSSEL (TWITTER = 4 IMAGENS POR TWEET, NO PRIMEIRO TWEET COLOCAR A LEGENDA, INSTAGRAM CARROSSEL E LINKEDIN CARROSSEL - CONVERTER PARA PDF, TEXTO DO POST É A LEGENDA)",
+        "height": 1200,
+        "width": 1952
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        48,
+        3680
+      ],
+      "typeVersion": 1,
+      "id": "222cb42c-295c-422d-b238-89e6ee539752",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## ENSAIO: POSTADO NO LINKEDIN ARTIGOS E NO TWITTER ARTIGOS",
+        "height": 1328,
+        "width": 2064
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        192,
+        6048
+      ],
+      "typeVersion": 1,
+      "id": "af93cb6b-6e04-4419-ae96-612d00be8fd1",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## TEXT-HEAVY (TWITTER UM UNICO TEXTO COM IMAGEM, LINKEDIN POST NORMAL COM IMAGEM, INSTAGRAM A IMAGEM É POSTADA E O TEXTO VAI PRA LEGENDA. TEM QUE TER UMA LOGICA DE ANALISAR A QUANTIDADE DE CARACATERES. SE FOR MAIOR QUE 3000, UM AGENTE ENTRA E ADAPTA PARA O LINKEDIN. SE FOR MAIOR QUE 2200, UM AGENTE ENTRA E ADAPTA PARA O INSTAGRAM)",
+        "height": 960,
+        "width": 2080
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -64,
+        5072
+      ],
+      "typeVersion": 1,
+      "id": "4f128076-3daa-4e82-98d4-9221ce478867",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.texto }}",
+        "options": {
+          "systemMessage": "=## IDENTIDADE E PAPEL\nVocê é um ghostwriter, e sua única função é receber um input e formatá-lo na estrutura abaixo indicada, começando com o <inicio-obrigatorio> e **preservando o tom de voz do <texto-base>**.\n\n## REGRA DE OURO\n\nSua tarefa é ADAPTAR o input, preservando a intenção, o estilo de escrita, a linguagem, o nível de sofisticação e o vocabulário do autor do <texto-base>.\n\nO output deve soar como se o próprio autor da ideia o tivesse escrito, mas apenas formatado de outra forma.\n\n{{ $json.system_prompt }}\n\n## INSTRUÇÕES DE ESCRITA\n\nObrigatoriamente inicie o texto do output com o input <início-obrigatorio>\n\nEscreva na primeira pessoa, para uma única pessoa (\"eu\" e \"você\"). A intenção é que o output soe como alguém explicando algo interessante para um amigo inteligente, com calor humano e pequenos detalhes humanos.\n\nUse \"bucket brigades\" (frases curtas com quebras de linha) na transição entre ideias, para tornar o texto visualmente escaneável e se aproximar do leitor.\n\nNunca use travessões (\"—\").\n\nNunca invente dados, números, depoimentos ou cases.\n\nO output deve ser um texto completo e fluido. A estrutura deve ficar invisível para o leitor, então não use os nomes das etapas como subtítulos.\n\n## FORMATO DE SAÍDA\n\n[apenas o texto]"
+        }
+      },
+      "id": "70d852d6-a561-4035-b675-d25ed603c7ba",
+      "name": "text-heavy com angulo",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        1600,
+        5600
+      ],
+      "onError": "continueRegularOutput",
+      "notes": "Personalize livremente o prompt e o modelo. Não precisa de Output Parser. O Code seguinte estrutura o resultado."
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.texto }}",
+        "options": {
+          "systemMessage": "=## IDENTIDADE E PAPEL\nVocê é um ghostwriter, e sua única função é receber um input e formatá-lo na estrutura abaixo indicada, começando com o <inicio-obrigatorio> e **preservando o tom de voz do <texto-base>**.\n\n## REGRA DE OURO\n\nSua tarefa é ADAPTAR o input, preservando a intenção, o estilo de escrita, a linguagem, o nível de sofisticação e o vocabulário do autor do <texto-base>.\n\nO output deve soar como se o próprio autor da ideia o tivesse escrito, mas apenas formatado de outra forma.\n\n{{ $json.system_prompt }}\n\n## INSTRUÇÕES DE ESCRITA\n\nObrigatoriamente inicie o texto do output com o input <início-obrigatorio>\n\nEscreva na primeira pessoa, para uma única pessoa (\"eu\" e \"você\"). A intenção é que o output soe como alguém explicando algo interessante para um amigo inteligente, com calor humano e pequenos detalhes humanos.\n\nUse \"bucket brigades\" (frases curtas com quebras de linha) na transição entre ideias, para tornar o texto visualmente escaneável e se aproximar do leitor.\n\nNunca use travessões (\"—\").\n\nNunca invente dados, números, depoimentos ou cases.\n\nO output deve ser um texto completo e fluido. A estrutura deve ficar invisível para o leitor, então não use os nomes das etapas como subtítulos.\n\n## FORMATO DE SAÍDA\n\n[apenas o texto]"
+        }
+      },
+      "id": "4326f57f-76c9-415b-a2ae-e629e3724ae3",
+      "name": "text-heavy",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        1280,
+        5344
+      ],
+      "onError": "continueRegularOutput",
+      "notes": "Personalize livremente o prompt e o modelo. Não precisa de Output Parser. O Code seguinte estrutura o resultado."
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.texto }}",
+        "options": {
+          "systemMessage": "=Formato o input como se fosse uma newsletter em primeira pessoa, focando na big idea [big idea] e com os seguintes H2s:\n\n[H2s]\n\nPreserve o vocabulário do input, o tamanho dos períodos e o tom de voz. O output. O objetivo é soar com alguém explicando algo interessante para um amigo inteligente, enquanto toma um café.\n\nMétrica principal: VALOR ENTREGUE POR CARACTERES. Seja direto ao ponto e faça o texto progredir, sem ser repetitivo, mas não resuma o input, pois o output deve ser um conteúdo long-form. \n\nNunca use travessões (\"—\").\n\nRetorne apenas o texto."
+        }
+      },
+      "id": "54a5bba5-141f-41f8-b504-e8ee2d4fb505",
+      "name": "ensaio com angulo",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        640,
+        6800
+      ],
+      "onError": "continueRegularOutput",
+      "notes": "Personalize livremente o prompt e o modelo. Não precisa de Output Parser. O Code seguinte estrutura o resultado."
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.texto }}",
+        "options": {
+          "systemMessage": "=Formato o input como se fosse uma newsletter em primeira pessoa.\n\nPreserve o vocabulário do input, o tamanho dos períodos e o tom de voz. O output. O objetivo é soar com alguém explicando algo interessante para um amigo inteligente, enquanto toma um café.\n\nMétrica principal: VALOR ENTREGUE POR CARACTERES. Seja direto ao ponto e faça o texto progredir, sem ser repetitivo, mas não resuma o input, pois o output deve ser um conteúdo long-form. \n\nNunca use travessões (\"—\").\n\nRetorne apenas o texto."
+        }
+      },
+      "id": "daefaa7f-29c2-4eec-9cb7-58d744620acd",
+      "name": "ensaio sem angulo",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        656,
+        6432
+      ],
+      "onError": "continueRegularOutput",
+      "notes": "Personalize livremente o prompt e o modelo. Não precisa de Output Parser. O Code seguinte estrutura o resultado."
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.texto }}",
+        "options": {
+          "systemMessage": "=\n## A estrutura: 4Us (Útil, Urgente, Único, Ultraespecífico)*\n\nFiltro de Michael Masterson para títulos, assuntos de e-mail e ganchos: cada headline é avaliada em utilidade (benefício claro), urgência (motivo legítimo para agir agora), unicidade (formulação que o leitor ainda não viu) e ultraespecificidade (números e detalhes concretos). Este agente gera versões de headline a partir do texto do input e as avalia nas quatro réguas.\n\n## Etapas da estrutura\n\n1. Geração: Escreva de 8 a 12 headlines a partir do material, todas no vocabulário do autor. Cada headline funciona como primeira frase da peça, então precisa se sustentar sozinha, sem depender do corpo do texto para fazer sentido.\n2. Utilidade: Avalie o benefício prometido em cada versão: o que o leitor ganha ao ler ou clicar.\n3. Urgência: Verifique se existe motivo legítimo para agir agora; datas, prazos e janelas só entram se constarem do input.\n4. Unicidade: Elimine as formulações batidas do nicho e reescreva o que sobreviveu de forma que o leitor ainda não tenha visto.\n5. Ultraespecificidade: Prefira números, prazos e situações concretas presentes no material.\n6. Ranking: Dê nota de 1 a 5 por régua, monte a tabela comparativa e destaque a vencedora com justificativa.\n\n### Erros a evitar\n\n- Urgência inventada (“últimas horas” sem prazo no input).\n- Número ou estatística que não consta do material.\n- Eleger uma headline forte em uma régua e nula nas outras três."
+        }
+      },
+      "id": "5a478beb-ffc4-4ac1-aa91-17eeea691251",
+      "name": "título e subtítulo",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        992,
+        6576
+      ],
+      "onError": "continueRegularOutput",
+      "notes": "Personalize livremente o prompt e o modelo. Não precisa de Output Parser. O Code seguinte estrutura o resultado."
+    },
+    {
+      "parameters": {
+        "content": "## PENSAMENTOS RÁPIDOS (TWITTER, LINKEDIN E INSTAGRAM STORIES)",
+        "height": 1200,
+        "width": 1952
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -256,
+        96
+      ],
+      "typeVersion": 1,
+      "id": "af869995-540a-4499-ac10-fa183a0d9e73",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.texto }}",
+        "options": {
+          "systemMessage": "=Formate o input em um tweet curto do dia a dia, como se fosse um pensamento rápido, casual\n\n## Tom de voz:\ninformal, como se estivesse conversando com um amigo inteligente durante um café\n\n## Vocabulário \nAbreviações comuns de redes sociais (vc, oq, pra, pro, pros)\n\n## Mecânica de escrita\n\ntexto em minúsculo, mas uso de CAIXA ALTA quando o input tiver algo que precisa de uma ênfase dramática\n\nQuebras de linha, uso de listas curtas sem marcador formais e blocos delimitados por emojis\n\nnunca use negrito\n\n## Estrutura das frases\n\nTente simular o mesmo do input\n\n## Emojis\n\nUse quando cabível\n\n## Nunca faça\n\n- nunca use linguagem acadêmica, sisuda ou excessivamente formal\n- nao escreva blocos maciços de texto sem quebras visuais ou emojis\n- nunca use negrito\n- nunca use travessões (\"—\")\n"
+        }
+      },
+      "id": "c443d68b-b6c6-4731-bf8f-62f1d9163912",
+      "name": "Tweets/Stories sem angulo",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        752,
+        368
+      ],
+      "onError": "continueRegularOutput",
+      "notes": "Personalize livremente o prompt e o modelo. Não precisa de Output Parser. O Code seguinte estrutura o resultado."
+    },
+    {
+      "parameters": {
+        "content": "## INTERAÇÃO COM O PÚBLICO (TWITTER, LINKEDIN E INSTAGRAM STORIES)",
+        "height": 672,
+        "width": 1952
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -208,
+        1504
+      ],
+      "typeVersion": 1,
+      "id": "f4560516-0fb3-492d-834d-12d42263108d",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.texto }}",
+        "options": {
+          "systemMessage": "=Formate o input em uma breve sequência de tweets curtos do dia a dia, como se fossem um pensamento rápido, casual, usando técnicas de storytelling\n\n## Tom de voz:\ninformal, como se estivesse conversando com um amigo inteligente durante um café\n\n## Vocabulário \nAbreviações comuns de redes sociais (vc, oq, pra, pro, pros)\n\n## Estrutura das frases\n\nTente simular o mesmo do input\n\n## Emojis\n\nUse quando cabível\n\n## Nunca faça\n\n- nunca use linguagem acadêmica, sisuda ou excessivamente formal\n- nao escreva blocos maciços de texto sem quebras visuais ou emojis\n- nunca use negrito\n- nunca use travessões (\"—\")\n\n## Saída esperada\n\nRetorne apenas os tweets, sem comentários extras:\n\n[tweet 1]\n\n---\n\n[tweet 2]\n\n---\n\n[tweet 3]\n\n(...)\n"
+        }
+      },
+      "id": "ee0fd49a-06f8-40d0-b616-47d54eea4670",
+      "name": "Sequência de pensamentos rápidos",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        336,
+        2512
+      ],
+      "onError": "continueRegularOutput",
+      "notes": "Personalize livremente o prompt e o modelo. Não precisa de Output Parser. O Code seguinte estrutura o resultado."
+    },
+    {
+      "parameters": {
+        "content": "## SEQUENCIAS  DE PENSAMENTOS RÁPIDOS (TWITTER THREAD, INSTAGRAM STORIES E LINKEDIN AGRUPA TUDO NUM SÓ TEXTO)\n",
+        "height": 672,
+        "width": 1952
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        32,
+        2240
+      ],
+      "typeVersion": 1,
+      "id": "2eeec0a0-c34f-4e0e-a4e6-9850b542061f",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://openrouter.ai/api/alpha/decisions",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "openRouterApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ {\n  model: \"typesafe/jev-1.13\",\n  state: { text: $(\"Validar pedido do Diário\").first().json.text },\n  questions: {\n  \"victory\": {\n    \"type\": \"noul\",\n    \"instructions\": \"O texto relata uma vitória ou conquista concreta de que o autor participou?\",\n    \"criteria\": {\n      \"true\": \"Há resultado alcançado, entrega concluída, reconhecimento recebido, habilidade aprendida ou conquista pessoal concreta do autor. O resultado já aconteceu, ainda que pequeno.\",\n      \"false\": \"Há somente plano, hipótese, tarefa ainda sem resultado ou conquista exclusivamente de outra pessoa.\"\n    }\n  }\n}\n} }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 60000
+        }
+      },
+      "id": "d3bdf353-abe2-419a-b1c2-274e8b39976d",
+      "name": "Jev — CABE google imagens? (para cada tweet)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        576,
+        3104
+      ],
+      "onError": "continueRegularOutput",
+      "notes": "Personalize a pergunta e os critérios deste aspecto no corpo JSON. Preserve a chave victory e o tipo noul, usados para reunir as respostas."
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.texto }}",
+        "options": {
+          "systemMessage": "=## IDENTIDADE E PAPEL\nVocê é um copywriter especializado em escrever a copy de carrosséis, seguindo a estrutura abaixo indicada. O primeiro slide já está pronto e foi dado no input, e, sua função é escrever o restante dos slides.\n\nAdapte o <texto-base> do input, preservando a intenção original, com linguagem simples e progressão narrativa. \n\n## REGRAS DE OURO\n\n- Escreva para adultos, mas use o 4º ano do ensino fundamental como referência de simplicidade da linguagem\n\n- Preserve a personalidade do autor e a primeira pessoa quando presentes\n\n- Você pode reescrever, reorganizar e condensar, mas procure manter o tom de voz original.\n\n- Não invente dados, resultados, depoimentos, exemplos ou argumentos\n\n- Nunca use travessões\n\n{{ $json.system_prompt }}\n\n## INSTRUÇÕES DE ESCRITA\n\n- O primeiro slide já está pronto; comece a partir do segundo\n\n- Produza até 9 slides, com no máximo 50 palavras por slide\n\n- Títulos são opcionais, mas, se utilizados, devem possuir no máximo 8 palavras\n\n- Desenvolva uma ideia principal por slide e avance o raciocínio entre eles\n\n- Destaque, quando útil, até dois trechos curtos em negrito por bloco.\n\n\n## SAÍDA OBRIGATÓRIA\n\nEntregue somente o texto de cada slide do carrossel.\nSepare cada slide com uma linha contendo exclusivamente três hífens.\n\nExemplo:\n\n```\n[Texto do segundo slide]\n\n---\n\n[Texto do terceiro slide]\n\n---\n\n[Texto do quarto slide]\n\n(...)\n```\n"
+        }
+      },
+      "id": "4db4ac7a-b01a-4081-b916-093bbf5050ff",
+      "name": "carrossel - linguagem flesch 8-9 ano2",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        544,
+        4272
+      ],
+      "onError": "continueRegularOutput",
+      "notes": "Personalize livremente o prompt e o modelo. Não precisa de Output Parser. O Code seguinte estrutura o resultado."
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.texto }}",
+        "options": {
+          "systemMessage": "=## IDENTIDADE E PAPEL\nVocê é um redator de threads, e sua única função é receber um input e formatá-lo na estrutura abaixo indicada, **preservando o tom de voz do <texto-base> do input**.\n\n## REGRA DE OURO\n\nSua tarefa é ADAPTAR o input, preservando a intenção, o estilo de escrita, a linguagem, o nível de sofisticação e a escolha de palavras do autor.\n\nO output deve soar como se o próprio autor da ideia o tivesse escrito, mas apenas formatado de outra forma.\n\n{{ $json.system_prompt }}\n\n## INSTRUÇÕES DE ESCRITA\n\nO primeiro bloco da thread já está pronto, e foi dado no input <primeiro-bloco>. Sua função é escrever os próximos blocos (no máximo 9).\n\nNão há nenhuma limitação de palavras por bloco. Pode ser bem curto, mas não deve ser extremamente grande.\n\nPreserve o tom de voz do <texto-base> do input e nunca use travessões (\"—\").\n\nNunca invente dados, números, depoimentos ou cases.\n\n\n## FORMATO DE SAÍDA\n\nEntregue somente o texto de cada bloco.\nSepare cada bloco com uma linha contendo exclusivamente três hífens.\n\nExemplo:\n\n```\n[Texto do segundo bloco]\n\n---\n\n[Texto do terceiro bloco]\n\n---\n\n[Texto do quarto bloco]\n\n(...)\n```\n"
+        }
+      },
+      "id": "dd9e8e08-4940-4541-88ea-cbcfad0e1b21",
+      "name": "thread",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        144,
+        3104
+      ],
+      "onError": "continueRegularOutput",
+      "notes": "Personalize livremente o prompt e o modelo. Não precisa de Output Parser. O Code seguinte estrutura o resultado."
+    },
+    {
+      "parameters": {
+        "content": "## THREAD - TWITTER É VARIOS TWEETS COM UMA IMAGEM CADA, NO INSTA VIRA CARROSSEL E NO LINKEDIN VIRA PDF",
+        "height": 576,
+        "width": 1952
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        32,
+        2944
+      ],
+      "typeVersion": 1,
+      "id": "06f30252-67d5-4245-b1a4-d4a714771158",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.texto }}",
+        "options": {
+          "systemMessage": "=## IDENTIDADE E PAPEL\nVocê é um copywriter especializado em escrever a copy de carrosséis, seguindo a estrutura abaixo indicada. O primeiro slide já está pronto e foi dado no input, e, sua função é escrever o restante dos slides.\n\nAdapte o <texto-base> do input, preservando a intenção original, com linguagem simples e progressão narrativa. \n\n## REGRAS DE OURO\n\n- Escreva para adultos, mas use o 4º ano do ensino fundamental como referência de simplicidade da linguagem\n\n- Preserve a personalidade do autor e a primeira pessoa quando presentes\n\n- Você pode reescrever, reorganizar e condensar, mas procure manter o tom de voz original.\n\n- Não invente dados, resultados, depoimentos, exemplos ou argumentos\n\n- Nunca use travessões\n\n{{ $json.system_prompt }}\n\n## INSTRUÇÕES DE ESCRITA\n\n- O primeiro slide já está pronto; comece a partir do segundo\n\n- Produza até 9 slides, com no máximo 50 palavras por slide\n\n- Títulos são opcionais, mas, se utilizados, devem possuir no máximo 8 palavras\n\n- Desenvolva uma ideia principal por slide e avance o raciocínio entre eles\n\n- Destaque, quando útil, até dois trechos curtos em negrito por bloco.\n\n\n## SAÍDA OBRIGATÓRIA\n\nEntregue somente o texto de cada slide do carrossel.\nSepare cada slide com uma linha contendo exclusivamente três hífens.\n\nExemplo:\n\n```\n[Texto do segundo slide]\n\n---\n\n[Texto do terceiro slide]\n\n---\n\n[Texto do quarto slide]\n\n(...)\n```\n"
+        }
+      },
+      "id": "a097ac96-1605-4715-b037-0887a11eda82",
+      "name": "carrossel - linguagem flesch 8-9 ano3",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        800,
+        4272
+      ],
+      "onError": "continueRegularOutput",
+      "notes": "Personalize livremente o prompt e o modelo. Não precisa de Output Parser. O Code seguinte estrutura o resultado."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://openrouter.ai/api/alpha/decisions",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "openRouterApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ {\n  model: \"typesafe/jev-1.13\",\n  state: { text: $(\"Validar pedido do Diário\").first().json.text },\n  questions: {\n  \"victory\": {\n    \"type\": \"noul\",\n    \"instructions\": \"O texto relata uma vitória ou conquista concreta de que o autor participou?\",\n    \"criteria\": {\n      \"true\": \"Há resultado alcançado, entrega concluída, reconhecimento recebido, habilidade aprendida ou conquista pessoal concreta do autor. O resultado já aconteceu, ainda que pequeno.\",\n      \"false\": \"Há somente plano, hipótese, tarefa ainda sem resultado ou conquista exclusivamente de outra pessoa.\"\n    }\n  }\n}\n} }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 60000
+        }
+      },
+      "id": "e2aee822-b996-4d0d-b7f6-f6f87b3e7d9f",
+      "name": "Jev — CABE google imagens? (para cada tweet)1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1648,
+        5328
+      ],
+      "onError": "continueRegularOutput",
+      "notes": "Personalize a pergunta e os critérios deste aspecto no corpo JSON. Preserve a chave victory e o tipo noul, usados para reunir as respostas."
+    },
+    {
+      "parameters": {
+        "model": "google/gemini-3.8-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        -160,
+        1136
+      ],
+      "id": "bd24d61e-8061-4c0b-b6ea-a1784a66167a",
+      "name": "OpenRouter Chat Model"
+    },
+    {
+      "parameters": {
+        "model": "google/gemini-3.8-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        192,
+        2048
+      ],
+      "id": "d0d4e34e-5d6b-45bc-a700-bcf0ea4dedb3",
+      "name": "OpenRouter Chat Model1"
+    },
+    {
+      "parameters": {
+        "model": "google/gemini-3.8-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        320,
+        2720
+      ],
+      "id": "26c1c310-0aae-4af9-a715-320972ec45c6",
+      "name": "OpenRouter Chat Model2"
+    },
+    {
+      "parameters": {
+        "model": "google/gemini-3.8-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        144,
+        3312
+      ],
+      "id": "b8d95d92-4a7c-43f3-ae47-4e3cc6ed1f23",
+      "name": "OpenRouter Chat Model3"
+    },
+    {
+      "parameters": {
+        "model": "google/gemini-3.8-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        432,
+        4608
+      ],
+      "id": "b96de7a5-c091-42da-8f7b-424fcdd1e924",
+      "name": "OpenRouter Chat Model4"
+    },
+    {
+      "parameters": {
+        "model": "google/gemini-3.8-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        624,
+        5904
+      ],
+      "id": "730dbe38-66d3-4a83-8a3a-25f61190f25c",
+      "name": "OpenRouter Chat Model5"
+    },
+    {
+      "parameters": {
+        "model": "google/gemini-3.8-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        448,
+        7152
+      ],
+      "id": "f73e0c16-2d1d-41d3-8daf-2419bbe12104",
+      "name": "OpenRouter Chat Model6"
+    }
+  ],
+  "connections": {
+    "Contar palavras para conteúdo — Diário1": {
+      "main": [
+        [
+          {
+            "node": "Rotear conteúdo por palavras — Diário1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Rotear conteúdo por palavras — Diário1": {
+      "main": [
+        [
+          {
+            "node": "Tweets/Stories sem angulo",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Interação com seguidores",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Angulos para até 2 tweets",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Interação com seguidores",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Angulos para até 3 tweets",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Interação com seguidores",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Sequência de pensamentos rápidos",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Jev — tutorial/how-to carrossel",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "text-heavy",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Angulos para até 4 tweets",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Interação com seguidores",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "thread",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Jev — tutorial/how-to carrossel",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "text-heavy",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Angulos para até 8 tweets",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Interação com seguidores (até 3)",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Angulos para até 2 posts M",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "thread",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Jev — tutorial/how-to carrossel",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "ensaio sem angulo",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Angulos para até 8 tweets",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Interação com seguidores (até 3)",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Angulos para long-form 3200+",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Angulos para até 3 posts M",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "thread",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Jev — tutorial/how-to carrossel",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Angulos para long-form 3200+",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Angulos para até 8 tweets",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Interação com seguidores (até 3)",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Angulos x posts 3200+",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "thread",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Jev — tutorial/how-to carrossel",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Angulos para até 2 tweets": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Angulos para até 3 tweets": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Angulos para até 4 tweets": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Falha ao gerar ângulos?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Falha ao gerar ângulos?": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Tweets/Stories com angulo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Angulos para até 8 tweets": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "carrossel - linguagem flesch 8-9 ano": {
+      "main": [
+        [
+          {
+            "node": "Legenda completa instagram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Angulos para até 2 posts M": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Angulos para até 3 posts M": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Angulos para long-form 3200+": {
+      "main": [
+        [
+          {
+            "node": "ensaio com angulo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Falha ao gerar ângulos?1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Falha ao gerar ângulos?1": {
+      "main": [
+        [],
+        [
+          {
+            "node": "text-heavy com angulo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Angulos x posts 3200+": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Jev — Storytelling carrossel": {
+      "main": [
+        [
+          {
+            "node": "Jev — Checklist carrossel",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "carrossel - linguagem flesch 8-9 ano2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Jev — Lista carrossel1": {
+      "main": [
+        [
+          {
+            "node": "carrossel - linguagem flesch 8-9 ano",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Jev — Checklist carrossel": {
+      "main": [
+        [
+          {
+            "node": "Jev — Lista carrossel1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "carrossel - linguagem flesch 8-9 ano3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Jev — tutorial/how-to carrossel": {
+      "main": [
+        [
+          {
+            "node": "Jev — Storytelling carrossel",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "carrossel - linguagem flesch 8-9 ano1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "carrossel - linguagem flesch 8-9 ano1": {
+      "main": [
+        [
+          {
+            "node": "Legenda completa instagram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "text-heavy": {
+      "main": [
+        [
+          {
+            "node": "Jev — CABE google imagens? (para cada tweet)1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ensaio com angulo": {
+      "main": [
+        [
+          {
+            "node": "título e subtítulo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ensaio sem angulo": {
+      "main": [
+        [
+          {
+            "node": "título e subtítulo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "título e subtítulo": {
+      "main": [
+        [
+          {
+            "node": "SOFT CTA PARA O PROPRIO TEXTO",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "carrossel - linguagem flesch 8-9 ano2": {
+      "main": [
+        [
+          {
+            "node": "Legenda completa instagram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "thread": {
+      "main": [
+        [
+          {
+            "node": "Jev — CABE google imagens? (para cada tweet)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenRouter Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Angulos para até 8 tweets",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Angulos para até 4 tweets",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Angulos para até 3 tweets",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Angulos para até 2 tweets",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Tweets/Stories com angulo",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Tweets/Stories sem angulo",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenRouter Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Interação com seguidores (até 3)",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Interação com seguidores",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenRouter Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Sequência de pensamentos rápidos",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenRouter Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "thread",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenRouter Chat Model4": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "carrossel - linguagem flesch 8-9 ano1",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "carrossel - linguagem flesch 8-9 ano2",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "carrossel - linguagem flesch 8-9 ano3",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "carrossel - linguagem flesch 8-9 ano",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Legenda completa instagram",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenRouter Chat Model5": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Angulos x posts 3200+",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Angulos para até 3 posts M",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Angulos para até 2 posts M",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "text-heavy",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "text-heavy com angulo",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenRouter Chat Model6": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Angulos para long-form 3200+",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "ensaio com angulo",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "ensaio sem angulo",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "título e subtítulo",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "SOFT CTA PARA O PROPRIO TEXTO",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": true,
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner"
+  }
+}

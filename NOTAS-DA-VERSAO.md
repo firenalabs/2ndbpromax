@@ -1,11 +1,11 @@
-# Versão 1.0.6 — um arquivo por tweet
+# Versão 1.0.7 — posts organizados por rede social
 
-Corrige o salvamento de vários conteúdos gerados para a mesma origem. Cada item com `contentKey` próprio recebe um identificador e arquivos `.md` e `.json` distintos em **Conteúdos Gerados**. Antes, os itens do mesmo grupo usavam o mesmo nome e apenas o último permanecia salvo. Repetir o salvamento mantém os nomes, sem duplicar arquivos. Conteúdos antigos sem `contentKey` conservam o comportamento anterior.
+Cada post do novo Diário recebe documentos `.md` e `.json` próprios em **Conteúdos Gerados/LinkedIn**, **Twitter** ou **Instagram**. Os documentos identificam rede, formato e blocos textuais e conservam as avaliações dos Jevs. Pensamentos rápidos e interações são posts independentes; sequências, threads e carrosséis mantêm todas as partes num documento, separadas por `---`. Sequências no LinkedIn ficam num texto. Imagens e PDFs não são gerados.
 
-**Para atualizar:** opção **9. Atualizar sistema**, depois feche e reabra o programa. Configuração, Diário, Atlas e demais dados são preservados.
+**Para atualizar o programa:** use **9. Atualizar sistema**, feche e reabra. Dados e configuração são preservados. Clientes com o webhook antigo continuam usando o Diário antigo até que o responsável configure o novo endereço.
 
-**n8n:** esta atualização não altera workflows, prompts, Agents, modelos ou credenciais. Se o workflow de tweets já retorna os itens em `generatedContents` com `contentKey` distintos, não é necessário modificar o n8n. Não reimporte os workflows de referência sobre um workflow personalizado.
+**n8n:** `Codes-n8n.zip` inclui `02b-diario-social.importar.json`. Importe como um novo workflow, configure suas credenciais e publique. Preserve o workflow legacy e seu webhook `segundo-cerebro-local-diario-v1`. A cópia usa `segundo-cerebro-local-diario-social-v2`. No cliente, configure `diaryWebhook` com o novo endereço completo e, se necessário, `diaryRequestTimeoutMs` com `1800000`. A opção 9 não altera esses campos. No ambiente local desta implementação, o novo workflow já está publicado e a cópia em Downloads já está configurada.
 
-Arquivos sobrescritos antes da atualização não são recuperados automaticamente. Os conteúdos podem ser recuperados do JSON final de uma execução existente no n8n, sem chamar a IA novamente.
+A incorporação mantém as faixas de palavras, os prompts originais e as configurações dos Agents/modelos; acrescenta instruções de retorno JSON, organização em JavaScript e adaptações text-heavy acima dos limites indicados nas sticky notes. Os seis Jevs de formato/imagens foram corrigidos conforme a solicitação. Nenhum Output Parser foi acrescentado à geração social.
 
-Validação: testes de vários tweets do mesmo grupo, arquivos separados, conservação do texto e repetição idempotente, além da suíte completa do programa.
+Validação: 97 testes do programa passaram. As sete faixas foram verificadas no n8n com respostas simuladas, incluindo falhas parciais e adaptações por limite de caracteres. Uma execução retornou 58 posts, todos salvos em 58 Markdown e 58 JSON, com nomes distintos e pastas corretas.

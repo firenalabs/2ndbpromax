@@ -79,4 +79,6 @@ Node.js 22+, até 512 KB por input e 120.000 caracteres por texto/grupo para cha
 
 A opção 7 apaga os dados daquela cópia, incluindo a Entrada e grupo aberto, após confirmação digitando LIMPAR. Código e configuração são mantidos. Essa limpeza não apaga workflows/históricos do n8n.
 
+Conteúdos por rede: a cópia **02b Diário e Conquistas — Posts por Rede (v2)** usa o webhook `segundo-cerebro-local-diario-social-v2`. Os documentos ficam em **Conteúdos Gerados/LinkedIn**, **Twitter** e **Instagram**, com rede, formato, blocos textuais e avaliações Jev. Cada pensamento/interação independente vira um documento; partes de sequência, thread ou carrossel ficam juntas, separadas por `---`. Sequências no LinkedIn são reunidas num texto. Os arquivos são Markdown com metadados em JSON; imagens e PDFs não são produzidos. O workflow original e seu webhook `segundo-cerebro-local-diario-v1` permanecem como alternativa. Reinicie o programa depois de mudar a configuração.
+
 Conteúdos automáticos: os workflows 02a e 02b podem gerar conteúdo por faixa de palavras na mesma execução. Os arquivos ficam em **Conteúdos Gerados**, identificados por Atlas ou Diário. Personalize os Switches e os Agents no n8n. A opção 8 continua sendo geração manual independente.
