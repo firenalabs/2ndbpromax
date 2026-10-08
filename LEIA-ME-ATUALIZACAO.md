@@ -1,5 +1,7 @@
 # Atualizar o sistema
 
+Na versão **1.0.6**, cada conteúdo com `contentKey` próprio é salvo em arquivos distintos, mesmo quando vários tweets pertencem ao mesmo grupo. Atualize pela opção 9 e reinicie o programa. Esta correção não requer alterações no workflow do n8n que já retorna esses itens; preserve seus prompts e modelos personalizados.
+
 ## Para o sócio
 
 Abra iniciar.bat / iniciar.sh e escolha **9. Atualizar sistema**. Aguarde a conclusão, feche e abra novamente. Não precisa Git instalado. Dados e endereço do n8n são mantidos. O código anterior fica em Atualizações/Backups; falha durante a gravação restaura automaticamente os arquivos anteriores.

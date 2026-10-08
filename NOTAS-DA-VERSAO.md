@@ -1,5 +1,11 @@
-Geração automática de conteúdos nos workflows 02a Atlas e 02b Diário, com contagem de palavras, quatro faixas iniciais, um AI Agent e modelo independente por faixa e estruturação em JavaScript. Cada ramificação retorna na mesma resposta do workflow. O programa salva os resultados em Conteúdos Gerados (.md e .json), identificando Atlas ou Diário e sem duplicar arquivos ao repetir uma referência. Falhas dos novos Agents não interrompem o comportamento original.
+# Versão 1.0.6 — um arquivo por tweet
 
-**Computadores:** opção 9 — Atualizar sistema, depois reiniciar o iniciador. Configuração e dados são preservados.
+Corrige o salvamento de vários conteúdos gerados para a mesma origem. Cada item com `contentKey` próprio recebe um identificador e arquivos `.md` e `.json` distintos em **Conteúdos Gerados**. Antes, os itens do mesmo grupo usavam o mesmo nome e apenas o último permanecia salvo. Repetir o salvamento mantém os nomes, sem duplicar arquivos. Conteúdos antigos sem `contentKey` conservam o comportamento anterior.
 
-**n8n produção (manual):** Codes-n8n.zip inclui 02a-atlas.importar.json, 02b-diario.importar.json e CONTEUDOS-AUTOMATICOS.txt com as ligações. Para preservar customizações, transfira os novos nodes e os Codes de conclusão conforme essas definições. Configure as credenciais dos novos modelos e publique os workflows. O n8n local já foi atualizado. O workflow 03 e a opção 8 continuam independentes.
+**Para atualizar:** opção **9. Atualizar sistema**, depois feche e reabra o programa. Configuração, Diário, Atlas e demais dados são preservados.
+
+**n8n:** esta atualização não altera workflows, prompts, Agents, modelos ou credenciais. Se o workflow de tweets já retorna os itens em `generatedContents` com `contentKey` distintos, não é necessário modificar o n8n. Não reimporte os workflows de referência sobre um workflow personalizado.
+
+Arquivos sobrescritos antes da atualização não são recuperados automaticamente. Os conteúdos podem ser recuperados do JSON final de uma execução existente no n8n, sem chamar a IA novamente.
+
+Validação: testes de vários tweets do mesmo grupo, arquivos separados, conservação do texto e repetição idempotente, além da suíte completa do programa.

@@ -25,7 +25,9 @@ export async function saveAutomaticContents(root, result, origin, sources, log =
       const source = sources.find(s => s.id === content.referenceId);
       if (!source || content.origin !== origin || typeof content.body !== 'string' || !content.body.trim()
         || typeof content.title !== 'string' || !content.title.trim()) throw new Error('Conteúdo automático inválido ou sem origem correspondente.');
-      const id = createHash('sha256').update(`${origin}:${source.id}`).digest('hex').slice(0, 24);
+      const contentKey = typeof content.contentKey === 'string' && content.contentKey.trim()
+        ? content.contentKey.trim() : null;
+      const id = createHash('sha256').update(`${origin}:${source.id}${contentKey ? ':' + contentKey : ''}`).digest('hex').slice(0, 24);
       const record = { ...content, id, schemaVersion: 1, sourceIds: source.sourceIds,
         sourceWordCount: (source.text.match(/\S+/g) ?? []).length, wordCount: (content.body.match(/\S+/g) ?? []).length };
       if (!Number.isFinite(Date.parse(record.createdAt))) record.createdAt = new Date().toISOString();
