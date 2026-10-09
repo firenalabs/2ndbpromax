@@ -5,6 +5,7 @@ import { readJson, writeJson, ensureFolders } from './arquivos.mjs';
 import { updateSystem } from './atualizador.mjs';
 import { Executor, acquireLock } from './executor.mjs';
 import { configureInteractive, resetInteractive, currentN8nUrl } from './manutencao.mjs';
+import { migrateDiaryWebhook } from './migracoes-configuracao.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 let release;
@@ -21,6 +22,9 @@ try {
   console.log(`\nn8n configurado: ${currentN8nUrl(config)}`);
   await ensureFolders(root);
   release = await acquireLock(root);
+  const migration = await migrateDiaryWebhook(root, config);
+  config = migration.config;
+  if (migration.migrated) console.log('Diário atualizado para o workflow Posts por Rede (v2). Servidor e demais configurações preservados; configuração anterior em Atualizações/Backups/migracao-diario-social-v2.');
   let mode = process.argv[2];
   if (!mode && process.stdin.isTTY) {
     console.log('\nSegundo cérebro — protótipo local\n\n1. Iniciar e aguardar novos textos\n2. Processar os textos que já estão na Entrada\n3. Tentar novamente os textos com erro\n4. Ver o andamento\n5. Ignorar o primeiro texto com erro e seguir\n6. Configurar endereço do n8n\n7. Limpar dados e começar de novo\n8. Gerar conteúdos dos grupos concluídos\n9. Atualizar sistema\n');

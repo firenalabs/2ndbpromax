@@ -32,7 +32,7 @@ Para parar, pressione Ctrl+C e aguarde “Sistema parado”. Arquivos são proce
 
 Abra o iniciador e escolha **9. Atualizar sistema**. Ele consulta a última Release estável, baixa e verifica o pacote, guarda o código anterior e substitui somente arquivos de programa. Feche e abra novamente após a atualização.
 
-Configuração, textos, histórico, Atlas, Diário, Conquistas e Conteúdos Gerados são preservados. Cada pasta de cliente precisa ser atualizada separadamente. Backups do código ficam em **Atualizações/Backups**.
+Servidor, configurações particulares, textos, histórico, Atlas, Diário, Conquistas e Conteúdos Gerados são preservados. A partir da versão 1.0.8, no primeiro início depois da atualização, somente o caminho conhecido do Diário legacy é migrado para o v2, com backup da configuração. URLs personalizadas são mantidas. Cada pasta de cliente precisa ser atualizada separadamente. Backups do código ficam em **Atualizações/Backups**.
 
 **Cópias antigas sem opção 9:** baixe Sistema-Completo.zip e extraia na pasta existente, mesclando/substituindo os arquivos. Não apague a pasta sistema. O ZIP não contém configuração particular ou dados; depois dessa primeira atualização, use a opção 9.
 
@@ -79,6 +79,6 @@ Node.js 22+, até 512 KB por input e 120.000 caracteres por texto/grupo para cha
 
 A opção 7 apaga os dados daquela cópia, incluindo a Entrada e grupo aberto, após confirmação digitando LIMPAR. Código e configuração são mantidos. Essa limpeza não apaga workflows/históricos do n8n.
 
-Conteúdos por rede: a cópia **02b Diário e Conquistas — Posts por Rede (v2)** usa o webhook `segundo-cerebro-local-diario-social-v2`. Os documentos ficam em **Conteúdos Gerados/LinkedIn**, **Twitter** e **Instagram**, com rede, formato, blocos textuais e avaliações Jev. Cada pensamento/interação independente vira um documento; partes de sequência, thread ou carrossel ficam juntas, separadas por `---`. Sequências no LinkedIn são reunidas num texto. Os arquivos são Markdown com metadados em JSON; imagens e PDFs não são produzidos. O workflow original e seu webhook `segundo-cerebro-local-diario-v1` permanecem como alternativa. Reinicie o programa depois de mudar a configuração.
+Conteúdos por rede: a cópia **02b Diário e Conquistas — Posts por Rede (v2)** usa o webhook `segundo-cerebro-local-diario-social-v2`. Os documentos ficam em **Conteúdos Gerados/LinkedIn**, **Twitter** e **Instagram**, com rede, formato, blocos textuais e avaliações Jev. Cada pensamento/interação independente vira um documento; partes de sequência, thread ou carrossel ficam juntas, separadas por `---`. Sequências no LinkedIn são reunidas num texto. Os arquivos são Markdown com metadados em JSON; imagens e PDFs não são produzidos. O workflow original e seu webhook `segundo-cerebro-local-diario-v1` permanecem como alternativa. Depois da migração automática, é possível voltar ao legacy manualmente sem que o programa reverta essa escolha. Reinicie o programa depois de mudar a configuração.
 
 Conteúdos automáticos: os workflows 02a e 02b podem gerar conteúdo por faixa de palavras na mesma execução. Os arquivos ficam em **Conteúdos Gerados**, identificados por Atlas ou Diário. Personalize os Switches e os Agents no n8n. A opção 8 continua sendo geração manual independente.

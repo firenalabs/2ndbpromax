@@ -1,6 +1,6 @@
 # Atualizar o sistema
 
-Na versão **1.0.7**, posts do novo Diário são salvos em **Conteúdos Gerados/LinkedIn**, **Twitter** e **Instagram**, com rede, formato, blocos textuais e avaliações Jev. Atualize pela opção 9 e reinicie. O workflow original permanece intacto. O novo workflow precisa ser publicado no n8n e seu webhook configurado nos clientes; a atualização automática preserva a configuração existente.
+Na versão **1.0.8**, a opção 9 instala a correção e, ao reabrir o programa, o webhook conhecido do Diário legacy é migrado automaticamente para `segundo-cerebro-local-diario-social-v2`. O servidor, prefixos da URL e demais campos são mantidos. URLs personalizadas não são alteradas. A configuração anterior fica em **Atualizações/Backups/migracao-diario-social-v2/configuracao.json**. O workflow v2 deve estar publicado no n8n utilizado pelo cliente.
 
 ## Para o sócio
 
