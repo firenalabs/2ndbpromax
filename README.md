@@ -1,6 +1,6 @@
 # 2ndBrainProMax — segundo cérebro local
 
-Coloque textos `.txt` em **Entrada**. O programa preserva os originais, identifica ideias, organiza o **Atlas de Conhecimento** e reúne textos consecutivos para gerar **Diário** e **Conquistas**. **Conteúdos Gerados** podem ser produzidos automaticamente pelo Atlas e pelo Diário, além da opção manual 8.
+Coloque textos `.txt` em **Entrada**. O programa preserva os originais, identifica ideias, organiza o **Atlas de Conhecimento** e reúne textos consecutivos para gerar **Diário** e **Conquistas**. **Conteúdos Gerados** podem ser produzidos automaticamente pelo Atlas e pelo Diário.
 
 ## Instalar
 
@@ -23,7 +23,6 @@ Em uma instalação nova, a configuração inicial é criada automaticamente. Ca
 | 5 | Ignorar o primeiro texto com erro e seguir |
 | 6 | Configurar endereço do n8n |
 | 7 | Limpar dados e começar de novo, com confirmação |
-| 8 | Gerar conteúdos dos grupos já concluídos |
 | 9 | Atualizar sistema pelo GitHub |
 
 Para parar, pressione Ctrl+C e aguarde “Sistema parado”. Arquivos são processados um a um, por data de modificação, com desempate pelo nome. Nenhuma numeração é exigida; coloque os textos na ordem desejada quando houver continuidade.
@@ -63,7 +62,6 @@ SEGs são âncoras determinísticas: frases curtas ou blocos de até 50 palavras
 
 Notas do Atlas usam endereços como A.1, A.1.A e A.1.A.1. Só categorias raiz são criadas; nos demais níveis, o Jev compara títulos de notas. Os arquivos seguem `A.2 - 150 palavras - Título.md`, contando palavras do recorte. Notas existentes recebem o novo nome ao iniciar após atualizar. Notas contêm apenas o recorte integral; o índice contém apenas categorias e títulos.
 
-A opção 8 chama o workflow 03 somente para grupos fechados ainda pendentes. Até 150 palavras não gera conteúdo; as outras faixas são 151–600, 601–1499 e 1500+. O payload é o mesmo finalize do Diário. Nenhuma correção automática de KeyTopics está configurada.
 
 ## Publicar novas versões
 
@@ -81,4 +79,4 @@ A opção 7 apaga os dados daquela cópia, incluindo a Entrada e grupo aberto, a
 
 Conteúdos por rede: a cópia **02b Diário e Conquistas — Posts por Rede (v2)** usa o webhook `segundo-cerebro-local-diario-social-v2`. Os documentos ficam em **Conteúdos Gerados/LinkedIn**, **Twitter** e **Instagram**, com rede, formato, blocos textuais e avaliações Jev. Cada pensamento/interação independente vira um documento; partes de sequência, thread ou carrossel ficam juntas, separadas por `---`. Sequências no LinkedIn são reunidas num texto. Os arquivos são Markdown com metadados em JSON; imagens e PDFs não são produzidos. O workflow original e seu webhook `segundo-cerebro-local-diario-v1` permanecem como alternativa. Depois da migração automática, é possível voltar ao legacy manualmente sem que o programa reverta essa escolha. Reinicie o programa depois de mudar a configuração.
 
-Conteúdos automáticos: os workflows 02a e 02b podem gerar conteúdo por faixa de palavras na mesma execução. Os arquivos ficam em **Conteúdos Gerados**, identificados por Atlas ou Diário. Personalize os Switches e os Agents no n8n. A opção 8 continua sendo geração manual independente.
+Conteúdos automáticos: os workflows 02a e 02b podem gerar conteúdo por faixa de palavras na mesma execução. Os arquivos ficam em **Conteúdos Gerados**, identificados por Atlas ou Diário. Personalize os Switches e os Agents no n8n.

@@ -3,10 +3,28 @@ import assert from 'node:assert/strict';
 import { mkdtemp, mkdir, writeFile, readFile, readdir, rm } from 'node:fs/promises';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
-import { migrateDiaryWebhook } from '../migracoes-configuracao.mjs';
+import { migrateDiaryWebhook, retireManualContentGeneration, retiredManualContentPaths } from '../migracoes-configuracao.mjs';
 import { applyBundle, sha256 } from '../atualizador.mjs';
 const legacy = '/webhook/segundo-cerebro-local-diario-v1';
 const social = '/webhook/segundo-cerebro-local-diario-social-v2';
+test('retira geração manual de uma instalação antiga sem apagar documentos nem histórico', async t => {
+  const { root, config, text } = await setup(t, 'https://cliente/webhook/diario-customizado');
+  const previous = { ...config, diarySocialV2MigrationApplied: true, contentWebhook: 'https://cliente/webhook/conteudos-antigos' };
+  await writeFile(join(root, 'sistema', 'configuracao.json'), JSON.stringify(previous));
+  for (const path of retiredManualContentPaths) {
+    await mkdir(join(root, path, '..'), { recursive: true });
+    await writeFile(join(root, path), 'programa aposentado');
+  }
+  await mkdir(join(root, 'Conteúdos Gerados'));
+  await writeFile(join(root, 'Conteúdos Gerados', 'post.md'), 'Conteúdo já gerado');
+  const result = await retireManualContentGeneration(root, previous);
+  assert.deepEqual(result, { ...config, diarySocialV2MigrationApplied: true });
+  assert.deepEqual(JSON.parse(await readFile(join(root, 'sistema', 'configuracao.json'), 'utf8')), result);
+  for (const path of retiredManualContentPaths) await assert.rejects(readFile(join(root, path)), { code: 'ENOENT' });
+  assert.equal(await readFile(join(root, 'Conteúdos Gerados', 'post.md'), 'utf8'), 'Conteúdo já gerado');
+  assert.equal(await readFile(join(root, 'sistema', 'diario.json'), 'utf8'), 'histórico do cliente');
+  assert.deepEqual(await retireManualContentGeneration(root, result), result);
+});
 async function setup(t, diaryWebhook) {
   const root = await mkdtemp(join(tmpdir(), 'diary-config-migration-'));
   t.after(() => rm(root, { recursive: true, force: true }));

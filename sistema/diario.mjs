@@ -1,12 +1,11 @@
 import { saveAutomaticContents } from './conteudos-automaticos.mjs';
 import { randomUUID } from 'node:crypto';
-import { mkdir, writeFile, unlink } from 'node:fs/promises';
+import { mkdir, readFile, writeFile, unlink } from 'node:fs/promises';
 import { join } from 'node:path';
 import { setTimeout as sleep } from 'node:timers/promises';
 import { readJson, writeJson, readableName } from './arquivos.mjs';
 import { validateDigest } from './contratos.mjs';
 import { aspectKeys, aspectLabels, validateDecision, validateAspects, validateDiaryOutput, validateBragOutput } from './contratos-diario.mjs';
-import { contentRange, validateGeneratedContent, contentWebhookFor } from './conteudos.mjs';
 
 export class DiaryProcessor {
   constructor(root, config, { request = fetch, log = console.log } = {}) {
@@ -19,10 +18,10 @@ export class DiaryProcessor {
     const now = new Date().toISOString();
     this.state = await readJson(this.statePath, { id: randomUUID(), createdAt: now, updatedAt: now, schemaVersion: 1, openGroupId: null, groups: [] });
     this.validateState();
-    for (const group of this.state.groups) {
-      group.contentStatus ??= group.status === 'open' || group.diaryStatus !== 'completed' || !['completed', 'skipped'].includes(group.bragStatus) ? 'pending' : 'skipped';
-    }
-    await writeFile(join(this.root, 'Conteúdos Gerados', 'README.md'), '# Conteúdos Gerados\n\nTextos gerados pelos Agents do 03 Conteúdos Gerados. Use a opção 8 do iniciador para gerar conteúdos dos grupos concluídos; o processamento normal não chama esse fluxo.\n\nAbra os arquivos .md para ler. Os .json guardam o conteúdo, IDs, datas, referências das origens e contagem de palavras. Textos com até 150 palavras não geram conteúdo nesta etapa.\n', { encoding: 'utf8', flag: 'wx' }).catch(error => { if (error.code !== 'EEXIST') throw error; });
+    const contentsReadme = join(this.root, 'Conteúdos Gerados', 'README.md');
+    const contentsInstructions = '# Conteúdos Gerados\n\nConteúdos retornados automaticamente pelos workflows do Atlas e do Diário. Cada post fica em seu próprio documento, organizado por rede social quando informada.\n\nAbra os arquivos .md para ler. Os .json guardam conteúdo, formato, partes e referências das origens.\n';
+    const previousInstructions = await readFile(contentsReadme, 'utf8').catch(error => { if (error.code === 'ENOENT') return null; throw error; });
+    if (previousInstructions === null || previousInstructions.startsWith('# Conteúdos Gerados\n\nTextos gerados pelos Agents do 03')) await writeFile(contentsReadme, contentsInstructions, 'utf8');
     await this.save();
   }
 
@@ -66,11 +65,11 @@ export class DiaryProcessor {
     return lines.join('\n');
   }
 
-  async call(payload, webhook = this.config.diaryWebhook) {
+  async call(payload) {
     let lastError;
     for (let attempt = 0; attempt < 2; attempt++) {
       try {
-        const response = await this.request(webhook, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(payload), signal: AbortSignal.timeout(this.config.diaryRequestTimeoutMs ?? Math.max(this.config.requestTimeoutMs, 600000)) });
+        const response = await this.request(this.config.diaryWebhook, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(payload), signal: AbortSignal.timeout(this.config.diaryRequestTimeoutMs ?? Math.max(this.config.requestTimeoutMs, 600000)) });
         let value;
         try { value = await response.json(); } catch { throw new Error('O workflow do Diário não retornou JSON válido.'); }
         if (!response.ok || value?.ok !== true) throw new Error(value?.error?.message || `Falha no workflow: HTTP ${response.status}.`);
@@ -84,7 +83,7 @@ export class DiaryProcessor {
     const now = new Date().toISOString();
     const group = { id: `${input.sourceId}-group-v1`, createdAt: input.createdAt, updatedAt: now, schemaVersion: 1,
       status: 'open', sourceIds: [input.sourceId], lastSourceId: input.sourceId, inputs: [input], fullText: input.text,
-      continuityDecisions: [], aspects: null, diaryStatus: 'pending', bragStatus: 'pending', contentStatus: 'pending' };
+      continuityDecisions: [], aspects: null, diaryStatus: 'pending', bragStatus: 'pending' };
     this.state.groups.push(group); this.state.openGroupId = group.id;
     return group;
   }
@@ -122,21 +121,15 @@ export class DiaryProcessor {
 
   async clearError(group, stage) { await unlink(this.errorPath(group, stage)).catch(e => { if (e.code !== 'ENOENT') throw e; }); }
 
-  async finalizePending({ retry = false, generateContent = false, contentOnly = false } = {}) {
+  async finalizePending({ retry = false } = {}) {
     for (const group of this.state.groups.filter(g => g.status === 'closed')) {
-      if (!contentOnly && retry && group.diaryStatus === 'failed') group.diaryStatus = 'pending';
-      if (!contentOnly && retry && group.bragStatus === 'failed') group.bragStatus = 'pending';
-      if (generateContent && retry && group.contentStatus === 'failed') group.contentStatus = 'pending';
-      if (group.diaryStatus !== 'pending' && !(group.diaryStatus === 'completed' && group.bragStatus === 'pending') && !(generateContent && group.contentStatus === 'pending')) continue;
+      if (retry && group.diaryStatus === 'failed') group.diaryStatus = 'pending';
+      if (retry && group.bragStatus === 'failed') group.bragStatus = 'pending';
+      if (group.diaryStatus !== 'pending' && !(group.diaryStatus === 'completed' && group.bragStatus === 'pending')) continue;
       if (group.achievements && group.aspects?.flags.victory) group.actionsCompleted = true;
       const payload = { operation: 'finalize', text: group.fullText, threshold: this.config.aspectThreshold, groupId: group.id, sourceIds: group.sourceIds };
-      const contentRequest = generateContent && group.contentStatus === 'pending' && !group.generatedContent && contentRange(group.fullText)
-        ? (group.fullText.length > this.config.maxGroupCharacters
-          ? Promise.resolve({ error: new Error('O grupo excede o limite de caracteres para gerar conteúdo; o texto foi conservado.') })
-          : this.call(payload, contentWebhookFor(this.config)).then(result => ({ result }), error => ({ error })))
-        : Promise.resolve({});
       let errors = {};
-      if (!contentOnly && (group.diaryStatus === 'pending' || group.bragStatus === 'pending') && (!group.aspects || !group.diaryOutput || !group.actionsCompleted)) {
+      if ((group.diaryStatus === 'pending' || group.bragStatus === 'pending') && (!group.aspects || !group.diaryOutput || !group.actionsCompleted)) {
         try {
           if (group.fullText.length > this.config.maxGroupCharacters) throw new Error(`O grupo excede o limite de ${this.config.maxGroupCharacters} caracteres do protótipo. Seus textos completos foram conservados em Diário/Grupos; nenhum trecho foi truncado.`);
           const result = await this.call(payload);
@@ -151,7 +144,7 @@ export class DiaryProcessor {
           await this.save();
         } catch (error) { errors.pipeline = error.message; }
       }
-      if (!contentOnly && group.diaryStatus === 'pending') {
+      if (group.diaryStatus === 'pending') {
         try {
           if (!group.aspects || !group.diaryOutput) throw new Error(errors.pipeline || errors.diary || 'O workflow não retornou um Diário válido.');
           await this.writeDiary(group); await this.clearError(group, 'Diário');
@@ -160,7 +153,7 @@ export class DiaryProcessor {
         } catch (error) { group.diaryStatus = 'failed'; group.diaryError = error.message; await this.stageError(group, 'Diário', error); }
         group.updatedAt = new Date().toISOString(); await this.save();
       }
-      if (!contentOnly && group.diaryStatus === 'completed' && group.bragStatus === 'pending') {
+      if (group.diaryStatus === 'completed' && group.bragStatus === 'pending') {
         try {
           if (!group.actionsCompleted) throw new Error(errors.pipeline || errors.brag || 'A execução das ações ficou pendente.');
           if (!group.aspects.flags.victory) group.bragStatus = 'skipped';
@@ -174,35 +167,7 @@ export class DiaryProcessor {
         if (group.bragStatus === 'failed') await this.writeDiary(group);
         group.updatedAt = new Date().toISOString(); await this.save();
       }
-      const contentResponse = await contentRequest;
-      if (generateContent && group.contentStatus === 'pending') {
-        try {
-          if (!contentRange(group.fullText)) group.contentStatus = 'skipped';
-          else {
-            if (!group.generatedContent) {
-              if (contentResponse.error) throw contentResponse.error;
-              const result = contentResponse.result;
-              if (!result?.generatedContent) throw new Error(result?.errors?.generatedContent || 'Atualize e publique o workflow 03 Conteúdos Gerados nesse n8n.');
-              group.generatedContent = validateGeneratedContent(result.generatedContent, group.fullText);
-              await this.save();
-            }
-            await this.writeGeneratedContent(group);
-            group.contentStatus = 'completed';
-            this.log(`Conteúdo salvo: ${group.generatedContent.title}`);
-          }
-          delete group.contentError; await this.clearError(group, 'Conteúdo');
-        } catch (error) { group.contentStatus = 'failed'; group.contentError = error.message; await this.stageError(group, 'Conteúdo', error); }
-        group.updatedAt = new Date().toISOString(); await this.save();
-      }
     }
-  }
-
-  async generatePendingContents() {
-    for (const group of this.state.groups.filter(g => g.status === 'closed')) {
-      if (group.contentStatus === 'skipped' && contentRange(group.fullText)) group.contentStatus = 'pending';
-    }
-    await this.save();
-    await this.finalizePending({ retry: true, generateContent: true, contentOnly: true });
   }
 
   async writeDiary(group) {
@@ -226,15 +191,6 @@ export class DiaryProcessor {
     lines.push('## Texto completo do grupo', '', group.fullText, '');
     await writeFile(join(this.root, 'Diário', name + '.md'), lines.join('\n'), 'utf8');
     group.diaryFile = join('Diário', name + '.json');
-  }
-
-  async writeGeneratedContent(group) {
-    const content = validateGeneratedContent(group.generatedContent, group.fullText);
-    const id = `${group.id}-content-v1`, name = readableName(content.title, group.createdAt, id);
-    const record = { ...content, id, createdAt: group.closedAt, updatedAt: new Date().toISOString(), groupId: group.id, sourceIds: [...group.sourceIds] };
-    await writeJson(join(this.root, 'Conteúdos Gerados', name + '.json'), record);
-    await writeFile(join(this.root, 'Conteúdos Gerados', name + '.md'), `# ${content.title}\n\n${content.body}\n`, 'utf8');
-    group.contentFile = join('Conteúdos Gerados', name + '.json');
   }
 
   async writeAchievements(group) {

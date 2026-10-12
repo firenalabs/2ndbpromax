@@ -29,7 +29,8 @@ test('configura os três webhooks, aceita prefixo de proxy e mantém demais opç
     assert.equal(saved[key], `https://n8n.exemplo.com/n8n/webhook/${endpoint}`);
   }
   assert.equal(saved.workflowId, config.workflowId);
-  assert.equal(saved.contentWebhook,'https://n8n.exemplo.com/n8n/webhook/segundo-cerebro-local-conteudos-v1');
+  assert.equal(Object.hasOwn(saved, 'contentWebhook'), false);
+  assert.equal(Object.hasOwn(configureN8n({...config, contentWebhook: 'https://obsolete.invalid'}, 'localhost:5678'), 'contentWebhook'), false);
   assert.equal(saved.knowledgeThreshold, 0.8);
   assert.equal(config.digestWebhook, 'http://localhost:5678/webhook/digestao');
   assert.equal(configureN8n(saved, 'localhost:5678').digestWebhook, config.digestWebhook);

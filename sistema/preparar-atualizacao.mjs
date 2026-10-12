@@ -1,6 +1,8 @@
-import { readdir, mkdir, copyFile, readFile, writeFile } from 'node:fs/promises';
+import { readdir, mkdir, copyFile, readFile, writeFile, unlink } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+
+import { retiredManualContentPaths } from './migracoes-configuracao.mjs';
 
 // Only explicitly selected program files enter the delivery; client data never does.
 export async function prepareUpdate(root) {
@@ -11,6 +13,8 @@ export async function prepareUpdate(root) {
   const files = runtime.map(name => 'sistema/' + name).concat(['iniciar.bat', 'iniciar.sh', 'package.json', 'README.md', 'LEIA-ME-ATUALIZACAO.md', 'sistema/README.md']);
   await mkdir(join(client, 'sistema'), { recursive: true });
   await mkdir(n8n, { recursive: true });
+  for (const path of retiredManualContentPaths) await unlink(join(client, path)).catch(error => { if (error.code !== 'ENOENT') throw error; });
+  for (const name of ['03-conteudos.importar.json', '03-conteudos.sdk.js']) await unlink(join(n8n, name)).catch(error => { if (error.code !== 'ENOENT') throw error; });
   for (const name of files) await copyFile(join(root, name), join(client, name));
   const codes = [
     ['01-digestao.nodes.json', 'Validar entrada e adicionar SEGs', '01 - Validar entrada e adicionar SEGs.js'],
@@ -30,7 +34,7 @@ export async function prepareUpdate(root) {
   await copyFile(join(root, 'sistema', 'workflows', 'keytopics.prompt.txt'), join(n8n, '01 - Prompt KeyTopics.txt'));
   // Social workflow is a separate import; never replaces the legacy 02b.
   try { await copyFile(join(root, 'sistema', 'workflows', '02b-diario-social.importar.json'), join(n8n, '02b-diario-social.importar.json')); } catch (error) { if (error.code !== 'ENOENT') throw error; }
-  await writeFile(join(n8n, 'LEIA-ME.txt'), 'Abra cada arquivo .js, copie todo o conteúdo e cole no Code com o mesmo nome no workflow indicado (01 ou 02a). Publique os dois workflows depois de colar. Não precisa importar o workflow inteiro. Os Codes são completos; confira customizações locais antes de substituir. No 01, remova Schema — KeyTopics e Agent: Estruturar KeyTopics, se existir. Desative Require Specific Output Format no Agent: KeyTopics. Adicione um Code chamado Estruturar KeyTopics em JavaScript entre Agent: KeyTopics e Validar e montar digestão. Copie para ele o Code correspondente. Acrescente apenas as regras de formato Markdown do arquivo 01 - Formato Markdown KeyTopics.txt ao prompt atual, preservando suas instruções de análise e o modelo. Para as ramificações automáticas de 02a e 02b, siga CONTEUDOS-AUTOMATICOS.txt e os JSONs completos incluídos. O 03 permanece independente.\n');
+  await writeFile(join(n8n, 'LEIA-ME.txt'), 'Abra cada arquivo .js, copie todo o conteúdo e cole no Code com o mesmo nome no workflow indicado (01 ou 02a). Publique os dois workflows depois de colar. Não precisa importar o workflow inteiro. Os Codes são completos; confira customizações locais antes de substituir. No 01, remova Schema — KeyTopics e Agent: Estruturar KeyTopics, se existir. Desative Require Specific Output Format no Agent: KeyTopics. Adicione um Code chamado Estruturar KeyTopics em JavaScript entre Agent: KeyTopics e Validar e montar digestão. Copie para ele o Code correspondente. Acrescente apenas as regras de formato Markdown do arquivo 01 - Formato Markdown KeyTopics.txt ao prompt atual, preservando suas instruções de análise e o modelo. Para as ramificações automáticas de 02a e 02b, siga CONTEUDOS-AUTOMATICOS.txt e os JSONs completos incluídos.\n');
   await writeFile(join(base, 'LEIA-ME.txt'), 'CLIENTE: pare o programa. Copie o CONTEÚDO de "Copiar para o cliente" para a raiz de cada cliente, onde está iniciar.bat. Mescle as pastas e substitua os arquivos. Não apague a pasta sistema. Reinicie e use opção 3 para retomar erros. Configuração, histórico e resultados não estão neste pacote.\n\nN8N: "Colar no n8n" contém Codes completos, nomeados pelos nodes. Aplique manualmente e publique.\n\nPRÓXIMAS ATUALIZAÇÕES: execute preparar-atualizacao.bat ou ./preparar-atualizacao.sh na cópia de desenvolvimento. A mesma pasta será atualizada com o código atual. Envie a pasta Copiar para o cliente ao sócio.\n');
   await writeFile(join(base, 'arquivos-do-programa.json'), JSON.stringify(files, null, 2) + '\n');
   return { base, files };

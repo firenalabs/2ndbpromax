@@ -14,7 +14,7 @@ Atualizações do programa não alteram o servidor. Leia as notas da Release. Se
 
 Nesta primeira Release, os Codes são **01 — Validar entrada e adicionar SEGs**, **01 — Validar e montar digestão**, **02a — Validar pedido do Atlas** e **02a — Cortar texto deterministicamente**. Eles incluem segmentação de transcrições sem pontuação e validam os dados sem bloqueio pelo nome de versão. Se já aplicou esses Codes, não precisa repetir.
 
-Preserve suas customizações de produção ao substituir a lógica de um Code. O prompt KeyTopics é uma referência; não precisa substituir um prompt customizado. O 03 permanece independente para a opção 8; 02a e 02b possuem geração automática adicional na versão 1.0.5.
+Preserve suas customizações de produção ao substituir a lógica de um Code. O prompt KeyTopics é uma referência; não precisa substituir um prompt customizado. A geração manual independente foi retirada; os conteúdos automáticos de Atlas e Diário continuam funcionando.
 
 Se ainda houver nodes de correção de KeyTopics da entrega antiga, remova **Digestão válida?**, **Agent: Corrigir KeyTopics** e **Validar digestão corrigida**. Conecte **Validar e montar digestão** diretamente ao retorno ao computador. O sistema atual não tenta corrigir automaticamente os KeyTopics.
 

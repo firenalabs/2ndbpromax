@@ -322,7 +322,6 @@ export class Executor {
       const open = groups.find(g => g.status === 'open');
       const pending = groups.filter(g => g.status === 'closed' && (g.diaryStatus !== 'completed' || !['completed', 'skipped'].includes(g.bragStatus))).length;
       this.log(`Diário: ${groups.filter(g => g.diaryStatus === 'completed').length} registro(s) | ${pending} grupo(s) pendente(s).`);
-      this.log(`Conteúdos Gerados: ${groups.filter(g => g.contentStatus === 'completed').length} conteúdo(s) | ${groups.filter(g => g.status === 'closed' && ['pending', 'failed'].includes(g.contentStatus)).length} pendente(s).`);
       const continuityErrors = this.state.jobs.filter(j => j.diaryStatus === 'failed').length;
       if (continuityErrors) this.log(`Continuidade pendente para ${continuityErrors} texto(s). Consulte Erros e use “Tentar novamente”.`);
       this.log(open ? `Grupo do Diário aguardando próximo texto: ${open.inputs.length} texto(s). Veja Diário/Grupo em andamento.md.` : 'Diário aguardando o primeiro texto.');

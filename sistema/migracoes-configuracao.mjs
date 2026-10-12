@@ -1,6 +1,25 @@
-import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, writeFile, unlink } from 'node:fs/promises';
 import { join } from 'node:path';
 import { writeJson } from './arquivos.mjs';
+
+export const retiredManualContentPaths = [
+  'sistema/conteudos.mjs',
+  'sistema/testes/conteudos.test.mjs',
+  'sistema/workflows/03-conteudos.sdk.js',
+  'sistema/workflows/03-conteudos.importar.json',
+];
+
+// Older updaters merge files, so retire unused program files on restart too.
+// User documents and processing history are never removed.
+export async function retireManualContentGeneration(root, config) {
+  for (const path of retiredManualContentPaths) {
+    await unlink(join(root, path)).catch(error => { if (error.code !== 'ENOENT') throw error; });
+  }
+  if (!Object.hasOwn(config, 'contentWebhook')) return config;
+  const { contentWebhook: retiredWebhook, ...updated } = config;
+  await writeJson(join(root, 'sistema', 'configuracao.json'), updated);
+  return updated;
+}
 
 // Runs on restart, including when an older updater installed the new code.
 export async function migrateDiaryWebhook(root, config) {

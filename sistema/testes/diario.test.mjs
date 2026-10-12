@@ -34,6 +34,24 @@ async function setup(t, request) {
   return { root, diary };
 }
 
+test('finalização usa apenas Diário mesmo com configuração e opções da geração manual antiga', async t => {
+  const calls = [];
+  const { root, diary } = await setup(t, async (url, options) => {
+    calls.push(url);
+    return normalResponse(JSON.parse(options.body));
+  });
+  diary.config = { ...diary.config, contentWebhook: 'http://obsolete.invalid/conteudos' };
+  await diary.accept(digest('primeiro', Array(200).fill('ideia').join(' ')), 'primeiro.txt');
+  await diary.accept(digest('segundo', 'Outro tema.'), 'segundo.txt');
+  await diary.finalizePending({ generateContent: true, contentOnly: true });
+  await diary.finalizePending();
+  assert.equal(diary.state.groups[0].diaryStatus, 'completed');
+  assert.equal(Object.hasOwn(diary.state.groups[0], 'contentStatus'), false);
+  assert.equal(calls.length, 2);
+  assert.ok(calls.every(url => url === diary.config.diaryWebhook));
+  assert.deepEqual(await readdir(join(root, 'Conteúdos Gerados')), ['README.md']);
+});
+
 test('Jev exige seis respostas válidas e erro nunca vira quebra de continuidade', () => {
   assert.equal(readNoul({ answers: { continuidade: { type: 'noul', noul: 0.8 } } }, 'continuidade', 0.8).accepted, true);
   for (const noul of [null, '0.9', -1, 2]) assert.throws(() => readNoul({ answers: { continuidade: { type: 'noul', noul } } }, 'continuidade', 0.8));

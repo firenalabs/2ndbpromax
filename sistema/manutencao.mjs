@@ -1,7 +1,6 @@
 import { lstat, readdir, unlink } from 'node:fs/promises';
 import { join } from 'node:path';
 import { folders, writeJson } from './arquivos.mjs';
-import { contentWebhookFor } from './conteudos.mjs';
 
 export function configureN8n(config, address) {
   let value = address.trim();
@@ -17,14 +16,13 @@ export function configureN8n(config, address) {
   }
   if (/\/webhook(?:-test)?(?:\/|$)/.test(url.pathname)) throw new Error('Informe a URL principal do n8n, sem o caminho /webhook.');
   const base = url.href.replace(/\/+$/, '');
-  const result = { ...config, n8nBaseUrl: base };
+  const { contentWebhook: retiredWebhook, ...currentConfig } = config;
+  const result = { ...currentConfig, n8nBaseUrl: base };
   for (const key of ['digestWebhook', 'atlasWebhook', 'diaryWebhook']) {
     const endpoint = new URL(config[key]).pathname.match(/\/webhook\/(.+)$/)?.[1];
     if (!endpoint) throw new Error(`O caminho do webhook ${key} não foi encontrado na configuração.`);
     result[key] = `${base}/webhook/${endpoint}`;
   }
-  const endpoint = new URL(contentWebhookFor(config)).pathname.match(/\/webhook\/(.+)$/)?.[1];
-  result.contentWebhook = `${base}/webhook/${endpoint}`;
   return result;
 }
 
@@ -71,8 +69,8 @@ export async function configureInteractive(root, config, ask, log = console.log)
   if (!answer.trim()) { log('Configuração mantida.'); return; }
   const updated = configureN8n(config, answer);
   await writeJson(join(root, 'sistema', 'configuracao.json'), updated);
-  log(`\nEndereço salvo: ${updated.n8nBaseUrl}\nOs quatro fluxos usarão esse endereço na próxima execução.`);
-  log('Nesse n8n, os quatro workflows precisam estar publicados, com os mesmos caminhos de webhook e credenciais OpenRouter configuradas.');
+  log(`\nEndereço salvo: ${updated.n8nBaseUrl}\nOs três fluxos usarão esse endereço na próxima execução.`);
+  log('Nesse n8n, os três workflows precisam estar publicados, com os mesmos caminhos de webhook e credenciais OpenRouter configuradas.');
 }
 
 export async function resetInteractive(root, ask, log = console.log) {
