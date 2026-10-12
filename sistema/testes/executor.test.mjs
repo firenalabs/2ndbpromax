@@ -174,6 +174,74 @@ test('ignora texto inválido sem perder original e segue com o próximo', async 
   assert.equal(await readFile(join(root, original), 'utf8'), '');
 });
 
+test('Iniciar retoma erros, processa a Entrada e depois recebe textos novos sem duplicar resultados', {timeout: 5000}, async t => {
+  let broken = true;
+  let executor;
+  const calls = [];
+  const result = await setup(t, async (_, options) => {
+    const text = JSON.parse(options.body).text;
+    calls.push(text);
+    if (broken) throw new Error('Erro anterior');
+    if (text === 'Texto novo.') executor.stopping = true;
+    return responseFor(options);
+  });
+  executor = result.executor;
+  executor.config.pollIntervalMs = 5;
+  await writeFile(join(result.root, 'Entrada', 'antigo.txt'), 'Texto com erro.');
+  await executor.batch();
+  const id = executor.state.jobs[0].id;
+  broken = false;
+  await writeFile(join(result.root, 'Entrada', 'entrada.txt'), 'Texto na Entrada.');
+  let monitoring;
+  const ready = new Promise(resolve => { monitoring = resolve; });
+  executor.log = message => { if (message.startsWith('Monitorando:')) monitoring(); };
+  const watching = executor.watch();
+  t.after(() => { executor.stopping = true; });
+  await ready;
+  assert.ok(executor.state.jobs.every(job => job.status === 'completed'));
+  assert.equal(executor.state.jobs[0].id, id);
+  await writeFile(join(result.root, 'Entrada', 'novo.txt'), 'Texto novo.');
+  await watching;
+  assert.equal(executor.state.jobs.length, 3);
+  assert.ok(executor.state.jobs.every(job => job.status === 'completed'));
+  assert.equal(calls.filter(text => text === 'Texto com erro.').length, 3);
+  assert.equal(calls.filter(text => text === 'Texto na Entrada.').length, 1);
+  assert.equal(calls.filter(text => text === 'Texto novo.').length, 1);
+});
+
+test('erro persistente é tentado na partida e não bloqueia outros textos nem repete no polling', {timeout: 5000}, async t => {
+  let executor;
+  const calls = [];
+  const result = await setup(t, async (_, options) => {
+    const text = JSON.parse(options.body).text;
+    calls.push(text);
+    if (text === 'Falha persistente.') throw new Error('Falha persistente');
+    if (text === 'Texto novo.') executor.stopping = true;
+    return responseFor(options);
+  });
+  executor = result.executor;
+  executor.config.pollIntervalMs = 5;
+  await writeFile(join(result.root, 'Entrada', 'erro.txt'), 'Falha persistente.');
+  await executor.batch();
+  const id = executor.state.jobs[0].id;
+  await writeFile(join(result.root, 'Entrada', 'saudavel.txt'), 'Texto saudável.');
+  let monitoring;
+  const ready = new Promise(resolve => { monitoring = resolve; });
+  executor.log = message => { if (message.startsWith('Monitorando:')) monitoring(); };
+  const watching = executor.watch();
+  t.after(() => { executor.stopping = true; });
+  await ready;
+  await new Promise(resolve => setTimeout(resolve, 30));
+  assert.equal(calls.filter(text => text === 'Falha persistente.').length, 4);
+  assert.equal(executor.state.jobs[0].id, id);
+  assert.equal(executor.state.jobs[0].status, 'failed');
+  assert.equal(executor.state.jobs[1].status, 'completed');
+  await writeFile(join(result.root, 'Entrada', 'novo.txt'), 'Texto novo.');
+  await watching;
+  assert.equal(calls.filter(text => text === 'Falha persistente.').length, 4);
+  assert.equal(executor.state.jobs[2].status, 'completed');
+});
+
 test('escuta contínua recebe arquivo novo depois de iniciar', async t => {
   let executor;
   const setupResult = await setup(t, async (_, options) => {

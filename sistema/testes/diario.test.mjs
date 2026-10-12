@@ -286,6 +286,38 @@ test('executor inicia Atlas e Diário em paralelo, aguardando ambos antes de ava
   assert.equal(executor.state.jobs[0].atlasStatus, 'completed'); assert.equal(executor.state.jobs[0].diaryStatus, 'completed');
 });
 
+test('Iniciar permite digestão e Atlas avançarem mas conserva a ordem do Diário após falha', async t => {
+  const root = await mkdtemp(join(tmpdir(), 'diario-unified-test-'));
+  t.after(() => rm(root, { recursive: true, force: true }));
+  const executor = new Executor(root, {...config, atlasWebhook: 'http://example.invalid/atlas'}, {log() {}, request: async (_, options) => {
+    const p = JSON.parse(options.body);
+    const d = digest(p.sourceId, p.text); d.createdAt = p.createdAt;
+    return reply(d);
+  }});
+  await executor.initialize();
+  const atlas = [], diary = [];
+  executor.atlas.run = async d => { atlas.push(d.originalText); };
+  executor.diary.accept = async d => {
+    diary.push(d.originalText);
+    if (d.originalText === 'Ideia 1.') throw new Error('Comparação indisponível');
+  };
+  for (let i = 0; i < 3; i++) {
+    const file = join(root, 'Entrada', `${i}.txt`);
+    await writeFile(file, `Ideia ${i}.`); await utimes(file, 100 + i, 100 + i);
+  }
+  await executor.batch({continuePastErrors: true});
+  await executor.processQueue({continuePastErrors: true});
+  assert.ok(executor.state.jobs.every(job => job.status === 'completed' && job.atlasStatus === 'completed'));
+  assert.deepEqual(atlas, ['Ideia 0.', 'Ideia 1.', 'Ideia 2.']);
+  assert.deepEqual(diary, ['Ideia 0.', 'Ideia 1.']);
+  assert.equal(executor.state.jobs[1].diaryStatus, 'failed');
+  assert.equal(executor.state.jobs[2].diaryStatus, 'pending');
+  await executor.ignoreFirstError();
+  assert.equal(executor.state.jobs[1].diaryStatus, 'skipped');
+  assert.equal(executor.state.jobs[2].diaryStatus, 'completed');
+  assert.deepEqual(diary, ['Ideia 0.', 'Ideia 1.', 'Ideia 2.']);
+});
+
 test('falha de continuidade pausa próximo input e retry não repete digestão', async t => {
   const root = await mkdtemp(join(tmpdir(), 'diario-order-test-')); t.after(() => rm(root, { recursive: true, force: true }));
   let broken = true; let digestCalls = 0;

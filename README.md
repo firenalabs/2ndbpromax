@@ -8,7 +8,7 @@ Coloque textos `.txt` em **Entrada**. O programa preserva os originais, identifi
 2. Na [última Release](https://github.com/firenalabs/2ndbpromax/releases/latest), baixe **Sistema-Completo.zip** e extraia inteiro.
 3. Windows: abra **iniciar.bat**. Linux/macOS: execute **./iniciar.sh** nesta pasta.
 4. Use **6. Configurar endereço do n8n** para informar o domínio acessível do seu servidor.
-5. Use **1. Iniciar e aguardar novos textos**, depois coloque arquivos em Entrada.
+5. Use **1. Iniciar**, depois coloque arquivos em Entrada.
 
 Em uma instalação nova, a configuração inicial é criada automaticamente. Cada computador precisa alcançar o n8n configurado: localhost aponta para o próprio computador. O servidor precisa ter os workflows publicados e as credenciais OpenRouter configuradas.
 
@@ -16,14 +16,14 @@ Em uma instalação nova, a configuração inicial é criada automaticamente. Ca
 
 | Opção | Ação |
 | --- | --- |
-| 1 | Aguardar novos textos em Entrada |
-| 2 | Processar os textos que já estão em Entrada |
-| 3 | Tentar novamente os textos com erro |
+| 1 | Iniciar: tentar erros, processar Entrada e aguardar novos textos |
 | 4 | Ver o andamento |
 | 5 | Ignorar o primeiro texto com erro e seguir |
 | 6 | Configurar endereço do n8n |
 | 7 | Limpar dados e começar de novo, com confirmação |
 | 9 | Atualizar sistema pelo GitHub |
+
+A opção 1 faz uma rodada de novas tentativas dos erros já registrados, processa a Entrada e continua aguardando novos textos. Falhas persistentes ficam em Erros e não são tentadas repetidamente durante a escuta. Digestão e Atlas dos demais textos continuam; o Diário mantém a ordem e aguarda resolver ou ignorar um texto que bloqueia sua sequência. Reinicie com a opção 1 para uma nova rodada de tentativas.
 
 Para parar, pressione Ctrl+C e aguarde “Sistema parado”. Arquivos são processados um a um, por data de modificação, com desempate pelo nome. Nenhuma numeração é exigida; coloque os textos na ordem desejada quando houver continuidade.
 
@@ -73,7 +73,7 @@ Configuração particular, dados dos clientes, bloqueios e arquivos temporários
 
 ## Limites do protótipo
 
-Node.js 22+, até 512 KB por input e 120.000 caracteres por texto/grupo para chamadas ao n8n. Grupos maiores são conservados e ficam pendentes; não são truncados. Falhas conservam o original; use opção 3 após resolver a causa.
+Node.js 22+, até 512 KB por input e 120.000 caracteres por texto/grupo para chamadas ao n8n. Grupos maiores são conservados e ficam pendentes; não são truncados. Falhas conservam o original; reinicie com opção 1 após resolver a causa.
 
 A opção 7 apaga os dados daquela cópia, incluindo a Entrada e grupo aberto, após confirmação digitando LIMPAR. Código e configuração são mantidos. Essa limpeza não apaga workflows/históricos do n8n.
 

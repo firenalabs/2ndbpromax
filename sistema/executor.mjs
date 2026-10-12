@@ -78,7 +78,7 @@ export class Executor {
       if (this.state.jobs.some(job => job.fingerprint === fingerprint)) {
         if (!this.inputNotices.has(fingerprint)) {
           this.inputNotices.add(fingerprint);
-          this.log(`Já registrado nesta cópia: ${entry.name}. Consulte o andamento na opção 4; use a opção 3 para tentar novamente se houve erro.`);
+          this.log(`Já registrado nesta cópia: ${entry.name}. Consulte o andamento na opção 4; reinicie com a opção 1 para tentar novamente se houve erro.`);
         }
         continue;
       }
@@ -185,26 +185,34 @@ export class Executor {
       job.updatedAt = new Date().toISOString();
       await this.save();
       await writeFile(join(this.root, folders.errors, `${job.baseName}.md`),
-        `# Não foi possível processar ${job.inputName}\n\n${error.message}\n\nOrigem: ${job.id}\n\nO original foi conservado em Originais. Para tentar novamente, use a opção “Tentar novamente” do iniciador.\n`, 'utf8');
-      this.log(`Não foi possível processar ${job.inputName}: ${error.message}\nVeja a pasta Erros. A sequência foi pausada.`);
+        `# Não foi possível processar ${job.inputName}\n\n${error.message}\n\nOrigem: ${job.id}\n\nO original foi conservado em Originais. Para tentar novamente, reinicie com a opção “Iniciar”.\n`, 'utf8');
+      this.log(`Não foi possível processar ${job.inputName}: ${error.message}\nVeja a pasta Erros. A nova tentativa ocorrerá ao reiniciar com a opção 1.`);
       return false;
     }
   }
 
-  async processQueue() {
+  async processQueue({ continuePastErrors = false } = {}) {
     if (this.diary) await this.diary.finalizePending();
+    let diaryBlocked = false;
     for (const job of [...this.state.jobs].sort((a, b) => a.sequence - b.sequence)) {
       if (this.stopping) break;
-      if (job.status === 'failed') break;
-      if (job.status === 'queued' && !await this.process(job)) break;
+      if (job.status === 'queued') await this.process(job);
+      if (job.status === 'failed') {
+        if (!continuePastErrors) break;
+        diaryBlocked = true;
+        continue;
+      }
       if (job.status === 'completed') {
         const tasks = [];
         if (this.atlas && job.atlasStatus === 'pending') tasks.push(this.processAtlas(job));
-        if (this.diary && job.diaryStatus === 'pending') tasks.push(this.processDiary(job));
+        if (this.diary && !diaryBlocked && job.diaryStatus === 'pending') tasks.push(this.processDiary(job));
         const results = await Promise.allSettled(tasks);
         const failed = results.find(r => r.status === 'rejected');
         if (failed) throw failed.reason;
-        if (this.diary && job.diaryStatus === 'failed') break;
+        if (this.diary && job.diaryStatus === 'failed') {
+          if (!continuePastErrors) break;
+          diaryBlocked = true;
+        }
       }
     }
   }
@@ -221,7 +229,7 @@ export class Executor {
     } catch (error) {
       job.diaryStatus = 'failed'; job.diaryError = error.message;
       await writeFile(join(this.root, folders.errors, `Continuidade — ${job.baseName}.md`),
-        `# Continuidade pendente: ${job.inputName}\n\n${error.message}\n\nO original, a digestão e o grupo anterior ficaram conservados. A sequência foi pausada. Use “Tentar novamente” no iniciador, ou ignore este input para continuar sem incluí-lo no Diário.\n`, 'utf8');
+        `# Continuidade pendente: ${job.inputName}\n\n${error.message}\n\nO original, a digestão e o grupo anterior ficaram conservados. A sequência foi pausada. Reinicie com a opção “Iniciar”, ou ignore este input para continuar sem incluí-lo no Diário.\n`, 'utf8');
       this.log(`Comparação do Diário pendente: ${error.message}. A sequência foi pausada.`);
     }
     job.updatedAt = new Date().toISOString(); await this.save();
@@ -242,14 +250,14 @@ export class Executor {
       job.atlasStatus = 'failed';
       job.atlasError = error.message;
       await writeFile(join(this.root, folders.errors, `Atlas — ${job.baseName}.md`),
-        `# Atlas pendente: ${job.inputName}\n\n${error.message}\n\nA digestão e os recortes já salvos foram conservados. Use “Tentar novamente” no iniciador. Os demais textos podem continuar.\n`, 'utf8');
+        `# Atlas pendente: ${job.inputName}\n\n${error.message}\n\nA digestão e os recortes já salvos foram conservados. Reinicie com a opção “Iniciar”. Os demais textos podem continuar.\n`, 'utf8');
       this.log(`Atlas pendente para ${job.inputName}: ${error.message}. A digestão permanece salva.`);
     }
     job.updatedAt = new Date().toISOString();
     await this.save();
   }
 
-  async batch({ retry = false } = {}) {
+  async batch({ retry = false, continuePastErrors = false } = {}) {
     if (retry) {
       for (const job of this.state.jobs) if (job.status === 'failed') { job.status = 'queued'; delete job.error; }
       for (const job of this.state.jobs) if (job.atlasStatus === 'failed') { job.atlasStatus = 'pending'; delete job.atlasError; }
@@ -259,7 +267,7 @@ export class Executor {
     }
     let result = await this.discover();
     if (result.settling) { await sleep(this.config.stableForMs + 5); result = await this.discover(); }
-    await this.processQueue();
+    await this.processQueue({ continuePastErrors });
     if (result.settling) this.log('Há arquivos ainda sendo copiados. Eles serão recebidos na próxima execução.');
     this.showStatus();
   }
@@ -295,14 +303,16 @@ export class Executor {
   }
 
   async watch() {
+    // Retry failures only at startup. Polling never puts failed jobs back in the queue.
+    if (!this.stopping) await this.batch({ retry: true, continuePastErrors: true });
     this.log(`Monitorando: ${join(this.root, folders.input)}`);
     this.log('Aguardando arquivos .txt. Para parar, pressione Ctrl+C.');
     if (process.platform === 'win32') this.log('Se a janela estiver com texto selecionado e parecer parada, pressione Esc para liberar o terminal.');
     const blocked = this.state.jobs.find(j => j.status === 'failed' || j.diaryStatus === 'failed');
-    if (blocked) this.log(`A fila tem um erro anterior em ${blocked.inputName}. Use a opção 3 para tentar novamente ou 5 para ignorar.`);
+    if (blocked) this.log(`O erro em ${blocked.inputName} ficou registrado. Digestão e Atlas dos demais textos continuam; a sequência do Diário aguarda a resolução ou a opção 5. Reinicie com a opção 1 para tentar novamente.`);
     while (!this.stopping) {
       await this.discover();
-      await this.processQueue();
+      await this.processQueue({ continuePastErrors: true });
       if (!this.stopping) await sleep(this.config.pollIntervalMs);
     }
     this.log('Sistema parado. Os dados ficaram salvos nesta pasta.');
@@ -323,7 +333,7 @@ export class Executor {
       const pending = groups.filter(g => g.status === 'closed' && (g.diaryStatus !== 'completed' || !['completed', 'skipped'].includes(g.bragStatus))).length;
       this.log(`Diário: ${groups.filter(g => g.diaryStatus === 'completed').length} registro(s) | ${pending} grupo(s) pendente(s).`);
       const continuityErrors = this.state.jobs.filter(j => j.diaryStatus === 'failed').length;
-      if (continuityErrors) this.log(`Continuidade pendente para ${continuityErrors} texto(s). Consulte Erros e use “Tentar novamente”.`);
+      if (continuityErrors) this.log(`Continuidade pendente para ${continuityErrors} texto(s). Consulte Erros e reinicie com a opção “Iniciar”.`);
       this.log(open ? `Grupo do Diário aguardando próximo texto: ${open.inputs.length} texto(s). Veja Diário/Grupo em andamento.md.` : 'Diário aguardando o primeiro texto.');
       this.log('Etapas 1, 2 e 3 disponíveis. Resultados em Digestões, Atlas, Diário e Conquistas.');
     } else this.log(this.atlas ? 'Etapas 1 e 2 disponíveis. Diário e Conquistas serão conectados na etapa 3.' : 'Etapa 1: digestão disponível.');

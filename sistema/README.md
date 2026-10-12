@@ -54,3 +54,7 @@ O Agent identifica tópicos e retorna `## [SEG_00008] Título` seguido de linhas
 ## Conteúdos automáticos (1.0.5)
 
 `estender-workflows-conteudos.mjs` acrescenta as ramificações aos JSONs importáveis de 02a e 02b durante `preparar-atualizacao`. Os SDKs são os modelos de base; para importar o fluxo completo atualizado, use os arquivos `.importar.json`. Os novos Agents retornam Markdown livre; `conteudos-automaticos.mjs` estrutura e grava os resultados recebidos em `generatedContents`. `generatedContentErrors` é independente dos erros do Atlas/Diário. O Merge aguarda original + conteúdo antes de continuar, sem nova chamada HTTP do computador. Faixas iniciais: 0–150, 151–600, 601–1499, 1500+. Cada Agent possui modelo próprio. IDs de arquivo são estáveis por origem e referência, com fonte e contagens conferidas localmente.
+
+## Início unificado
+
+A opção 1 (`--escutar`) tenta os erros existentes em uma rodada inicial, processa a Entrada e continua monitorando. As antigas opções 2 e 3 foram retiradas do menu; os comandos `--lote` e `--tentar-novamente` continuam disponíveis para scripts existentes. No modo Iniciar, falhas não bloqueiam digestão nem Atlas dos textos seguintes. O Diário aguarda resolver ou ignorar a falha anterior para preservar a ordem dos grupos. A escuta não recoloca erros na fila; uma nova tentativa exige reiniciar.

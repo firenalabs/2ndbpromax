@@ -28,11 +28,11 @@ try {
   if (migration.migrated) console.log('Diário atualizado para o workflow Posts por Rede (v2). Servidor e demais configurações preservados; configuração anterior em Atualizações/Backups/migracao-diario-social-v2.');
   let mode = process.argv[2];
   if (!mode && process.stdin.isTTY) {
-    console.log('\nSegundo cérebro — protótipo local\n\n1. Iniciar e aguardar novos textos\n2. Processar os textos que já estão na Entrada\n3. Tentar novamente os textos com erro\n4. Ver o andamento\n5. Ignorar o primeiro texto com erro e seguir\n6. Configurar endereço do n8n\n7. Limpar dados e começar de novo\n9. Atualizar sistema\n');
+    console.log('\nSegundo cérebro — protótipo local\n\n1. Iniciar\n4. Ver o andamento\n5. Ignorar o primeiro texto com erro e seguir\n6. Configurar endereço do n8n\n7. Limpar dados e começar de novo\n9. Atualizar sistema\n');
     menu = createInterface({ input: process.stdin, output: process.stdout });
     const answer = await menu.question('Escolha uma opção [1]: ');
-    mode = ({ '': '--escutar', '1': '--escutar', '2': '--lote', '3': '--tentar-novamente', '4': '--status', '5': '--ignorar-erro', '6': '--configurar-n8n', '7': '--limpar', '9': '--atualizar' })[answer.trim()];
-    if (!mode) throw new Error('Escolha uma opção de 1 a 7 ou 9.');
+    mode = ({ '': '--escutar', '1': '--escutar', '4': '--status', '5': '--ignorar-erro', '6': '--configurar-n8n', '7': '--limpar', '9': '--atualizar' })[answer.trim()];
+    if (!mode) throw new Error('Escolha 1, 4, 5, 6, 7 ou 9.');
   }
   mode ??= '--escutar';
   if (!['--escutar', '--lote', '--tentar-novamente', '--status', '--ignorar-erro', '--configurar-n8n', '--limpar', '--atualizar'].includes(mode)) throw new Error('Opção desconhecida. Inicie sem argumentos para abrir o menu.');

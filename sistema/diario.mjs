@@ -115,7 +115,7 @@ export class DiaryProcessor {
   errorPath(group, stage) { return join(this.root, 'Erros', `${stage} — ${this.groupName(group)}.md`); }
 
   async stageError(group, stage, error) {
-    await writeFile(this.errorPath(group, stage), `# ${stage} pendente\n\n${error.message}\n\nOs textos do grupo ${group.id} ficaram salvos em Diário/Grupos. Use “Tentar novamente” no iniciador. O grupo em andamento e os demais inputs podem continuar.\n`, 'utf8');
+    await writeFile(this.errorPath(group, stage), `# ${stage} pendente\n\n${error.message}\n\nOs textos do grupo ${group.id} ficaram salvos em Diário/Grupos. Reinicie com a opção “Iniciar”. O grupo em andamento e os demais inputs podem continuar.\n`, 'utf8');
     this.log(`${stage} pendente: ${error.message}. Textos conservados.`);
   }
 
