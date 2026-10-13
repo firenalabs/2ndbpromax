@@ -6,6 +6,7 @@ import { join } from 'node:path';
 import { Executor, acquireLock } from '../executor.mjs';
 import { segmentText } from '../contratos.mjs';
 import { ensureFolders, writeJson } from '../arquivos.mjs';
+import { saveMaterials } from '../materiais.mjs';
 
 function responseFor(options) {
   const source = JSON.parse(options.body);
@@ -19,13 +20,47 @@ function responseFor(options) {
   }; } };
 }
 
-async function setup(t, request) {
+async function setup(t, request, config = {}) {
   const root = await mkdtemp(join(tmpdir(), 'segundo-cerebro-test-'));
   t.after(() => rm(root, { recursive: true, force: true }));
-  const executor = new Executor(root, { digestWebhook: 'http://example.invalid', stableForMs: 1 }, { request, log() {} });
+  const executor = new Executor(root, { digestWebhook: 'http://example.invalid', stableForMs: 1, ...config }, { request, log() {} });
   await executor.initialize();
   return { root, executor };
 }
+
+test('cadeia modular conclui a entrada sem criar ou escrever na pasta antiga Digestões', async t => {
+  let calls=0;
+  const {root,executor}=await setup(t,async(_,options)=>{calls++;return responseFor(options);},{modularPipelineVersion:1});
+  const logs=[];executor.log=message=>logs.push(message);
+  await writeFile(join(root,'Entrada','modular.txt'),'Um conhecimento para preparar.');
+  await executor.batch();
+  const job=executor.state.jobs[0];
+  assert.equal(job.status,'completed');assert.equal(calls,1);
+  assert.equal(job.digestFile,join('KeyTopics Processados',job.baseName+'.json'));
+  assert.match(await readFile(join(root,'KeyTopics Processados',job.baseName+'.md'),'utf8'),/Ideia principal/);
+  assert.ok((await readdir(join(root,'Recortes por Assunto',job.id))).some(name=>name.endsWith('.json')));
+  assert.equal((await readdir(join(root,'Processados'))).length,1);
+  await assert.rejects(readdir(join(root,'Digestões')),{code:'ENOENT'});
+  assert.ok(logs.some(message=>message.includes('Concluído: modular.txt → KeyTopics Processados')));
+});
+
+test('retomada do erro de Digestões reutiliza KeyTopics salvos sem nova chamada de IA', async t => {
+  const {root,executor}=await setup(t,async()=>{throw new Error('Não deve chamar IA novamente');},{modularPipelineVersion:1});
+  const text='Material já preparado antes do erro de escrita.';
+  await writeFile(join(root,'Entrada','recuperar.txt'),text);
+  await executor.discover();await new Promise(resolve=>setTimeout(resolve,5));await executor.discover();
+  const job=executor.state.jobs[0];
+  const digest=await responseFor({body:JSON.stringify({sourceId:job.id,digestId:job.digestId,createdAt:job.createdAt,text})}).json();
+  await saveMaterials(root,{...digest,sourceFile:job.originalFile,inputName:job.inputName,sequence:job.sequence},job.baseName);
+  job.status='failed';job.attempts=1;job.error='ENOENT: Digestões';await executor.save();
+  await writeFile(join(root,'Erros',job.baseName+'.md'),'Erro antigo');
+  const restarted=new Executor(root,executor.config,{request:async()=>{throw new Error('Não deve chamar IA novamente');},log(){}});
+  await restarted.initialize();await restarted.batch({retry:true});
+  const resumed=restarted.state.jobs[0];assert.equal(resumed.status,'completed');assert.equal(resumed.attempts,1);assert.equal(resumed.id,job.id);
+  assert.equal((await readdir(join(root,'Erros'))).length,0);
+  assert.equal((await readdir(join(root,'Processados'))).length,1);
+  await assert.rejects(readdir(join(root,'Digestões')),{code:'ENOENT'});
+});
 
 test('lote aceita nomes livres, respeita datas, salva originais/digestões e arquiva entradas', async t => {
   const calls = [];

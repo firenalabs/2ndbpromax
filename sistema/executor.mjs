@@ -166,8 +166,10 @@ export class Executor {
       const previous = await readJson(digestPath, null);
       const digest = previous ? validateDigest(previous, { id: job.id, digestId: job.digestId, text }) : await this.callWorkflow(job, text);
       if (this.config.modularPipelineVersion) await saveMaterials(this.root, { ...digest, sourceFile: job.originalFile, inputName: job.inputName, sequence: job.sequence }, job.baseName);
-      else await writeJson(digestPath, digest);
-      await writeFile(join(this.root, folders.digests, `${job.baseName}.md`), digestMarkdown(digest, job.inputName), 'utf8');
+      else {
+        await writeJson(digestPath, digest);
+        await writeFile(join(this.root, folders.digests, `${job.baseName}.md`), digestMarkdown(digest, job.inputName), 'utf8');
+      }
       const inputPath = join(this.root, folders.input, job.inputName);
       const current = await readFile(inputPath).catch(error => { if (error.code === 'ENOENT') return null; throw error; });
       if (current && sha256(current) === job.contentHash) {
@@ -181,7 +183,7 @@ export class Executor {
       delete job.error;
       await this.save();
       await unlink(join(this.root, folders.errors, `${job.baseName}.md`)).catch(error => { if (error.code !== 'ENOENT') throw error; });
-      this.log(`Concluído: ${job.inputName} → Digestões`);
+      this.log(`Concluído: ${job.inputName} → ${this.config.modularPipelineVersion ? folders.keytopics : folders.digests}`);
       return true;
     } catch (error) {
       job.status = 'failed';

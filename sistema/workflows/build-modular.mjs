@@ -2,6 +2,9 @@ import { readFile, writeFile } from 'node:fs/promises';
 import { validateDigest } from '../contratos.mjs';
 import { buildBlocks } from '../contratos-atlas.mjs';
 import { normalizeEditorial, validEditorialCheckpoint } from '../outputs-editoriais.mjs';
+import { simplifyEditorial } from './simplificar-editorial.mjs';
+import { diaryWithoutLoop } from './diario-sem-loop.mjs';
+import { organizeAtlas } from './atlas-organizado.mjs';
 
 const read = async name => JSON.parse(await readFile(new URL(name, import.meta.url), 'utf8'));
 const prune = (w, names) => {
@@ -45,7 +48,7 @@ export function sdkCode(w) {
   for (const [from, c] of Object.entries(w.connections)) for (const [out, batch] of (c.main ?? []).entries()) for (const e of batch) lines.push(`w.add(${index.get(from)}.output(${out}).to(${index.get(e.node)}.input(${e.index})));`);
   lines.push('export default w;'); return lines.join('\n');
 }
-export async function buildModular() {
+export async function buildModular({ simplify = true, atlasLayout = true } = {}) {
   const original = await read('modular-originais.json');
   const prep = structuredClone(original.prep), atlas = structuredClone(original.atlas), diary = structuredClone(original.diary), test = structuredClone(original.test);
   prep.name = 'Protótipo local — 01 Preparar KeyTopics e Recortes';
@@ -148,7 +151,7 @@ return [{json:{ok:true,...normalized,cache,workflowId:$workflow.id,executionId:$
       n.position = position; n.parameters.width = width; n.parameters.height = height;
     }
   }
-  return { prep, atlas, diary, generation: test };
+  return { prep, atlas: atlasLayout ? organizeAtlas(atlas) : atlas, diary: diaryWithoutLoop(diary), generation: simplify ? simplifyEditorial(test) : test };
 }
 export async function writeModular() {
   const all = await buildModular();

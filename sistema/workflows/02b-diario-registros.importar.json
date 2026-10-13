@@ -14,7 +14,7 @@
       "typeVersion": 2.1,
       "position": [
         1760,
-        2016
+        2616
       ],
       "webhookId": "9bbe715d-9b58-4a29-84cf-b0deecb1cf8c"
     },
@@ -28,7 +28,7 @@
       "typeVersion": 2,
       "position": [
         2000,
-        2016
+        2616
       ]
     },
     {
@@ -60,7 +60,7 @@
       "typeVersion": 2.3,
       "position": [
         2240,
-        2016
+        2616
       ]
     },
     {
@@ -75,8 +75,8 @@
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.5,
       "position": [
-        13088,
-        1664
+        6464,
+        2656
       ]
     },
     {
@@ -88,8 +88,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        4208,
-        2016
+        3376,
+        2616
       ]
     },
     {
@@ -108,8 +108,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        5056,
-        2000
+        3936,
+        2600
       ],
       "onError": "continueRegularOutput",
       "notes": "Criado por Codex — prompt v1."
@@ -129,8 +129,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
       "typeVersion": 1,
       "position": [
-        5072,
-        2208
+        3952,
+        2808
       ]
     },
     {
@@ -143,8 +143,8 @@
       "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
       "typeVersion": 1.3,
       "position": [
-        5232,
-        2208
+        4128,
+        2808
       ]
     },
     {
@@ -156,8 +156,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        5424,
-        2000
+        4368,
+        2600
       ]
     },
     {
@@ -176,7 +176,7 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        13168,
+        5216,
         2000
       ],
       "onError": "continueRegularOutput",
@@ -192,7 +192,7 @@
       "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
       "typeVersion": 1.3,
       "position": [
-        13344,
+        5408,
         2208
       ]
     },
@@ -205,13 +205,13 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        13568,
+        5600,
         2000
       ]
     },
     {
       "parameters": {
-        "content": "## Diário e Conquistas\ncompare: verifica se o próximo input continua a ideia anterior.\n\nfinalize: UMA chamada para os seis aspectos, Diário e ações true. O retorno ao computador acontece somente no final, para salvar os arquivos.\n\nVitória chama o Brag. O loop aguarda todas as ações ativas. Falhas de Diário/Brag são informadas separadamente no JSON completo.",
+        "content": "## Diário e Conquistas\n\nCada input gera seu registro do Diário.\n\nOs seis Jevs são avaliados em caminhos independentes, reunidos antes do roteamento. Todos os aspectos true seguem seus respectivos caminhos, sem loop.\n\nVitória chama o Brag. Os demais aspectos mantêm os pontos “conectar ação aqui”. Sem aspectos true, o Diário também é concluído.\n\nA montagem final espera todos os caminhos selecionados e conserva os resultados e erros de Diário/Brag.",
         "height": 300,
         "width": 800,
         "color": 5
@@ -295,8 +295,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        3008,
-        2016
+        2768,
+        2256
       ],
       "onError": "continueRegularOutput",
       "notes": "Personalize a pergunta e os critérios deste aspecto no corpo JSON. Preserve a chave obstacle e o tipo noul, usados para reunir as respostas."
@@ -333,8 +333,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        3248,
-        2016
+        2768,
+        2496
       ],
       "onError": "continueRegularOutput",
       "notes": "Personalize a pergunta e os critérios deste aspecto no corpo JSON. Preserve a chave story e o tipo noul, usados para reunir as respostas."
@@ -371,8 +371,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        3488,
-        2016
+        2768,
+        2736
       ],
       "onError": "continueRegularOutput",
       "notes": "Personalize a pergunta e os critérios deste aspecto no corpo JSON. Preserve a chave gratitude e o tipo noul, usados para reunir as respostas."
@@ -409,8 +409,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        3728,
-        2016
+        2768,
+        2976
       ],
       "onError": "continueRegularOutput",
       "notes": "Personalize a pergunta e os critérios deste aspecto no corpo JSON. Preserve a chave joke e o tipo noul, usados para reunir as respostas."
@@ -447,8 +447,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        3968,
-        2016
+        2768,
+        3216
       ],
       "onError": "continueRegularOutput",
       "notes": "Personalize a pergunta e os critérios deste aspecto no corpo JSON. Preserve a chave personalLife e o tipo noul, usados para reunir as respostas."
@@ -607,8 +607,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.4,
       "position": [
-        12848,
-        2208
+        4880,
+        2600
       ],
       "notes": "Todas as saídas true são ativadas, não apenas a primeira. Recebe os aspectos já salvos pelo computador após a escrita do Diário. Conecte novos comportamentos aos pontos de extensão. Preserve a saída de conclusão sem Vitória."
     },
@@ -619,7 +619,7 @@
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        13200,
+        5248,
         2448
       ],
       "notes": "Esta rota executa somente quando obstacle = true. Ainda não possui comportamento. Conecte seu grupo de nodes à saída deste ponto; text, flags, groupId e sourceIds estarão disponíveis. Não adicione outro Respond to Webhook: a resposta é concluída pela rota Vitória ou Sem Vitória."
@@ -631,7 +631,7 @@
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        13200,
+        5248,
         2640
       ],
       "notes": "Esta rota executa somente quando story = true. Ainda não possui comportamento. Conecte seu grupo de nodes à saída deste ponto; text, flags, groupId e sourceIds estarão disponíveis. Não adicione outro Respond to Webhook: a resposta é concluída pela rota Vitória ou Sem Vitória."
@@ -643,7 +643,7 @@
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        13200,
+        5248,
         2848
       ],
       "notes": "Esta rota executa somente quando gratitude = true. Ainda não possui comportamento. Conecte seu grupo de nodes à saída deste ponto; text, flags, groupId e sourceIds estarão disponíveis. Não adicione outro Respond to Webhook: a resposta é concluída pela rota Vitória ou Sem Vitória."
@@ -655,7 +655,7 @@
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        13200,
+        5248,
         3040
       ],
       "notes": "Esta rota executa somente quando joke = true. Ainda não possui comportamento. Conecte seu grupo de nodes à saída deste ponto; text, flags, groupId e sourceIds estarão disponíveis. Não adicione outro Respond to Webhook: a resposta é concluída pela rota Vitória ou Sem Vitória."
@@ -667,7 +667,7 @@
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        13200,
+        5248,
         3248
       ],
       "notes": "Esta rota executa somente quando personalLife = true. Ainda não possui comportamento. Conecte seu grupo de nodes à saída deste ponto; text, flags, groupId e sourceIds estarão disponíveis. Não adicione outro Respond to Webhook: a resposta é concluída pela rota Vitória ou Sem Vitória."
@@ -687,7 +687,7 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
       "typeVersion": 1,
       "position": [
-        13184,
+        5232,
         2208
       ]
     },
@@ -720,8 +720,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        4448,
-        2016
+        3616,
+        2616
       ]
     },
     {
@@ -731,60 +731,47 @@
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        13200,
+        5248,
         3440
       ]
     },
     {
       "parameters": {
-        "jsCode": "function prepareAspectActions(context) {\n  const keys = ['victory', 'obstacle', 'story', 'gratitude', 'joke', 'personalLife'];\n  if (keys.some(key => typeof context?.aspects?.flags?.[key] !== 'boolean')) throw new Error('Aspectos inválidos para roteamento.');\n  const active = keys.filter(key => context.aspects.flags[key]);\n  return (active.length ? active : ['none']).map(aspect => ({ ...context, flags: context.aspects.flags, aspect }));\n}\nreturn prepareAspectActions($input.first().json).map(json=>({json}));"
+        "jsCode": "function prepareAspectActions(context) {\n  const keys = ['victory', 'obstacle', 'story', 'gratitude', 'joke', 'personalLife'];\n  if (keys.some(key => typeof context?.aspects?.flags?.[key] !== 'boolean')) throw new Error('Aspectos inválidos para roteamento.');\n  const active = keys.filter(key => context.aspects.flags[key]);\n  return (active.length ? active : ['none']).map(aspect => ({ ...context, flags: context.aspects.flags, aspect }));\n}\nreturn prepareAspectActions($input.first().json).map(json=>({json,pairedItem:{item:0}}));"
       },
       "id": "ba95fc07-56f7-47b3-9789-fcc8537fdeac",
       "name": "Preparar ações dos aspectos true",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        12368,
-        2000
+        4624,
+        2600
       ]
     },
     {
       "parameters": {
-        "options": {}
-      },
-      "id": "bfb2b6ec-6d33-4f9c-8466-03047cf1009e",
-      "name": "Executar cada aspecto true",
-      "type": "n8n-nodes-base.splitInBatches",
-      "typeVersion": 3,
-      "position": [
-        12608,
-        2000
-      ]
-    },
-    {
-      "parameters": {
-        "jsCode": "const context=$('Executar cada aspecto true').item.json;\nconst result=$input.first().json;\nreturn [{json:{...context,...result,aspect:context.aspect,errors:{...context.errors,...result.errors}}}];"
+        "jsCode": "return $input.all().map((item, index) => {\n  const context = $('Preparar ações dos aspectos true').itemMatching(index).json;\n  const result = item.json;\n  return {json:{...context,...result,aspect:context.aspect,errors:{...context.errors,...result.errors}},pairedItem:{item:index}};\n});"
       },
       "id": "8c0130f5-b3d4-4718-af86-329c12a28bf4",
       "name": "Registrar resultado da ação",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        13888,
+        5952,
         2656
       ]
     },
     {
       "parameters": {
-        "jsCode": "function combineFinalization(items) {\n  if (!items.length || !items[0].aspects) throw new Error('Finalização sem resultados de aspectos.');\n  const first = items[0];\n  const errors = Object.assign({}, ...items.map(item => item.errors ?? {}));\n  const victory = items.find(item => item.aspect === 'victory');\n  return { ok: true, contentDecisions:first.contentDecisions??[], generatedContents:first.generatedContents??[], generatedContentErrors:first.generatedContentErrors??[], aspects: first.aspects, diary: first.diary ?? null,\n    achievements: victory?.achievements ?? [], errors,\n    activeRoutes: Object.keys(first.aspects.flags).filter(key => first.aspects.flags[key]),\n    actionResults: items.filter(item => item.aspect !== 'none').map(item => ({ aspect: item.aspect, status: item.errors?.brag && item.aspect === 'victory' ? 'failed' : item.aspect === 'victory' ? 'completed' : 'no_behavior' })) };\n}\nreturn [{json:combineFinalization($input.all().map(item=>item.json))}];"
+        "jsCode": "function combineFinalization(items) {\n  if (!items.length || !items[0].aspects) throw new Error('Finalização sem resultados de aspectos.');\n  const first = items[0];\n  const errors = Object.assign({}, ...items.map(item => item.errors ?? {}));\n  const victory = items.find(item => item.aspect === 'victory');\n  return { ok: true, contentDecisions:first.contentDecisions??[], generatedContents:first.generatedContents??[], generatedContentErrors:first.generatedContentErrors??[], aspects: first.aspects, diary: first.diary ?? null,\n    achievements: victory?.achievements ?? [], errors,\n    activeRoutes: Object.keys(first.aspects.flags).filter(key => first.aspects.flags[key]),\n    actionResults: items.filter(item => item.aspect !== 'none').map(item => ({ aspect: item.aspect, status: item.errors?.brag && item.aspect === 'victory' ? 'failed' : item.aspect === 'victory' ? 'completed' : 'no_behavior' })) };\n}\n// Cada caminho registra seu resultado. Só o último a concluir emite o retorno.\nconst context = $('Validar título e resumo').first().json;\nconst active = Object.keys(context.aspects.flags).filter(key => context.aspects.flags[key]);\nconst expected = active.length ? active : ['none'];\nconst completed = new Map();\nlet lastAspect;\nfor (let run = 0; run < expected.length; run++) {\n  let items;\n  try { items = $('Registrar resultado da ação').all(0, run); } catch { break; }\n  for (const item of items) {\n    if (expected.includes(item.json.aspect)) {\n      completed.set(item.json.aspect, item.json);\n      lastAspect = item.json.aspect;\n    }\n  }\n}\nif (expected.some(aspect => !completed.has(aspect))) return [];\n// Evita resposta duplicada mesmo se o n8n enfileirar a montagem dos ramos juntos.\nif (!$input.all().some(item => item.json.aspect === lastAspect)) return [];\nreturn [{json:combineFinalization(expected.map(aspect => completed.get(aspect)))}];"
       },
       "id": "3977c52f-10b0-44dd-83d4-deff448fb831",
       "name": "Montar Diário e Conquistas completos",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        12848,
-        1664
+        6208,
+        2656
       ]
     },
     {
@@ -800,7 +787,21 @@
       "typeVersion": 1.5,
       "position": [
         2480,
-        2256
+        3520
+      ]
+    },
+    {
+      "name": "Aguardar as seis avaliações Jev",
+      "id": "Aguardar as seis avaliações Jev",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "parameters": {
+        "mode": "append",
+        "numberInputs": 6
+      },
+      "position": [
+        3104,
+        2616
       ]
     }
   ],
@@ -832,6 +833,31 @@
         [
           {
             "node": "Jev — Vitória",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Jev — Obstáculo",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Jev — História",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Jev — Gratidão",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Jev — Piada",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Jev — Vida pessoal",
             "type": "main",
             "index": 0
           }
@@ -937,7 +963,7 @@
       "main": [
         [
           {
-            "node": "Jev — Obstáculo",
+            "node": "Aguardar as seis avaliações Jev",
             "type": "main",
             "index": 0
           }
@@ -948,9 +974,9 @@
       "main": [
         [
           {
-            "node": "Jev — História",
+            "node": "Aguardar as seis avaliações Jev",
             "type": "main",
-            "index": 0
+            "index": 1
           }
         ]
       ]
@@ -959,9 +985,9 @@
       "main": [
         [
           {
-            "node": "Jev — Gratidão",
+            "node": "Aguardar as seis avaliações Jev",
             "type": "main",
-            "index": 0
+            "index": 2
           }
         ]
       ]
@@ -970,9 +996,9 @@
       "main": [
         [
           {
-            "node": "Jev — Piada",
+            "node": "Aguardar as seis avaliações Jev",
             "type": "main",
-            "index": 0
+            "index": 3
           }
         ]
       ]
@@ -981,9 +1007,9 @@
       "main": [
         [
           {
-            "node": "Jev — Vida pessoal",
+            "node": "Aguardar as seis avaliações Jev",
             "type": "main",
-            "index": 0
+            "index": 4
           }
         ]
       ]
@@ -992,9 +1018,9 @@
       "main": [
         [
           {
-            "node": "Reunir aspectos e definir rotas",
+            "node": "Aguardar as seis avaliações Jev",
             "type": "main",
-            "index": 0
+            "index": 5
           }
         ]
       ]
@@ -1151,24 +1177,6 @@
       "main": [
         [
           {
-            "node": "Executar cada aspecto true",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Executar cada aspecto true": {
-      "main": [
-        [
-          {
-            "node": "Montar Diário e Conquistas completos",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
             "node": "Rotear aspectos true",
             "type": "main",
             "index": 0
@@ -1180,7 +1188,7 @@
       "main": [
         [
           {
-            "node": "Executar cada aspecto true",
+            "node": "Montar Diário e Conquistas completos",
             "type": "main",
             "index": 0
           }
@@ -1192,6 +1200,17 @@
         [
           {
             "node": "Retornar resultado ao computador",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aguardar as seis avaliações Jev": {
+      "main": [
+        [
+          {
+            "node": "Reunir aspectos e definir rotas",
             "type": "main",
             "index": 0
           }
