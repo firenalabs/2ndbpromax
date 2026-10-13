@@ -9,7 +9,7 @@ const exec=(code,input,lookup)=>new Function('$input','$',code)({all:()=>input,f
 
 test('Diário sem loop conserva agentes, modelos, schemas, Jevs e todos os caminhos',async()=>{
   const original=JSON.parse(await readFile(new URL('../workflows/modular-originais.json',import.meta.url)));
-  const w=(await buildModular()).diary;
+  const w=(await buildModular({bragSegments:false})).diary;
   assert.equal(w.nodes.some(n=>n.type==='n8n-nodes-base.splitInBatches'),false);
   for(const n of w.nodes.filter(n=>/\.agent$|lmChat|outputParser|httpRequest/.test(n.type))){
     const old=find(original.diary,n.name);assert.deepEqual(n.parameters,old.parameters);assert.equal(n.onError,old.onError);

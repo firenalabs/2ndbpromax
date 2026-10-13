@@ -64,13 +64,21 @@ export function validateDiaryOutput(value) {
   return { title: value.title.trim(), summary: value.summary.trim() };
 }
 
-export function validateBragOutput(value, fullText) {
+export function validateBragOutput(value, fullText, segmentation) {
   if (!Array.isArray(value?.achievements) || value.achievements.length > 20) throw new Error('O Escrivão Brag Document não retornou uma lista válida.');
   return value.achievements.map(item => {
     if (typeof item?.evento !== 'string' || !item.evento.trim() || item.evento.length > 150
       || typeof item.descricao !== 'string' || !item.descricao.trim() || item.descricao.length > 2000
       || !['entrega', 'vitória pessoal', 'aprendizado', 'reconhecimento', 'construção'].includes(item.categoria)
       || typeof item.integra !== 'string' || !item.integra.trim() || !fullText.includes(item.integra)) throw new Error('Conquista inválida ou trecho que não é literal do original.');
-    return { evento: item.evento.trim(), descricao: item.descricao.trim(), categoria: item.categoria, integra: item.integra };
+    const result={ evento: item.evento.trim(), descricao: item.descricao.trim(), categoria: item.categoria, integra: item.integra };
+    if(segmentation && (item.segmentoInicial!==undefined || item.segmentoFinal!==undefined)) {
+      const segments=segmentation.segments;
+      const first=segments.findIndex(s=>s.id===item.segmentoInicial),last=segments.findIndex(s=>s.id===item.segmentoFinal);
+      if(first<0 || last<first || item.start!==segments[first].start || item.end!==segments[last].end
+        || item.offsetUnit!=='utf16' || fullText.slice(item.start,item.end)!==item.integra)throw new Error('Referências de segmentos da conquista divergem do original.');
+      Object.assign(result,{segmentoInicial:item.segmentoInicial,segmentoFinal:item.segmentoFinal,start:item.start,end:item.end,offsetUnit:'utf16'});
+    }
+    return result;
   });
 }

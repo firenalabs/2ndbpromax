@@ -2,7 +2,8 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import { terminalLog } from './terminal.mjs';
 import { join } from 'node:path';
 import { readJson, writeJson } from './arquivos.mjs';
-import { validateDigest } from './contratos.mjs';
+import { validateDigest, segmentText } from './contratos.mjs';
+import { validateSegmentSource } from './brag-segmentos.mjs';
 import { validateAspects, validateDiaryOutput, validateBragOutput } from './contratos-diario.mjs';
 
 export function localDay(date, timezone = 'America/Sao_Paulo') {
@@ -36,10 +37,30 @@ export class DiaryRecords {
     if (this.state.records.some(r => r.sourceId === digest.sourceId)) return;
     const record = { id: `${digest.sourceId}-diary-input-v1`, sourceId: digest.sourceId, digestId: digest.id,
       createdAt: digest.createdAt, day: localDay(digest.createdAt, this.config.timezone), inputName,
-      text: digest.originalText, keytopics: digest.keytopics, status: 'pending', diary: null, aspects: null, achievements: null };
+      text: digest.originalText, keytopics: digest.keytopics, segmentedText:digest.segmentedText, segmentation:digest.segmentation,
+      segmentationSource:'keytopics', status: 'pending', diary: null, aspects: null, achievements: null };
     this.state.records.push(record);
     await this.writeRecord(record);
     await this.save();
+  }
+  async prepareSegments(record) {
+    if(record.segmentation===undefined && record.segmentedText===undefined) {
+      const state=await readJson(join(this.root,'sistema','estado.json'),{jobs:[]});
+      const job=state.jobs.find(j=>j.id===record.sourceId);
+      const path=job?.baseName ? join(this.root,'KeyTopics Processados',job.baseName+'.json') : null;
+      const digest=path ? await readJson(path,null) : null;
+      if(digest) {
+        validateDigest(digest,{id:record.sourceId,digestId:record.digestId??digest.id,text:record.text});
+        record.segmentedText=digest.segmentedText;record.segmentation=digest.segmentation;record.digestId=digest.id;
+        record.segmentationSource='keytopics';
+      } else {
+        record.segmentation=segmentText(record.text);
+        record.segmentedText=record.segmentation.segments.map(s=>'['+s.id+'] '+record.text.slice(s.start,s.end).trim()).join('\n');
+        record.segmentationSource='deterministic-fallback';
+        this.log(`Diário: mapa salvo indisponível para ${record.inputName}; segmentação reconstruída deterministicamente, sem IA.`, 'warning');
+      }
+    }
+    validateSegmentSource(record.text,record.segmentedText,record.segmentation);
   }
   async finalizePending({ retry = false } = {}) {
     for (const record of this.state.records) {
@@ -47,14 +68,16 @@ export class DiaryRecords {
       if (record.status !== 'pending') continue;
       record.status = 'processing'; await this.save();
       try {
-        const payload = { operation: 'finalize', text: record.text, groupId: record.id, sourceIds: [record.sourceId], threshold: this.config.aspectThreshold };
+        await this.prepareSegments(record);
+        const payload = { operation: 'finalize', text: record.text, segmentedText:record.segmentedText, segmentation:record.segmentation,
+          sourceId:record.sourceId,digestId:record.digestId, groupId: record.id, sourceIds: [record.sourceId], threshold: this.config.aspectThreshold };
         const response = await this.request(this.config.diaryWebhook, { method: 'POST', headers: { 'content-type': 'application/json' },
           body: JSON.stringify(payload), signal: AbortSignal.timeout(this.config.diaryRequestTimeoutMs ?? 600000) });
         const result = await response.json();
         if (!response.ok || result.ok === false) throw new Error(result.error?.message ?? `Diário respondeu HTTP ${response.status}.`);
         record.aspects = validateAspects(result.aspects, this.config.aspectThreshold);
         if (result.diary && !record.diary) record.diary = validateDiaryOutput(result.diary);
-        if (!result.errors?.brag) record.achievements = record.aspects.flags.victory ? validateBragOutput(result, record.text) : [];
+        if (!result.errors?.brag) record.achievements = record.aspects.flags.victory ? validateBragOutput(result, record.text,record.segmentation) : [];
         record.errors = result.errors ?? {};
         if (!record.diary) record.errors.diary ??= 'Escrivão não retornou um registro válido.';
         record.status = Object.keys(record.errors).length ? 'partial' : 'completed';
@@ -76,7 +99,8 @@ export class DiaryRecords {
     for (const [i, achievement] of (record.achievements ?? []).entries()) {
       const name = `${base}-achievement-${i + 1}`;
       await writeJson(join(this.root, 'Conquistas', name + '.json'), { ...achievement, id: name, sourceIds: [record.sourceId], recordId: record.id });
-      await writeFile(join(this.root, 'Conquistas', name + '.md'), `# ${achievement.evento}\n\n${achievement.descricao}\n\nOrigem: ${record.sourceId}\n\n## Trecho literal\n\n${achievement.integra}\n`, 'utf8');
+      const reference=achievement.segmentoInicial ? `\nSegmentos: ${achievement.segmentoInicial} até ${achievement.segmentoFinal} (inclusive)\nPosições UTF-16: ${achievement.start} até ${achievement.end} (fim exclusivo)\n` : '';
+      await writeFile(join(this.root, 'Conquistas', name + '.md'), `# ${achievement.evento}\n\n${achievement.descricao}\n\nOrigem: ${record.sourceId}\n${reference}\n## Trecho literal\n\n${achievement.integra}\n`, 'utf8');
     }
     const records = this.state.records.filter(r => r.day === record.day);
     await writeFile(join(this.root, 'Diário', 'Dias', record.day + '.md'), '# Registros de ' + record.day + '\n\n' + records.map(r =>

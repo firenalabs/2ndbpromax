@@ -54,7 +54,7 @@ test('posts independentes se separam e sequências ficam num item por rede',()=>
  assert.equal(r.posts.length,9);assert.equal(r.posts.filter(p=>p.contentType==='sequencia').length,3);assert.equal(r.posts.find(p=>p.contentType==='sequencia'&&p.platform==='Twitter').parts.length,2);
 });
 test('workflows extraídos preservam Agents/modelos e eliminam dependência editorial do Atlas e Diário',async()=>{
- const original=JSON.parse(await readFile(new URL('../workflows/modular-originais.json',import.meta.url)));const all=await buildModular();
+ const original=JSON.parse(await readFile(new URL('../workflows/modular-originais.json',import.meta.url)));const all=await buildModular({bragSegments:false});
  for(const key of ['prep','atlas','diary'])for(const n of all[key].nodes.filter(n=>/\.agent$|lmChat/.test(n.type))){const old=original[key].nodes.find(o=>o.name===n.name);assert.deepEqual(n.parameters,old.parameters);}
  for(const n of all.generation.nodes.filter(n=>n.type.endsWith('.agent'))){const old=original.test.nodes.find(o=>o.name+' — chamada'===n.name);assert.deepEqual(n.parameters,old.parameters);assert.equal(n.onError,old.onError);}
  assert.equal(all.generation.nodes.some(n=>n.name==='Jev — Tem conhecimento?'),false);assert.equal(all.atlas.nodes.some(n=>n.name.startsWith('Agent: Conteúdo')),false);
