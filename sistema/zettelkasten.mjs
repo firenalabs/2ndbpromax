@@ -32,7 +32,7 @@ export function validateZettelTree(categories, notes) {
   const byId = new Map();
   for (const n of notes) {
     if (!n || typeof n.id !== 'string' || !n.id || n.id === 'none' || ids.has(n.id) || typeof n.title !== 'string' || !n.title.trim()
-      || n.title.length > 150 || /[\r\n]/.test(n.title) || !roots.has(n.categoryId) || (n.parentNoteId !== null && typeof n.parentNoteId !== 'string')
+      || n.title.length > 170 || /[\r\n]/.test(n.title) || !roots.has(n.categoryId) || (n.parentNoteId !== null && typeof n.parentNoteId !== 'string')
       || typeof n.address !== 'string' || addresses.has(n.address)) throw new Error('Nota ou endereço inválido ou duplicado.');
     for (const field of ['noteFile','legacyNoteFile']) if (n[field] !== undefined && (typeof n[field] !== 'string' || /[\\/]/.test(n[field]) || n[field] === '.' || n[field] === '..')) throw new Error('Nome de arquivo de nota inválido.');
     ids.add(n.id); addresses.add(n.address); byId.set(n.id, n);

@@ -1,10 +1,10 @@
-# Versão 1.1.7
+# Versão 1.1.8
 
-- Atlas aceita títulos longos na resposta estruturada do Preparador de Notas. O Code normaliza espaços e abrevia entre palavras para respeitar o limite de 150 caracteres do armazenamento.
-- O título completo permanece em originalTitle no recorte do Atlas. Conteúdo original e regras de classificação permanecem iguais.
-- Prompts, modelos, chamadas e conexões dos agentes foram preservados. Apenas o schema do título e o Code Montar nota preparada mudam no workflow.
-- Codes-n8n.zip inclui os dois arquivos e instruções para aplicar a correção sem substituir o workflow completo.
+- Título do Atlas com alvo de 130 caracteres e faixa desejada de 110–150, sem mínimo obrigatório. Limite máximo aceito: 170 caracteres.
+- Não corta nem abrevia títulos. Acima de 170 registra pendência específica e preserva o retorno completo em originalTitle para revisão.
+- Validações da árvore do Atlas no programa e no workflow aceitam o mesmo limite de 170, inclusive em próximas execuções.
+- Acrescenta somente orientação de comprimento ao System Message do Preparador de Notas, preservando instruções existentes, modelos e demais configurações.
 
-O workflow Atlas local já está corrigido e publicado. Em produção, aplique manualmente Input Schema de Schema — Título da nota e o JavaScript de Montar nota preparada, depois publique. A opção 9 atualiza o programa; não altera workflows no servidor n8n.
+O Atlas local foi corrigido e publicado. Em produção, acrescente a instrução de comprimento ao Agent: Preparador de Notas e substitua os Codes Montar nota preparada e Validar pedido do Atlas. O Schema — Título da nota precisa estar sem maxLength (mesmo JSON da versão 1.1.7), para que o Code preserve e registre títulos acima do limite. Os quatro arquivos e instruções estão em Codes-n8n.zip.
 
-130 testes passaram, incluindo o título de 154 caracteres relatado, limites, Unicode e conservação dos agentes. Nenhuma chamada de IA foi repetida nos testes.
+Atualize também o programa com opção 9 e reinicie para aceitar títulos de até 170. A opção 9 não altera o servidor n8n. Testes incluem o título de produção com 154 caracteres, aceito integralmente, e os limites de 170 e 171, sem chamadas de IA.

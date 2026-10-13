@@ -10,6 +10,7 @@ import { EditorialGeneration } from '../geracao-editorial.mjs';
 import { normalizeEditorial } from '../outputs-editoriais.mjs';
 import { writeJson } from '../arquivos.mjs';
 import { migrateModularPipeline } from '../migracoes-configuracao.mjs';
+import { atlasTitleInstruction } from '../workflows/titulo-atlas.mjs';
 import { buildModular } from '../workflows/build-modular.mjs';
 const config={modularPipelineVersion:1,timezone:'America/Sao_Paulo',diaryWebhook:'http://example.invalid/diary',generationWebhook:'http://example.invalid/editorial',aspectThreshold:.8,continuityThreshold:.8};
 const reply=v=>({ok:true,json:async()=>v});
@@ -55,7 +56,7 @@ test('posts independentes se separam e sequências ficam num item por rede',()=>
 });
 test('workflows extraídos preservam Agents/modelos e eliminam dependência editorial do Atlas e Diário',async()=>{
  const original=JSON.parse(await readFile(new URL('../workflows/modular-originais.json',import.meta.url)));const all=await buildModular({bragSegments:false});
- for(const key of ['prep','atlas','diary'])for(const n of all[key].nodes.filter(n=>/\.agent$|lmChat/.test(n.type))){const old=original[key].nodes.find(o=>o.name===n.name);assert.deepEqual(n.parameters,old.parameters);}
+ for(const key of ['prep','atlas','diary'])for(const n of all[key].nodes.filter(n=>/\.agent$|lmChat/.test(n.type))){const old=original[key].nodes.find(o=>o.name===n.name);const expected=structuredClone(old.parameters);if(key==='atlas'&&n.name==='Agent: Preparador de Notas')expected.options.systemMessage+='\n\n'+atlasTitleInstruction;assert.deepEqual(n.parameters,expected);}
  for(const n of all.generation.nodes.filter(n=>n.type.endsWith('.agent'))){const old=original.test.nodes.find(o=>o.name+' — chamada'===n.name);assert.deepEqual(n.parameters,old.parameters);assert.equal(n.onError,old.onError);}
  assert.equal(all.generation.nodes.some(n=>n.name==='Jev — Tem conhecimento?'),false);assert.equal(all.atlas.nodes.some(n=>n.name.startsWith('Agent: Conteúdo')),false);
  const names=new Set(all.generation.nodes.map(n=>n.name));for(const c of Object.values(all.generation.connections))for(const e of Object.values(c).flat(2))assert.ok(names.has(e.node));
