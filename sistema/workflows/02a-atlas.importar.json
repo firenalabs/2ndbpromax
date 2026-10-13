@@ -230,7 +230,7 @@
     {
       "parameters": {
         "schemaType": "manual",
-        "inputSchema": "{\"type\":\"object\",\"additionalProperties\":false,\"required\":[\"title\"],\"properties\":{\"title\":{\"type\":\"string\",\"minLength\":1,\"maxLength\":150}}}"
+        "inputSchema": "{\"type\":\"object\",\"additionalProperties\":false,\"required\":[\"title\"],\"properties\":{\"title\":{\"type\":\"string\",\"minLength\":1}}}"
       },
       "id": "7f792519-480a-408b-b523-e26471c4097b",
       "name": "Schema — Título da nota",
@@ -243,7 +243,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const context=$('Validar decisão de conhecimento').item.json;\ntry {let output=$input.first().json.output;if(typeof output==='string')output=JSON.parse(output);\nif(typeof output?.title!=='string'||!output.title.trim()||output.title.length>150)throw new Error('Título de nota inválido.');\nreturn [{json:{...context,ok:true,block:{...context.block,title:output.title.trim().replace(/\\s+/g,' '),status:'prepared'}}}];}\ncatch(error){return [{json:{...context,ok:false,errorMessage:error.message}}];}"
+        "jsCode": "function prepareAtlasTitle(value) {\n  if (typeof value !== 'string' || !value.trim()) throw new Error('Título de nota ausente ou vazio.');\n  const normalized = value.trim().replace(/\\s+/g, ' ');\n  if (normalized.length <= 150) return { title: normalized };\n  // Array.from evita dividir um par de substitutos (por exemplo, um emoji).\n  let prefix = '';\n  for (const character of normalized) {\n    if (prefix.length + character.length > 149) break;\n    prefix += character;\n  }\n  const boundary = prefix.lastIndexOf(' ');\n  if (boundary > 0) prefix = prefix.slice(0, boundary);\n  return { title: prefix.trimEnd() + '…', originalTitle: value };\n}\nconst context=$('Validar decisão de conhecimento').item.json;\ntry {\n  let output=$input.first().json.output;\n  if(typeof output==='string')output=JSON.parse(output);\n  const title=prepareAtlasTitle(output?.title);\n  return [{json:{...context,ok:true,block:{...context.block,...title,status:'prepared'}}}];\n} catch(error) {\n  return [{json:{...context,ok:false,errorMessage:error.message}}];\n}"
       },
       "id": "02bed213-d50d-4732-a7c9-96eaec46199f",
       "name": "Montar nota preparada",

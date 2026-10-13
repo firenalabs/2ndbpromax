@@ -5,6 +5,7 @@ import { normalizeEditorial, validEditorialCheckpoint } from '../outputs-editori
 import { simplifyEditorial } from './simplificar-editorial.mjs';
 import { diaryWithoutLoop } from './diario-sem-loop.mjs';
 import { organizeAtlas } from './atlas-organizado.mjs';
+import { fixAtlasTitle } from './titulo-atlas.mjs';
 import { bragBySegments } from './brag-por-segmentos.mjs';
 import { fixImageJevBodies } from './jevs-imagens-validos.mjs';
 
@@ -154,7 +155,7 @@ return [{json:{ok:true,...normalized,cache,workflowId:$workflow.id,executionId:$
     }
   }
   const organizedDiary=diaryWithoutLoop(diary);
-  return { prep, atlas: atlasLayout ? organizeAtlas(atlas) : atlas, diary: bragSegments ? bragBySegments(organizedDiary) : organizedDiary, generation: fixImageJevBodies(simplify ? simplifyEditorial(test) : test) };
+  return { prep, atlas: fixAtlasTitle(atlasLayout ? organizeAtlas(atlas) : atlas), diary: bragSegments ? bragBySegments(organizedDiary) : organizedDiary, generation: fixImageJevBodies(simplify ? simplifyEditorial(test) : test) };
 }
 export async function writeModular() {
   const all = await buildModular();

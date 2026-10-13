@@ -19,6 +19,12 @@ export async function prepareUpdate(root) {
   const modular = await readFile(join(root,'sistema','workflows','03-editorial.importar.json'),'utf8').catch(e=>{if(e.code==='ENOENT')return null;throw e;});
   if (modular) {
     for (const prefix of ['01-digestao','02a-atlas','02b-diario-registros','03-editorial']) await copyFile(join(root,'sistema','workflows',prefix+'.importar.json'),join(n8n,prefix+'.importar.json'));
+    const atlas=JSON.parse(await readFile(join(n8n,'02a-atlas.importar.json'),'utf8'));
+    const titleCode=atlas.nodes.find(n=>n.name==='Montar nota preparada').parameters.jsCode;
+    const titleSchema=atlas.nodes.find(n=>n.name==='Schema — Título da nota').parameters.inputSchema;
+    await writeFile(join(n8n,'02a - Montar nota preparada.js'),titleCode+'\n');
+    await writeFile(join(n8n,'02a - Schema Título da nota.json'),JSON.stringify(JSON.parse(titleSchema),null,2)+'\n');
+    await writeFile(join(n8n,'02a - CORREÇÃO TÍTULO.txt'),'Para corrigir títulos longos sem substituir o workflow: no Schema — Título da nota, cole o JSON do schema no Input Schema. No Code Montar nota preparada, cole o JavaScript completo. Preserve conexões, agentes, modelos e publique. Títulos acima de 150 caracteres são abreviados entre palavras; originalTitle mantém o original no recorte salvo pelo Atlas. A opção 9 não atualiza o servidor n8n.\n');
     await writeFile(join(n8n,'LEIA-ME.txt'),'Cadeia modular: importe os quatro workflows JSON, configure as credenciais OpenRouter e publique. O 01 prepara KeyTopics e recortes; 02a organiza Atlas; 02b registra cada input; 03 gera conteúdos. Preserve cópias anteriores. Despublique versões antigas que usem os mesmos webhooks antes de publicar substitutos. Não importe o workflow de teste. A atualização do programa não atualiza automaticamente o servidor n8n.\n');
     await writeFile(join(base,'LEIA-ME.txt'),'Pare o programa. Mescle Copiar para o cliente na instalação, preservando configuração e dados. Atualize também os quatro workflows do servidor conforme Colar no n8n. Opção 1 prepara e registra; opção 2 gera recortes pendentes; opção 3 gera grupos dos registros de um dia.\n');
     await writeFile(join(base,'arquivos-do-programa.json'),JSON.stringify(files,null,2)+'\n');
