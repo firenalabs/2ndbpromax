@@ -1,12 +1,10 @@
-# Versão 1.1.4
+# Versão 1.1.5
 
-- Diário envia o texto segmentado e o mapa UTF-16 já preparados pelo workflow 01, junto do texto original.
-- Escrivão Brag Document retorna segmentoInicial e segmentoFinal por conquista. O código extrai integra literalmente do original, incluindo o segmento final, sem depender de cópia feita pelo modelo.
-- Conquistas guardam os IDs de segmentos e as posições de origem no JSON e no Markdown.
-- Registros antigos pendentes recuperam o mapa dos KeyTopics salvos antes da nova tentativa. Quando esse material antigo não existe, a segmentação é reconstruída deterministicamente, sem chamada de IA, com aviso no terminal.
-- IDs inexistentes, intervalos invertidos e mapas divergentes são rejeitados. O registro do Diário permanece conservado quando o Brag falha.
-- Preserva objetivo, modelo, demais instruções e configurações do Brag. Ajusta somente sua entrada e o formato de retorno, além do schema já existente.
+- Corrige invalid syntax nos três Jevs de avaliação de imagens do workflow 03. Os corpos passam a usar JSON.stringify em uma expressão com fechamentos separados.
+- Preserva integralmente modelo, texto avaliado, perguntas e critérios. Não modifica agentes de criação de conteúdo, roteamento ou layout.
+- Verifica os demais Jevs da cadeia operacional: Atlas, Diário, continuidade e decisões de formatos.
+- Arquivos de importação e gerador incluem a correção, evitando que uma nova importação restaure as expressões antigas.
 
-Use a opção 9 para atualizar e reabra o iniciador. A opção 1 retoma os registros pendentes; os registros concluídos não são regenerados. Configuração, histórico, textos e resultados são preservados.
+O workflow 03 local já foi corrigido e publicado. Use a opção 3 com o mesmo dia para retomar os pedidos parciais; o programa reutiliza os checkpoints válidos já salvos. Nenhuma execução de produção foi repetida durante a correção.
 
-O workflow 02b no n8n local já foi atualizado e publicado. Em outros servidores, aplique também o arquivo 02b-diario-registros.importar.json do pacote Codes-n8n.zip, preservando backup e credenciais. A opção 9 atualiza o programa, mas não altera workflows de outro servidor. Durante a atualização, clientes antigos ainda funcionam com o novo workflow usando a mesma segmentação determinística.
+Use a opção 9 para manter o programa na versão atual. Em outros servidores n8n, aplique a correção do arquivo 03-editorial.importar.json no pacote Codes-n8n.zip, preservando backup e credenciais. A opção 9 não altera workflows de outro servidor.

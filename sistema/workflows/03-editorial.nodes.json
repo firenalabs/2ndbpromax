@@ -674,7 +674,7 @@
       },
       "sendBody": true,
       "specifyBody": "json",
-      "jsonBody": "={{ { \"model\":\"typesafe/jev-1.13\", state: {text: $json.part ?? $json.baseText ?? $json.text ?? $json.texto}, questions: {\"imagem\": {\"type\":\"noul\",\"instructions\":\"Uma imagem encontrada em pesquisa pode ilustrar este post sem inventar evidências?\",\"criteria\":{\"true\":\"Há assunto visual identificável e a imagem pode esclarecer o conteúdo como ilustração.\",\"false\":\"Uma imagem genérica não acrescentaria clareza ou poderia simular prova, resultado ou pessoa não identificada.\"}}} } }}",
+      "jsonBody": "={{ JSON.stringify({\n  model: \"typesafe/jev-1.13\",\n  state: { text: ($json.part ?? $json.baseText ?? $json.text ?? $json.texto) },\n  questions: {\n  \"imagem\": {\n    \"type\": \"noul\",\n    \"instructions\": \"Uma imagem encontrada em pesquisa pode ilustrar este post sem inventar evidências?\",\n    \"criteria\": {\n      \"true\": \"Há assunto visual identificável e a imagem pode esclarecer o conteúdo como ilustração.\",\n      \"false\": \"Uma imagem genérica não acrescentaria clareza ou poderia simular prova, resultado ou pessoa não identificada.\"\n    }\n  }\n}\n}) }}",
       "options": {
         "response": {
           "response": {
@@ -1320,7 +1320,7 @@
       },
       "sendBody": true,
       "specifyBody": "json",
-      "jsonBody": "={{ { \"model\":\"typesafe/jev-1.13\", state: {text: $json.part ?? $json.baseText ?? $json.text ?? $json.texto}, questions: {\"imagem\": {\"type\":\"noul\",\"instructions\":\"Uma imagem encontrada em pesquisa pode ilustrar este bloco do conteúdo sem inventar evidências?\",\"criteria\":{\"true\":\"O bloco menciona um objeto, lugar, processo ou conceito visual identificável; a imagem pode ser ilustrativa.\",\"false\":\"Uma imagem genérica não acrescentaria clareza ou poderia simular prova, resultado ou pessoa não identificada.\"}}} } }}",
+      "jsonBody": "={{ JSON.stringify({\n  model: \"typesafe/jev-1.13\",\n  state: { text: ($json.part ?? $json.baseText ?? $json.text ?? $json.texto) },\n  questions: {\n  \"imagem\": {\n    \"type\": \"noul\",\n    \"instructions\": \"Uma imagem encontrada em pesquisa pode ilustrar este bloco do conteúdo sem inventar evidências?\",\n    \"criteria\": {\n      \"true\": \"O bloco menciona um objeto, lugar, processo ou conceito visual identificável; a imagem pode ser ilustrativa.\",\n      \"false\": \"Uma imagem genérica não acrescentaria clareza ou poderia simular prova, resultado ou pessoa não identificada.\"\n    }\n  }\n}\n}) }}",
       "options": {
         "response": {
           "response": {
@@ -1543,7 +1543,7 @@
       },
       "sendBody": true,
       "specifyBody": "json",
-      "jsonBody": "={{ { \"model\":\"typesafe/jev-1.13\", state: {text: $json.part ?? $json.baseText ?? $json.text ?? $json.texto}, questions: {\"imagem\": {\"type\":\"noul\",\"instructions\":\"Uma imagem encontrada em pesquisa pode ilustrar este post sem inventar evidências?\",\"criteria\":{\"true\":\"Há assunto visual identificável e a imagem pode esclarecer o conteúdo como ilustração.\",\"false\":\"Uma imagem genérica não acrescentaria clareza ou poderia simular prova, resultado ou pessoa não identificada.\"}}} } }}",
+      "jsonBody": "={{ JSON.stringify({\n  model: \"typesafe/jev-1.13\",\n  state: { text: ($json.part ?? $json.baseText ?? $json.text ?? $json.texto) },\n  questions: {\n  \"imagem\": {\n    \"type\": \"noul\",\n    \"instructions\": \"Uma imagem encontrada em pesquisa pode ilustrar este post sem inventar evidências?\",\n    \"criteria\": {\n      \"true\": \"Há assunto visual identificável e a imagem pode esclarecer o conteúdo como ilustração.\",\n      \"false\": \"Uma imagem genérica não acrescentaria clareza ou poderia simular prova, resultado ou pessoa não identificada.\"\n    }\n  }\n}\n}) }}",
       "options": {
         "response": {
           "response": {
