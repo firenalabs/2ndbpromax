@@ -7,7 +7,7 @@ function fixture(){
  const body={sourceId,digestId:sourceId+'-digest-v1',createdAt:'2026-10-05T00:00:00Z',text:'Introdução ao podcast. Uma primeira ideia. Outra explicação.'};
  return new Function('$input',specs[1].parameters.jsCode)({first:()=>({json:{body}})})[0].json;
 }
-function runValidator(source,keytopics,index=5){
+function runValidator(source,keytopics,index=specs.findIndex(n=>n.name==='Validar e montar digestão')){
  return new Function('$input','$',specs[index].parameters.jsCode)({first:()=>({json:{output:{keytopics}}})},()=>({first:()=>({json:source})}))[0].json;
 }
 const topic=id=>({id,title:'Ideia',bulletpoints:['Uma ideia do texto.']});

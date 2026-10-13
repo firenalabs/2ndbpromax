@@ -42,3 +42,11 @@ dist/
 .env
 .env.*
 node_modules/
+
+KeyTopics Processados/
+Recortes por Assunto/
+Geração de Conteúdos/
+Diário/Registros/
+Diário/Dias/
+sistema/diario-registros.json
+sistema/geracoes.json

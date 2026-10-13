@@ -18,7 +18,7 @@ export function configureN8n(config, address) {
   const base = url.href.replace(/\/+$/, '');
   const { contentWebhook: retiredWebhook, ...currentConfig } = config;
   const result = { ...currentConfig, n8nBaseUrl: base };
-  for (const key of ['digestWebhook', 'atlasWebhook', 'diaryWebhook']) {
+  for (const key of ['digestWebhook', 'atlasWebhook', 'diaryWebhook', ...(config.generationWebhook ? ['generationWebhook'] : [])]) {
     const endpoint = new URL(config[key]).pathname.match(/\/webhook\/(.+)$/)?.[1];
     if (!endpoint) throw new Error(`O caminho do webhook ${key} não foi encontrado na configuração.`);
     result[key] = `${base}/webhook/${endpoint}`;
@@ -52,7 +52,7 @@ export async function resetFiles(root) {
   }
   const system = await exists(join(root, 'sistema'));
   if (system && (!system.isDirectory() || system.isSymbolicLink())) throw new Error('A pasta sistema deve ser uma pasta local para realizar a limpeza.');
-  for (const name of ['estado.json', 'estado.json.tmp', 'diario.json', 'diario.json.tmp']) {
+  for (const name of ['estado.json', 'estado.json.tmp', 'diario.json', 'diario.json.tmp', 'diario-registros.json', 'diario-registros.json.tmp', 'geracoes.json', 'geracoes.json.tmp']) {
     const path = join(root, 'sistema', name);
     const stat = await exists(path);
     if (stat) {
@@ -69,8 +69,8 @@ export async function configureInteractive(root, config, ask, log = console.log)
   if (!answer.trim()) { log('Configuração mantida.'); return; }
   const updated = configureN8n(config, answer);
   await writeJson(join(root, 'sistema', 'configuracao.json'), updated);
-  log(`\nEndereço salvo: ${updated.n8nBaseUrl}\nOs três fluxos usarão esse endereço na próxima execução.`);
-  log('Nesse n8n, os três workflows precisam estar publicados, com os mesmos caminhos de webhook e credenciais OpenRouter configuradas.');
+  log(`\nEndereço salvo: ${updated.n8nBaseUrl}\nOs fluxos usarão esse endereço na próxima execução.`);
+  log('Nesse n8n, os workflows precisam estar publicados, com os mesmos caminhos de webhook e credenciais OpenRouter configuradas.');
 }
 
 export async function resetInteractive(root, ask, log = console.log) {

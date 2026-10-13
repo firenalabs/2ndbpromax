@@ -32,7 +32,7 @@ test('Code e validador gerados incluem introdução e rejeitam SEG inventado sem
   const body = { sourceId: '00000000-0000-4000-8000-000000000001', digestId: '00000000-0000-4000-8000-000000000001-digest-v1', createdAt: '2026-10-06T00:00:00Z', text: 'Introdução. Uma ideia. Outra ideia.' };
   const source = new Function('$input', specs[1].parameters.jsCode)({ first: () => ({ json: { body } }) })[0].json;
   const parse = text => new Function('$input', keytopicsMarkdownCode)({ first: () => ({ json: { output: text } }) })[0].json;
-  const validate = value => new Function('$input', '$', specs[5].parameters.jsCode)({ first: () => ({ json: value }) }, () => ({ first: () => ({ json: source }) }))[0].json;
+  const validate = value => new Function('$input', '$', specs.find(n=>n.name==='Validar e montar digestão').parameters.jsCode)({ first: () => ({ json: value }) }, () => ({ first: () => ({ json: source }) }))[0].json;
   const digest = validate(parse('## [SEG_00002] Ideia\n- Ponto com "aspas".\n## [SEG_00003] Outra\n- Outro ponto.'));
   assert.equal(digest.ok, true);
   assert.equal(buildBlocks(digest).map(b => b.text).join(''), body.text);

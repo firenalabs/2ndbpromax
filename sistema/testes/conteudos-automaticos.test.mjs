@@ -20,16 +20,10 @@ test('salvamento separa origens, é idempotente e conserva o corpo',async t=>{
  const files=await readdir(join(root,'Conteúdos Gerados'));assert.equal(files.length,4);
  for(const file of files.filter(f=>f.endsWith('.md')))assert.equal(await readFile(join(root,'Conteúdos Gerados',file),'utf8'),'# Título\nTexto completo.\n');
 });
-test('faixas cobrem os limites sem sobreposição e os merges aguardam ambas as ramificações',async()=>{
- for(const [prefix,origin,gate]of [['02a-atlas','atlas','Conhecimento aceito?'],['02b-diario','diario','Respostas Jev válidas?']]){
- const w=JSON.parse(await readFile(new URL(`../workflows/${prefix}.importar.json`,import.meta.url),'utf8'));
- const label=origin==='atlas'?'Atlas':'Diário',router=w.nodes.find(n=>n.name===`Rotear conteúdo por palavras — ${label}`);
- for(const count of [0,150,151,600,601,1499,1500,10000]){
- const matches=router.parameters.rules.values.filter(r=>r.conditions.conditions.every(c=>c.operator.operation==='gte'?count>=c.rightValue:count<=c.rightValue));assert.equal(matches.length,1);
- }
- assert.equal(w.connections[gate].main[0].length,2);
- assert.equal(w.nodes.filter(n=>n.name.startsWith(`Agent: Conteúdo ${label}`)).length,4);
- assert.equal(w.nodes.find(n=>n.name===`Reunir fluxo e conteúdo — ${label}`).parameters.numberInputs,2);
- assert.deepEqual(extendContentWorkflow(w,origin),w);
- }
+test('Atlas modular mantém conhecimento e posicionamento sem geração editorial',async()=>{
+ const w=JSON.parse(await readFile(new URL('../workflows/02a-atlas.importar.json',import.meta.url),'utf8'));
+ assert.ok(w.nodes.some(n=>n.name==='Jev — Tem conhecimento?'));
+ assert.ok(w.nodes.some(n=>n.name==='Agent: Preparador de Notas'));
+ assert.equal(w.nodes.some(n=>n.name.startsWith('Agent: Conteúdo')),false);
+ assert.deepEqual(w.connections['Conhecimento aceito?'].main[0].map(e=>e.node),['Agent: Preparador de Notas']);
 });

@@ -16,6 +16,14 @@ export async function prepareUpdate(root) {
   for (const path of retiredManualContentPaths) await unlink(join(client, path)).catch(error => { if (error.code !== 'ENOENT') throw error; });
   for (const name of ['03-conteudos.importar.json', '03-conteudos.sdk.js']) await unlink(join(n8n, name)).catch(error => { if (error.code !== 'ENOENT') throw error; });
   for (const name of files) await copyFile(join(root, name), join(client, name));
+  const modular = await readFile(join(root,'sistema','workflows','03-editorial.importar.json'),'utf8').catch(e=>{if(e.code==='ENOENT')return null;throw e;});
+  if (modular) {
+    for (const prefix of ['01-digestao','02a-atlas','02b-diario-registros','03-editorial']) await copyFile(join(root,'sistema','workflows',prefix+'.importar.json'),join(n8n,prefix+'.importar.json'));
+    await writeFile(join(n8n,'LEIA-ME.txt'),'Cadeia modular: importe os quatro workflows JSON, configure as credenciais OpenRouter e publique. O 01 prepara KeyTopics e recortes; 02a organiza Atlas; 02b registra cada input; 03 gera conteúdos. Preserve cópias anteriores. Despublique versões antigas que usem os mesmos webhooks antes de publicar substitutos. Não importe o workflow de teste. A atualização do programa não atualiza automaticamente o servidor n8n.\n');
+    await writeFile(join(base,'LEIA-ME.txt'),'Pare o programa. Mescle Copiar para o cliente na instalação, preservando configuração e dados. Atualize também os quatro workflows do servidor conforme Colar no n8n. Opção 1 prepara e registra; opção 2 gera recortes pendentes; opção 3 gera grupos dos registros de um dia.\n');
+    await writeFile(join(base,'arquivos-do-programa.json'),JSON.stringify(files,null,2)+'\n');
+    return {base,files};
+  }
   const codes = [
     ['01-digestao.nodes.json', 'Validar entrada e adicionar SEGs', '01 - Validar entrada e adicionar SEGs.js'],
     ['01-digestao.nodes.json', 'Estruturar KeyTopics em JavaScript', '01 - Estruturar KeyTopics em JavaScript.js'],
@@ -42,48 +50,8 @@ export async function prepareUpdate(root) {
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
-  await import('./gerar-workflow.mjs');
-  await import('./gerar-workflow-atlas.mjs');
-  await import('./gerar-workflow-diario.mjs');
-  // Keep full imports and standalone Codes in sync, without replacing custom prompts/models.
-  for (const prefix of ['01-digestao', '02a-atlas']) {
-    const directory = join(root, 'sistema', 'workflows');
-    const specs = JSON.parse(await readFile(join(directory, prefix + '.nodes.json'), 'utf8'));
-    const path = join(directory, prefix + '.importar.json');
-    const workflow = JSON.parse(await readFile(path, 'utf8'));
-    if (prefix === '01-digestao') {
-      const removed = new Set(['Schema — KeyTopics', 'Agent: Estruturar KeyTopics']);
-      workflow.nodes = workflow.nodes.filter(n => !removed.has(n.name));
-      for (const name of removed) delete workflow.connections[name];
-      for (const channels of Object.values(workflow.connections)) for (const batches of Object.values(channels)) {
-        for (let i = 0; i < batches.length; i++) batches[i] = batches[i].filter(edge => !removed.has(edge.node));
-      }
-      const formatter = specs.find(n => n.name === 'Estruturar KeyTopics em JavaScript');
-      if (!workflow.nodes.some(n => n.name === formatter.name)) workflow.nodes.push({ ...formatter, id: 'keytopics-markdown-code', position: [1100, 300] });
-      const agent = workflow.nodes.find(n => n.name === 'Agent: KeyTopics');
-      agent.parameters.hasOutputParser = false;
-      const { keytopicsMarkdownInstructions } = await import('./keytopics-markdown.mjs');
-      agent.parameters.options.systemMessage = agent.parameters.options.systemMessage.split('\n').filter(line => !line.startsWith('Retorne exclusivamente o JSON exigido pelo parser:')).join('\n');
-      if (!agent.parameters.options.systemMessage.includes(keytopicsMarkdownInstructions)) agent.parameters.options.systemMessage += '\n\n' + keytopicsMarkdownInstructions;
-      workflow.connections['Agent: KeyTopics'] = { main: [[{ node: formatter.name, type: 'main', index: 0 }]] };
-      workflow.connections[formatter.name] = { main: [[{ node: 'Validar e montar digestão', type: 'main', index: 0 }]] };
-    }
-    for (const node of workflow.nodes) {
-      const code = specs.find(spec => spec.name === node.name)?.parameters.jsCode;
-      if (code) node.parameters.jsCode = code;
-    }
-    await writeFile(path, JSON.stringify(workflow, null, 2) + '\n');
-  }
-  const codes = [ ['01-digestao', 'Validar entrada e adicionar SEGs', '01-validar-entrada-segs.js'], ['01-digestao', 'Estruturar KeyTopics em JavaScript', '01-estruturar-keytopics.js'], ['01-digestao', 'Validar e montar digestão', '01-validar-digestao.js'], ['02a-atlas', 'Validar pedido do Atlas', '02a-compatibilidade-segs-1.js'], ['02a-atlas', 'Cortar texto deterministicamente', '02a-compatibilidade-segs-2.js'] ];
-  for (const [prefix, name, output] of codes) {
-    const directory = join(root, 'sistema', 'workflows');
-    const specs = JSON.parse(await readFile(join(directory, prefix + '.nodes.json'), 'utf8'));
-    await writeFile(join(directory, output), specs.find(n => n.name === name).parameters.jsCode + '\n');
-  }
-  const { extendLocalWorkflows } = await import('./estender-workflows-conteudos.mjs');
-  await extendLocalWorkflows(root);
-  const result = await prepareUpdate(root);
-  for (const prefix of ['02a-atlas','02b-diario']) await copyFile(join(root,'sistema','workflows',prefix+'.importar.json'),join(result.base,'Colar no n8n',prefix+'.importar.json'));
-  await writeFile(join(result.base,'Colar no n8n','CONTEUDOS-AUTOMATICOS.txt'),'02a e 02b agora possuem ramificações de conteúdo automático. Os JSONs .importar.json incluem o fluxo completo. Para preservar customizações de produção, copie apenas os nodes Contar palavras, Rotear conteúdo por palavras, quatro Agents e seus modelos, Estruturar conteúdo gerado e Reunir fluxo e conteúdo. Conecte a nova ramificação à saída true de Conhecimento aceito? (02a) ou Respostas Jev válidas? (02b). O Merge recebe o caminho original em input 1 e conteúdo em input 2, e continua no caminho original. Atualize também os Codes de conclusão conforme os JSONs. Publique. O modelo/credential de cada novo node deve ser configurado no n8n de produção. Atualize cada computador com a opção 9.\n');
-  console.log('\nAtualização pronta em: ' + result.base + '\nCopie a pasta "Copiar para o cliente" para enviar ao sócio. Os Codes ficam em "Colar no n8n".');
+  const {writeModular}=await import('./workflows/build-modular.mjs');
+  await writeModular();
+  const result=await prepareUpdate(root);
+  console.log('Atualização modular pronta em: '+result.base);
 }

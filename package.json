@@ -16,7 +16,9 @@
     "gerar-workflow-diario": "node sistema/gerar-workflow-diario.mjs",
     "preparar-atualizacao": "node sistema/preparar-atualizacao.mjs",
     "atualizar": "node sistema/iniciar.mjs --atualizar",
-    "gerar-release": "node sistema/gerar-release.mjs"
+    "gerar-release": "node sistema/gerar-release.mjs",
+    "gerar-recortes": "node sistema/iniciar.mjs --gerar-recortes",
+    "gerar-diario": "node sistema/iniciar.mjs --gerar-diario"
   },
-  "version": "1.0.10"
+  "version": "1.1.0"
 }

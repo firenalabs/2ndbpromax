@@ -1,82 +1,45 @@
-# 2ndBrainProMax — segundo cérebro local
+# Segundo cérebro — sistema local
 
-Coloque textos `.txt` em **Entrada**. O programa preserva os originais, identifica ideias, organiza o **Atlas de Conhecimento** e reúne textos consecutivos para gerar **Diário** e **Conquistas**. **Conteúdos Gerados** podem ser produzidos automaticamente pelo Atlas e pelo Diário.
+Coloque arquivos `.txt` em `Entrada` e execute `./iniciar.sh` (Linux/macOS) ou `iniciar.bat` (Windows). Requer Node.js 22 ou superior e os quatro workflows publicados no n8n, com credenciais OpenRouter configuradas.
 
-## Instalar
+1. **Iniciar:** tenta pendências uma vez, recebe textos existentes e aguarda novos. Prepara KeyTopics e recortes, organiza o Atlas e registra cada input no Diário imediatamente. Não gera posts automaticamente.
+2. **Gerar conteúdos dos recortes pendentes:** seleciona recortes de qualquer data cuja geração não terminou. Retoma pedidos parciais antes de criar um pedido com novos recortes.
+3. **Gerar conteúdos dos registros do Diário:** solicita um dia (`AAAA-MM-DD`, padrão hoje no fuso configurado), forma grupos por continuidade e gera uma execução por grupo. Usa originais e KeyTopics; não usa resumos do Diário.
+4. **Ver o andamento.**
+5. **Ignorar o primeiro texto com erro e seguir.**
+6. **Configurar endereço do n8n.**
+7. **Limpar dados e começar de novo:** exige confirmação explícita e apaga dados locais.
+9. **Atualizar sistema:** instala a versão publicada no GitHub. Atualizar o programa não altera os workflows do servidor n8n.
 
-1. Instale **Node.js 22 ou superior**. Não precisa instalar Git nem executar npm install.
-2. Na [última Release](https://github.com/firenalabs/2ndbpromax/releases/latest), baixe **Sistema-Completo.zip** e extraia inteiro.
-3. Windows: abra **iniciar.bat**. Linux/macOS: execute **./iniciar.sh** nesta pasta.
-4. Use **6. Configurar endereço do n8n** para informar o domínio acessível do seu servidor.
-5. Use **1. Iniciar**, depois coloque arquivos em Entrada.
+Também existem comandos `npm run gerar-recortes` e `npm run gerar-diario -- 2026-10-13`. `npm run lote` e `npm run tentar-novamente` continuam disponíveis para scripts.
 
-Em uma instalação nova, a configuração inicial é criada automaticamente. Cada computador precisa alcançar o n8n configurado: localhost aponta para o próprio computador. O servidor precisa ter os workflows publicados e as credenciais OpenRouter configuradas.
+## Onde encontrar os dados
 
-## Menu
+- `Originais`: cópias integrais com identidade e ordem de recebimento.
+- `KeyTopics Processados`: interpretação, segmentos, KeyTopics e recortes em JSON; versão legível em Markdown.
+- `Recortes por Assunto/<sourceId>`: recortes originais compartilhados entre Atlas e geração editorial.
+- `Atlas`: recortes avaliados, notas e árvore do conhecimento. Só incorpora conhecimento aceito; não gera posts.
+- `Diário/Registros`: um registro por input, sem aguardar o próximo.
+- `Diário/Dias`: índice diário determinístico, sem síntese por IA.
+- `Conquistas`: extrações com trecho literal que comprova a conquista.
+- `Conteúdos Gerados/gen-<data-hora>-<origem>-<id>`: um pedido de geração, com `LEIA-ME.md`, `pedido.json`, `Fontes` e pastas `Twitter`, `LinkedIn`, `Instagram` e `Blog` quando houver artigos.
+- `Geração de Conteúdos`: avisos de revisão de conteúdos antigos.
 
-| Opção | Ação |
-| --- | --- |
-| 1 | Iniciar: tentar erros, processar Entrada e aguardar novos textos |
-| 4 | Ver o andamento |
-| 5 | Ignorar o primeiro texto com erro e seguir |
-| 6 | Configurar endereço do n8n |
-| 7 | Limpar dados e começar de novo, com confirmação |
-| 9 | Atualizar sistema pelo GitHub |
+Abra o `LEIA-ME.md` de um pedido para navegar por fonte e rede. Cada `.md` representa um post; seu `.json` conserva partes, formato e rastreabilidade. Threads, sequências e carrosséis mantêm todas as partes no mesmo documento. Imagens, thumbnails e PDFs são indicações textuais; não são produzidos nesta versão.
 
-A opção 1 faz uma rodada de novas tentativas dos erros já registrados, processa a Entrada e continua aguardando novos textos. Falhas persistentes ficam em Erros e não são tentadas repetidamente durante a escuta. Digestão e Atlas dos demais textos continuam; o Diário mantém a ordem e aguarda resolver ou ignorar um texto que bloqueia sua sequência. Reinicie com a opção 1 para uma nova rodada de tentativas.
+## Retomadas e histórico
 
-Para parar, pressione Ctrl+C e aguarde “Sistema parado”. Arquivos são processados um a um, por data de modificação, com desempate pelo nome. Nenhuma numeração é exigida; coloque os textos na ordem desejada quando houver continuidade.
+Os pedidos usam uma seleção fixa de fontes. Inputs recebidos depois ficam para o próximo pedido. Grupos do Diário são fechados dentro da seleção, incluindo o último, e não são reabertos automaticamente.
 
-## Atualizar
+Resultados e respostas bem-sucedidas retornadas pelo workflow são persistidos para retomada. Uma falha em uma fonte não impede processar as seguintes. Se uma execução n8n for interrompida antes de devolver suas respostas, os estágios ainda não recebidos pelo programa podem precisar ser chamados novamente. Prompts, modelos e políticas de erro dos Agents foram preservados.
 
-Abra o iniciador e escolha **9. Atualizar sistema**. Ele consulta a última Release estável, baixa e verifica o pacote, guarda o código anterior e substitui somente arquivos de programa. Feche e abra novamente após a atualização.
+Recortes concluídos não voltam à fila ao mudar prompts. Conteúdos antigos sem evidência de completude das novas saídas ficam em revisão, evitando recriação silenciosa. Os arquivos anteriores em `Digestões`, `Diário/Grupos` e `Conteúdos Gerados` são conservados.
 
-Servidor, configurações particulares, textos, histórico, Atlas, Diário, Conquistas e Conteúdos Gerados são preservados. A partir da versão 1.0.8, no primeiro início depois da atualização, somente o caminho conhecido do Diário legacy é migrado para o v2, com backup da configuração. URLs personalizadas são mantidas. Cada pasta de cliente precisa ser atualizada separadamente. Backups do código ficam em **Atualizações/Backups**.
+## Workflows
 
-**Cópias antigas sem opção 9:** baixe Sistema-Completo.zip e extraia na pasta existente, mesclando/substituindo os arquivos. Não apague a pasta sistema. O ZIP não contém configuração particular ou dados; depois dessa primeira atualização, use a opção 9.
+1. `Protótipo local — 01 Preparar KeyTopics e Recortes`: `segundo-cerebro-local-digestao-v1`.
+2. `Protótipo local — 02a Organizar Atlas de Conhecimento`: `segundo-cerebro-local-atlas-v1`.
+3. `Protótipo local — 02b Registrar Diário e Conquistas`: `segundo-cerebro-local-diario-social-v2`.
+4. `Protótipo local — 03 Gerar Conteúdos para Redes`: `segundo-cerebro-local-conteudos-v1`.
 
-O n8n permanece sob atualização manual do responsável. Cada Release informa se é necessário alterar os workflows e inclui **Codes-n8n.zip**, com Codes nomeados pelos nodes de destino. Atualizar o programa não publica workflows.
-
-## Onde encontrar os resultados
-
-| Pasta | Conteúdo |
-| --- | --- |
-| Entrada | Novos textos UTF-8 `.txt` |
-| Originais | Textos originais e seus metadados |
-| Processados | Arquivos que concluíram a digestão |
-| Digestões | Original, SEGs, KeyTopics e bulletpoints, em JSON/Markdown |
-| Atlas | Atlas de Conhecimento.md com categorias/títulos; Notas com recortes integrais |
-| Diário | Registros concluídos; Grupo em andamento.md mostra o que aguarda continuidade |
-| Conquistas | Brag Document das vitórias identificadas |
-| Conteúdos Gerados | Conteúdos automáticos do Atlas/Diário e manuais da opção 8, em Markdown/JSON |
-| Erros | Explicação das falhas e pendências |
-| sistema | Código e configuração; não precisa editar para usar |
-
-Tudo fica dentro da pasta do cliente, mesmo iniciando de outro diretório. Faça uma cópia para cada cliente. Cada cópia tem sua configuração e dados; os mesmos workflows n8n podem atender todas. Não execute o iniciador de dentro do visualizador de ZIP.
-
-## Diário, Atlas e geração de conteúdo
-
-O grupo do Diário só fecha quando o Jev identifica que um novo texto não continua o raciocínio anterior. Tempo, fim do lote e reinício não o fecham. O Atlas recebe cada input sem esperar o fechamento.
-
-SEGs são âncoras determinísticas: frases curtas ou blocos de até 50 palavras para trechos longos sem pontuação. O Agent escolhe os cortes por ideia; o programa confere posições, IDs e original intacto. Versões de digestão/segmentação são metadados, sem bloqueio por número/nome.
-
-Notas do Atlas usam endereços como A.1, A.1.A e A.1.A.1. Só categorias raiz são criadas; nos demais níveis, o Jev compara títulos de notas. Os arquivos seguem `A.2 - 150 palavras - Título.md`, contando palavras do recorte. Notas existentes recebem o novo nome ao iniciar após atualizar. Notas contêm apenas o recorte integral; o índice contém apenas categorias e títulos.
-
-
-## Publicar novas versões
-
-No desenvolvimento, altere o código, incremente `version` em package.json e atualize **NOTAS-DA-VERSAO.md** com instruções de n8n quando necessário. Faça commit/push e publique uma tag correspondente, por exemplo `v1.0.1`. O GitHub Actions executa os testes e cria a Release com os pacotes. Commits sem uma nova Release não chegam aos clientes.
-
-`npm test` valida o programa. `npm run gerar-release` gera dist/atualizacao.json. `npm run preparar-atualizacao` prepara as pastas de copiar/colar manualmente, como alternativa.
-
-Configuração particular, dados dos clientes, bloqueios e arquivos temporários estão fora do repositório e dos pacotes publicados. Credenciais OpenRouter ficam no n8n.
-
-## Limites do protótipo
-
-Node.js 22+, até 512 KB por input e 120.000 caracteres por texto/grupo para chamadas ao n8n. Grupos maiores são conservados e ficam pendentes; não são truncados. Falhas conservam o original; reinicie com opção 1 após resolver a causa.
-
-A opção 7 apaga os dados daquela cópia, incluindo a Entrada e grupo aberto, após confirmação digitando LIMPAR. Código e configuração são mantidos. Essa limpeza não apaga workflows/históricos do n8n.
-
-Conteúdos por rede: a cópia **02b Diário e Conquistas — Posts por Rede (v2)** usa o webhook `segundo-cerebro-local-diario-social-v2`. Os documentos ficam em **Conteúdos Gerados/LinkedIn**, **Twitter** e **Instagram**, com rede, formato, blocos textuais e avaliações Jev. Cada pensamento/interação independente vira um documento; partes de sequência, thread ou carrossel ficam juntas, separadas por `---`. Sequências no LinkedIn são reunidas num texto. Os arquivos são Markdown com metadados em JSON; imagens e PDFs não são produzidos. O workflow original e seu webhook `segundo-cerebro-local-diario-v1` permanecem como alternativa. Depois da migração automática, é possível voltar ao legacy manualmente sem que o programa reverta essa escolha. Reinicie o programa depois de mudar a configuração.
-
-Conteúdos automáticos: os workflows 02a e 02b podem gerar conteúdo por faixa de palavras na mesma execução. Os arquivos ficam em **Conteúdos Gerados**, identificados por Atlas ou Diário. Personalize os Switches e os Agents no n8n.
+Os JSONs de importação ficam em `sistema/workflows`. O workflow `NOVO TESTE 09.10.26 DONE` permanece intacto e fora da cadeia operacional.

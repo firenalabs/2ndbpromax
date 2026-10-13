@@ -3,7 +3,7 @@ import { join } from 'node:path';
 
 export const folders = {
   input: 'Entrada', originals: 'Originais', processed: 'Processados',
-  digests: 'Digestões', atlas: 'Atlas', diary: 'Diário', achievements: 'Conquistas', errors: 'Erros', generatedContents: 'Conteúdos Gerados',
+  digests: 'Digestões', keytopics: 'KeyTopics Processados', cuts: 'Recortes por Assunto', generation: 'Geração de Conteúdos', atlas: 'Atlas', diary: 'Diário', achievements: 'Conquistas', errors: 'Erros', generatedContents: 'Conteúdos Gerados',
 };
 
 export async function readJson(path, fallback) {

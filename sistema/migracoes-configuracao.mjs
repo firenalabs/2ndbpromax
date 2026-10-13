@@ -44,3 +44,18 @@ export async function migrateDiaryWebhook(root, config) {
   await writeJson(path, updated);
   return { config: updated, migrated };
 }
+
+export async function migrateModularPipeline(root, config) {
+  if (config.modularPipelineVersion === 1) return config;
+  const backup = join(root, 'Atualizações', 'Backups', 'cadeia-modular-v1');
+  await mkdir(backup, { recursive: true });
+  await writeFile(join(backup, 'configuracao.json'), JSON.stringify(config, null, 2), { flag: 'wx' }).catch(e => { if (e.code !== 'EEXIST') throw e; });
+  const updated = { ...config, modularPipelineVersion: 1, timezone: config.timezone ?? 'America/Sao_Paulo' };
+  if (!updated.generationWebhook) {
+    const url = new URL(config.diaryWebhook ?? config.digestWebhook);
+    url.pathname = url.pathname.replace(/\/webhook\/[^/]+$/, '/webhook/segundo-cerebro-local-conteudos-v1');
+    updated.generationWebhook = url.href;
+  }
+  await writeJson(join(root, 'sistema', 'configuracao.json'), updated);
+  return updated;
+}

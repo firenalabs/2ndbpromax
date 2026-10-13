@@ -120,7 +120,7 @@ export class AtlasProcessor {
   }
 
   async run(digest) {
-    const expected = buildBlocks(digest);
+    const expected = digest.blocks ?? buildBlocks(digest);
     const existing = await Promise.all(expected.map(b => readJson(this.blockPath(b.id), null)));
     for (let i = 0; i < expected.length; i++) {
       if (!existing[i]) { existing[i] = expected[i]; await this.saveBlock(existing[i]); }
@@ -166,7 +166,7 @@ export class AtlasProcessor {
         const index = existing.findIndex(b => b.id === block.id);
         existing[index] = block; await this.saveBlock(block);
       }
-      await saveAutomaticContents(this.root, result, 'atlas', pending.map(b => ({ id:b.id, text:b.text, sourceIds:[b.sourceId], createdAt:b.createdAt })), this.log);
+      if (!this.config.modularPipelineVersion) await saveAutomaticContents(this.root, result, 'atlas', pending.map(b => ({ id:b.id, text:b.text, sourceIds:[b.sourceId], createdAt:b.createdAt })), this.log);
       failures = result.errors ?? [];
     }
     await this.render();

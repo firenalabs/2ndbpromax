@@ -7,6 +7,8 @@ import { folders, readJson, writeJson, ensureFolders, readableName, digestMarkdo
 import { validateDigest } from './contratos.mjs';
 import { AtlasProcessor } from './atlas.mjs';
 import { DiaryProcessor } from './diario.mjs';
+import { DiaryRecords } from './diario-registros.mjs';
+import { saveMaterials, migrateMaterials } from './materiais.mjs';
 
 export const defaults = {
   pollIntervalMs: 1500, stableForMs: 1500, requestTimeoutMs: 180000,
@@ -27,7 +29,7 @@ export class Executor {
     this.statePath = join(root, 'sistema', 'estado.json');
     this.stopping = false;
     this.atlas = this.config.atlasWebhook ? new AtlasProcessor(root, this.config, { request, log }) : null;
-    this.diary = this.config.diaryWebhook ? new DiaryProcessor(root, this.config, { request, log }) : null;
+    this.diary = this.config.diaryWebhook ? new (this.config.modularPipelineVersion ? DiaryRecords : DiaryProcessor)(root, this.config, { request, log }) : null;
     this.saveQueue = Promise.resolve();
   }
 
@@ -44,6 +46,7 @@ export class Executor {
       if (this.atlas && job.status === 'completed' && (!job.atlasStatus || job.atlasStatus === 'processing')) job.atlasStatus = 'pending';
       if (this.diary && job.status === 'completed' && (!job.diaryStatus || job.diaryStatus === 'processing')) job.diaryStatus = 'pending';
     }
+    if (this.config.modularPipelineVersion) await migrateMaterials(this.root, this.state.jobs);
     if (this.atlas) await this.atlas.initialize();
     if (this.diary) await this.diary.initialize();
     await this.save();
@@ -159,10 +162,11 @@ export class Executor {
       catch { throw new Error('O arquivo precisa estar salvo como texto UTF-8. O original foi conservado.'); }
       if (!text.trim()) throw new Error('O arquivo está vazio.');
       if (text.length > this.config.maxTextCharacters) throw new Error('Texto acima do limite de 120.000 caracteres. Divida-o em textos menores.');
-      const digestPath = join(this.root, folders.digests, `${job.baseName}.json`);
+      const digestPath = join(this.root, this.config.modularPipelineVersion ? folders.keytopics : folders.digests, `${job.baseName}.json`);
       const previous = await readJson(digestPath, null);
       const digest = previous ? validateDigest(previous, { id: job.id, digestId: job.digestId, text }) : await this.callWorkflow(job, text);
-      await writeJson(digestPath, digest);
+      if (this.config.modularPipelineVersion) await saveMaterials(this.root, { ...digest, sourceFile: job.originalFile, inputName: job.inputName, sequence: job.sequence }, job.baseName);
+      else await writeJson(digestPath, digest);
       await writeFile(join(this.root, folders.digests, `${job.baseName}.md`), digestMarkdown(digest, job.inputName), 'utf8');
       const inputPath = join(this.root, folders.input, job.inputName);
       const current = await readFile(inputPath).catch(error => { if (error.code === 'ENOENT') return null; throw error; });
@@ -170,7 +174,7 @@ export class Executor {
         await rename(inputPath, join(this.root, folders.processed, `${job.baseName}.txt`));
       }
       job.status = 'completed';
-      job.digestFile = join(folders.digests, `${job.baseName}.json`);
+      job.digestFile = join(this.config.modularPipelineVersion ? folders.keytopics : folders.digests, `${job.baseName}.json`);
       if (this.atlas && !job.atlasStatus) job.atlasStatus = 'pending';
       if (this.diary && !job.diaryStatus) job.diaryStatus = 'pending';
       job.updatedAt = new Date().toISOString();
@@ -199,7 +203,7 @@ export class Executor {
       if (job.status === 'queued') await this.process(job);
       if (job.status === 'failed') {
         if (!continuePastErrors) break;
-        diaryBlocked = true;
+        diaryBlocked = !this.config.modularPipelineVersion;
         continue;
       }
       if (job.status === 'completed') {
@@ -211,7 +215,7 @@ export class Executor {
         if (failed) throw failed.reason;
         if (this.diary && job.diaryStatus === 'failed') {
           if (!continuePastErrors) break;
-          diaryBlocked = true;
+          diaryBlocked = !this.config.modularPipelineVersion;
         }
       }
     }
@@ -328,6 +332,12 @@ export class Executor {
       this.log(`Atlas: ${this.atlas.atlas.noteIds.length} nota(s) | ${pendingAtlas} texto(s) pendente(s). Veja Atlas/Atlas de Conhecimento.md.`);
     }
     if (this.diary) {
+      if (this.config.modularPipelineVersion) {
+        const records = this.diary.state.records;
+        this.log(`Diário: ${records.length} registro(s) | ${records.filter(r=>['pending','partial','failed'].includes(r.status)).length} elaboração(ões) pendente(s). Veja Diário/Registros.`);
+        this.log('KeyTopics e recortes preparados. Use opções 2 e 3 para gerar conteúdos.');
+        return;
+      }
       const groups = this.diary.state.groups;
       const open = groups.find(g => g.status === 'open');
       const pending = groups.filter(g => g.status === 'closed' && (g.diaryStatus !== 'completed' || !['completed', 'skipped'].includes(g.bragStatus))).length;
