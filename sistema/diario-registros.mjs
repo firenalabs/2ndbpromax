@@ -77,7 +77,15 @@ export class DiaryRecords {
         if (!response.ok || result.ok === false) throw new Error(result.error?.message ?? `Diário respondeu HTTP ${response.status}.`);
         record.aspects = validateAspects(result.aspects, this.config.aspectThreshold);
         if (result.diary && !record.diary) record.diary = validateDiaryOutput(result.diary);
-        if (!result.errors?.brag) record.achievements = record.aspects.flags.victory ? validateBragOutput(result, record.text,record.segmentation) : [];
+        if(record.aspects.flags.victory && Array.isArray(result.achievements)) {
+          const incoming=validateBragOutput(result,record.text,record.segmentation);
+          const key=a=>JSON.stringify([a.evento,a.categoria,a.integra]);
+          const preserved=new Map((record.achievements??[]).map(a=>[key(a),a]));
+          for(const item of incoming)preserved.set(key(item),item);
+          record.achievements=[...preserved.values()];
+        } else if(!result.errors?.brag)record.achievements=record.aspects.flags.victory?validateBragOutput(result,record.text,record.segmentation):[];
+        record.bragWarnings=result.bragWarnings??[];
+        record.rejectedAchievements=result.rejectedAchievements??[];
         record.errors = result.errors ?? {};
         if (!record.diary) record.errors.diary ??= 'Escrivão não retornou um registro válido.';
         record.status = Object.keys(record.errors).length ? 'partial' : 'completed';
@@ -86,6 +94,7 @@ export class DiaryRecords {
       await this.writeRecord(record); await this.save();
       const labels={completed:'concluído',partial:'parcial',failed:'falhou'};
       this.log(`Diário: ${record.inputName} — ${labels[record.status]??record.status}.`,record.status==='completed'?'success':record.status==='partial'?'warning':'error');
+      for(const warning of record.bragWarnings??[])this.log(`Aviso de ${record.inputName} (brag): ${warning.message}`, 'warning');
       for(const[stage,message]of Object.entries(record.errors??{}))this.log(`Pendência de ${record.inputName} (${stage}): ${message}`, 'error');
     }
   }
@@ -95,6 +104,7 @@ export class DiaryRecords {
     await writeFile(join(this.root, 'Diário', 'Registros', base + '.md'),
       [`# ${record.diary?.title ?? record.inputName}`, '', `Estado: ${record.status}`, `Origem: ${record.sourceId}`, '',
         record.diary?.summary ?? 'Registro recebido. Elaboração ainda não concluída.', '', '## Texto original', '', record.text,
+        '', '## Avisos', '', ...(record.bragWarnings??[]).map(w=>'- '+w.message),
         '', '## Pendências', '', ...Object.entries(record.errors ?? {}).map(([k, v]) => `- ${k}: ${v}`), ''].join('\n'), 'utf8');
     for (const [i, achievement] of (record.achievements ?? []).entries()) {
       const name = `${base}-achievement-${i + 1}`;

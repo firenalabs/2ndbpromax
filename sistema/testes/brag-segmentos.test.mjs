@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {mkdtemp,rm,mkdir,writeFile,readFile} from 'node:fs/promises';
 import {tmpdir} from 'node:os';import{join}from'node:path';
 import {segmentText} from '../contratos.mjs';
-import {validateSegmentSource,extractSegmentAchievements} from '../brag-segmentos.mjs';
+import {validateSegmentSource,extractSegmentAchievements,extractSegmentAchievementBatch} from '../brag-segmentos.mjs';
 import {validateBragOutput} from '../contratos-diario.mjs';
 import {DiaryRecords} from '../diario-registros.mjs';
 import {saveMaterials} from '../materiais.mjs';
@@ -34,10 +34,25 @@ test('IDs inventados, intervalos invertidos, mapas corrompidos e metadados falso
  const a=extractSegmentAchievements({achievements:[achievement]},c)[0];
  assert.throws(()=>validateBragOutput({achievements:[{...a,start:1}]},c.text,c.segmentation),/Referências/);
 });
+test('normaliza apenas zeros dos IDs existentes; conserva conquistas válidas e rejeita referências inexistentes',()=>{
+ const c=source(Array.from({length:25},(_,i)=>'Frase '+(i+1)+'.').join(' '));
+ const result=extractSegmentAchievementBatch({achievements:[
+  {...achievement,segmentoInicial:'SEG_00004',segmentoFinal:'SEG_00007'},
+  {...achievement,evento:'Outra conquista',segmentoInicial:'SEG_000014',segmentoFinal:'SEG_000020'},
+  {...achievement,segmentoInicial:'SEG_99999',segmentoFinal:'SEG_00020'},
+  {...achievement,segmentoInicial:'SEG_00020',segmentoFinal:'SEG_00014'},
+ ]},c);
+ assert.equal(result.achievements.length,2);assert.equal(result.bragWarnings.length,2);assert.equal(result.rejectedAchievements.length,2);
+ const repaired=result.achievements[1];assert.equal(repaired.segmentoInicial,'SEG_00014');assert.equal(repaired.segmentoFinal,'SEG_00020');
+ assert.equal(repaired.integra,c.text.slice(c.segmentation.segments[13].start,c.segmentation.segments[19].end));
+ assert.equal(result.rejectedAchievements[0].achievementIndex,3);assert.equal(result.rejectedAchievements[1].achievementIndex,4);
+ assert.equal(result.rejectedAchievements[0].achievement.segmentoInicial,'SEG_99999');
+ for(const invalid of ['seg_00014','SEG_-14','SEG_00000','SEG_9007199254740993'])assert.equal(extractSegmentAchievementBatch({achievements:[{...achievement,segmentoInicial:invalid}]},c).rejectedAchievements.length,1);
+});
 test('workflow só altera transporte de segmentos, retorno do Brag, schema e extração',async()=>{
  const before=(await buildModular({bragSegments:false})).diary,after=bragBySegments(before);
  assert.deepEqual(after.connections,before.connections);assert.equal(after.nodes.length,before.nodes.length);
- const allowed=new Set(['Validar pedido do Diário','Agent: Escrivão Brag Document','Schema — Brag Document','Validar conquistas e trecho literal']);
+  const allowed=new Set(['Validar pedido do Diário','Agent: Escrivão Brag Document','Schema — Brag Document','Validar conquistas e trecho literal','Montar Diário e Conquistas completos']);
  for(const n of after.nodes){
   const old=before.nodes.find(o=>o.name===n.name);
   if(!allowed.has(n.name))assert.deepEqual(n,old);
@@ -68,4 +83,18 @@ test('registro antigo pendente carrega o mapa dos KeyTopics salvos e persiste a 
  const saved=JSON.parse(await readFile(path+'.json','utf8'));
  assert.equal(saved.integra,c.text);assert.equal(saved.segmentoInicial,'SEG_00001');assert.equal(saved.segmentoFinal,'SEG_00002');assert.deepEqual(saved.sourceIds,['source']);
  assert.match(await readFile(path+'.md','utf8'),/Segmentos: SEG_00001 até SEG_00002/);
+});
+test('falha em outra conquista não descarta as válidas, inclusive após nova tentativa',async t=>{
+ const root=await mkdtemp(join(tmpdir(),'brag-partial-'));t.after(()=>rm(root,{recursive:true,force:true}));
+ await mkdir(join(root,'sistema'));
+ const c=source(),digest={id:'source-digest',sourceId:'source',createdAt:'2026-10-13T12:00:00Z',updatedAt:'2026-10-13T12:00:00Z',originalText:c.text,segmentedText:c.segmentedText,segmentation:c.segmentation,keytopics:[{id:'SEG_00001',title:'Entrega',bulletpoints:['Projeto entregue.']}]};
+ const accepted=extractSegmentAchievements({achievements:[achievement]},c);let attempt=0;
+ const flags={victory:true,obstacle:false,story:false,gratitude:false,joke:false,personalLife:false};
+ const decisions=Object.fromEntries(Object.keys(flags).map(k=>[k,{probability:flags[k]?.95:.05,threshold:.8,accepted:flags[k]}]));
+ const diary=new DiaryRecords(root,{aspectThreshold:.8,diaryWebhook:'http://example.invalid'},{log(){},request:async()=>({ok:true,json:async()=>({ok:true,aspects:{flags,decisions},diary:{title:'Registro',summary:'Resumo'},achievements:attempt++===0?accepted:[],errors:{brag:'Intervalo inexistente em outra conquista.'},rejectedAchievements:[{achievementIndex:2}],bragWarnings:[]})})});
+ await diary.initialize();await diary.accept(digest,'input.txt');await diary.finalizePending();
+ const record=diary.state.records[0];assert.equal(record.status,'partial');assert.equal(record.achievements.length,1);
+ await diary.finalizePending({retry:true});assert.equal(record.achievements.length,1);assert.equal(record.status,'partial');
+ const saved=JSON.parse(await readFile(join(root,'Conquistas',record.day+' - source-achievement-1.json'),'utf8'));
+ assert.equal(saved.integra,c.text);assert.deepEqual(record.rejectedAchievements,[{achievementIndex:2}]);
 });

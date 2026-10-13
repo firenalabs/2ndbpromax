@@ -30,3 +30,30 @@ export function extractSegmentAchievements(value, context) {
       start,end,offsetUnit:'utf16'};
   });
 }
+
+export function extractSegmentAchievementBatch(value, context) {
+  validateSegmentSource(context.text,context.segmentedText,context.segmentation);
+  if(!Array.isArray(value?.achievements)||value.achievements.length>20)throw new Error('O Escrivão Brag Document não retornou uma lista válida.');
+  const ids=new Set(context.segmentation.segments.map(s=>s.id));
+  const achievements=[],bragWarnings=[],rejectedAchievements=[];
+  const normalize=id=>{
+    if(ids.has(id))return id;
+    const match=typeof id==='string'&&id.match(/^SEG_([0-9]+)$/);
+    if(!match)return id;
+    const number=Number(match[1]);
+    if(!Number.isSafeInteger(number)||number<=0)return id;
+    const canonical='SEG_'+String(number).padStart(5,'0');
+    return ids.has(canonical)?canonical:id;
+  };
+  for(const[itemIndex,item]of value.achievements.entries()){
+    const normalized={...item,segmentoInicial:normalize(item?.segmentoInicial),segmentoFinal:normalize(item?.segmentoFinal)};
+    try{
+      achievements.push(extractSegmentAchievements({achievements:[normalized]},context)[0]);
+      for(const field of ['segmentoInicial','segmentoFinal'])if(normalized[field]!==item[field])bragWarnings.push({achievementIndex:itemIndex+1,field,received:item[field],normalized:normalized[field],message:`Conquista ${itemIndex+1}: ${item[field]} normalizado para ${normalized[field]} (mesmo número de segmento).`});
+    }catch(error){
+      const message=String(error.message).replace(/conquista 1/ig,'conquista '+(itemIndex+1));
+      rejectedAchievements.push({achievementIndex:itemIndex+1,achievement:item,message,segmentoInicial:item?.segmentoInicial??null,segmentoFinal:item?.segmentoFinal??null});
+    }
+  }
+  return {achievements,bragWarnings,rejectedAchievements};
+}

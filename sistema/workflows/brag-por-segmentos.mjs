@@ -1,11 +1,31 @@
 import {segmentText} from '../contratos.mjs';
-import {validateSegmentSource,extractSegmentAchievements} from '../brag-segmentos.mjs';
+import {validateSegmentSource,extractSegmentAchievements,extractSegmentAchievementBatch} from '../brag-segmentos.mjs';
+
+export function resilientBragValidation(workflow) {
+  const w=structuredClone(workflow);
+  const validator=w.nodes.find(n=>n.name==='Validar conquistas e trecho literal');
+  validator.parameters.jsCode=validateSegmentSource.toString()+'\n'+extractSegmentAchievements.toString()+'\n'+extractSegmentAchievementBatch.toString()+`\nconst context=$('Validar título e resumo').first().json;
+try {
+  let value=$input.first().json.output;if(typeof value==='string')value=JSON.parse(value);
+  const result=extractSegmentAchievementBatch(value,context);
+  const errors={...context.errors};
+  if(result.rejectedAchievements.length)errors.brag=result.rejectedAchievements.map(r=>r.message+' ['+r.segmentoInicial+' até '+r.segmentoFinal+']').join('; ');
+  return [{json:{...context,...result,aspect:'victory',errors}}];
+} catch(error) {return [{json:{...context,aspect:'victory',achievements:[],bragWarnings:[],rejectedAchievements:[],errors:{...context.errors,brag:error.message}}}];}`;
+  const final=w.nodes.find(n=>n.name==='Montar Diário e Conquistas completos');
+  const marker='return [{json:combineFinalization(expected.map(aspect => completed.get(aspect)))}];';
+  if(final.parameters.jsCode.includes(marker))final.parameters.jsCode=final.parameters.jsCode.replace(marker,`const items=expected.map(aspect => completed.get(aspect));
+const victory=items.find(item=>item.aspect==='victory');
+return [{json:{...combineFinalization(items),bragWarnings:victory?.bragWarnings??[],rejectedAchievements:victory?.rejectedAchievements??[]}}];`);
+  else if(!final.parameters.jsCode.includes('bragWarnings:victory?.bragWarnings'))throw new Error('Montagem final mudou; revisar antes de preservar as conquistas.');
+  return w;
+}
 
 export function bragBySegments(workflow) {
   const w=structuredClone(workflow);
   const find=name=>{const n=w.nodes.find(n=>n.name===name);if(!n)throw new Error('Node esperado ausente: '+name);return n;};
   const agent=find('Agent: Escrivão Brag Document');
-  if(agent.parameters.text==='={{ $json.segmentedText }}')return w;
+  if(agent.parameters.text==='={{ $json.segmentedText }}')return resilientBragValidation(w);
   const prompt=agent.parameters.options.systemMessage;
   const oldReturn='Retorne somente {"achievements":[{"evento":"...","descricao":"...","categoria":"entrega","integra":"trecho literal"}]}.';
   const oldLiteral='integra deve ser uma substring EXATA do texto recebido, conservando acentos, pontuação e espaços. Escolha um trecho curto e contínuo que fundamente a conquista. Nunca reescreva o trecho ou una frases não consecutivas.';
@@ -40,5 +60,5 @@ try {
   let value=$input.first().json.output;if(typeof value==='string')value=JSON.parse(value);
   return [{json:{...context,aspect:'victory',achievements:extractSegmentAchievements(value,context)}}];
 } catch(error) {return [{json:{...context,aspect:'victory',errors:{...context.errors,brag:error.message}}}];}`;
-  return w;
+  return resilientBragValidation(w);
 }

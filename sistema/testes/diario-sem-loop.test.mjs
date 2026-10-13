@@ -28,7 +28,7 @@ test('Diário sem loop conserva agentes, modelos, schemas, Jevs e todos os camin
 });
 
 test('64 combinações de aspectos aguardam todos os resultados e respondem uma única vez',async()=>{
-  const w=(await buildModular()).diary;
+  const w=(await buildModular({bragSegments:false})).diary;
   const prepare=find(w,'Preparar ações dos aspectos true').parameters.jsCode;
   const final=find(w,'Montar Diário e Conquistas completos').parameters.jsCode;
   const original=JSON.parse(await readFile(new URL('../workflows/modular-originais.json',import.meta.url)));
@@ -52,7 +52,7 @@ test('64 combinações de aspectos aguardam todos os resultados e respondem uma 
 });
 
 test('conserva resultado parcial e erros de Diário/Brag, sem perder outros aspectos',async()=>{
-  const w=(await buildModular()).diary;
+  const w=(await buildModular({bragSegments:false})).diary;
   const context={text:'Original',aspects:{flags:Object.fromEntries(keys.map(k=>[k,true])),decisions:{}},diary:null,errors:{diary:'Falha no diário'}};
   const actions=exec(find(w,'Preparar ações dos aspectos true').parameters.jsCode,[{json:context}],()=>{});
   const registrar=find(w,'Registrar resultado da ação').parameters.jsCode;
