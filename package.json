@@ -20,5 +20,5 @@
     "gerar-recortes": "node sistema/iniciar.mjs --gerar-recortes",
     "gerar-diario": "node sistema/iniciar.mjs --gerar-diario"
   },
-  "version": "1.1.2"
+  "version": "1.1.3"
 }

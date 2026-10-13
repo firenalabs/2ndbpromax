@@ -9,6 +9,7 @@ import { AtlasProcessor } from './atlas.mjs';
 import { DiaryProcessor } from './diario.mjs';
 import { DiaryRecords } from './diario-registros.mjs';
 import { saveMaterials, migrateMaterials } from './materiais.mjs';
+import { terminalLog } from './terminal.mjs';
 
 export const defaults = {
   pollIntervalMs: 1500, stableForMs: 1500, requestTimeoutMs: 180000,
@@ -19,7 +20,7 @@ export const defaults = {
 const sha256 = bytes => createHash('sha256').update(bytes).digest('hex');
 
 export class Executor {
-  constructor(root, config, { request = fetch, log = console.log } = {}) {
+  constructor(root, config, { request = fetch, log = terminalLog } = {}) {
     this.root = root;
     this.config = { ...defaults, ...config };
     this.request = request;
@@ -70,7 +71,7 @@ export class Executor {
       if (!/\.txt$/i.test(entry.name)) {
         if (entry.name !== 'README.md' && !this.inputNotices.has(entry.name)) {
           this.inputNotices.add(entry.name);
-          this.log(`Arquivo ignorado: ${entry.name}. A Entrada aceita somente arquivos .txt; confira a extensão completa no Windows.`);
+          this.log(`Arquivo ignorado: ${entry.name}. A Entrada aceita somente arquivos .txt; confira a extensão completa no Windows.`, 'warning');
         }
         continue;
       }
@@ -143,7 +144,7 @@ export class Executor {
         return validateDigest(digest, { id: job.id, digestId: job.digestId, text });
       } catch (error) {
         lastError = error;
-        if (attempt === 0) { this.log('Não foi possível concluir. Tentando mais uma vez…'); await sleep(500); }
+        if (attempt === 0) { this.log('Não foi possível concluir. Tentando mais uma vez…', 'warning'); await sleep(500); }
       }
     }
     throw lastError;
@@ -183,7 +184,7 @@ export class Executor {
       delete job.error;
       await this.save();
       await unlink(join(this.root, folders.errors, `${job.baseName}.md`)).catch(error => { if (error.code !== 'ENOENT') throw error; });
-      this.log(`Concluído: ${job.inputName} → ${this.config.modularPipelineVersion ? folders.keytopics : folders.digests}`);
+      this.log(`Concluído: ${job.inputName} → ${this.config.modularPipelineVersion ? folders.keytopics : folders.digests}`, 'success');
       return true;
     } catch (error) {
       job.status = 'failed';
@@ -192,7 +193,7 @@ export class Executor {
       await this.save();
       await writeFile(join(this.root, folders.errors, `${job.baseName}.md`),
         `# Não foi possível processar ${job.inputName}\n\n${error.message}\n\nOrigem: ${job.id}\n\nO original foi conservado em Originais. Para tentar novamente, reinicie com a opção “Iniciar”.\n`, 'utf8');
-      this.log(`Não foi possível processar ${job.inputName}: ${error.message}\nVeja a pasta Erros. A nova tentativa ocorrerá ao reiniciar com a opção 1.`);
+      this.log(`Não foi possível processar ${job.inputName}: ${error.message}\nVeja a pasta Erros. A nova tentativa ocorrerá ao reiniciar com a opção 1.`, 'error');
       return false;
     }
   }
@@ -236,7 +237,7 @@ export class Executor {
       job.diaryStatus = 'failed'; job.diaryError = error.message;
       await writeFile(join(this.root, folders.errors, `Continuidade — ${job.baseName}.md`),
         `# Continuidade pendente: ${job.inputName}\n\n${error.message}\n\nO original, a digestão e o grupo anterior ficaram conservados. A sequência foi pausada. Reinicie com a opção “Iniciar”, ou ignore este input para continuar sem incluí-lo no Diário.\n`, 'utf8');
-      this.log(`Comparação do Diário pendente: ${error.message}. A sequência foi pausada.`);
+      this.log(`Comparação do Diário pendente: ${error.message}. A sequência foi pausada.`, 'error');
     }
     job.updatedAt = new Date().toISOString(); await this.save();
   }
@@ -257,7 +258,7 @@ export class Executor {
       job.atlasError = error.message;
       await writeFile(join(this.root, folders.errors, `Atlas — ${job.baseName}.md`),
         `# Atlas pendente: ${job.inputName}\n\n${error.message}\n\nA digestão e os recortes já salvos foram conservados. Reinicie com a opção “Iniciar”. Os demais textos podem continuar.\n`, 'utf8');
-      this.log(`Atlas pendente para ${job.inputName}: ${error.message}. A digestão permanece salva.`);
+      this.log(`Atlas pendente para ${job.inputName}: ${error.message}. A digestão permanece salva.`, 'error');
     }
     job.updatedAt = new Date().toISOString();
     await this.save();
@@ -328,15 +329,18 @@ export class Executor {
     const completed = this.state.jobs.filter(j => j.status === 'completed').length;
     const failed = this.state.jobs.filter(j => j.status === 'failed').length;
     const queued = this.state.jobs.filter(j => j.status === 'queued').length;
-    this.log(`Concluídos: ${completed} | Aguardando: ${queued} | Com erro: ${failed}`);
+    this.log(`${this.config.modularPipelineVersion ? 'Preparação — ' : ''}Concluídos: ${completed} | Aguardando: ${queued} | Com erro: ${failed}`, failed ? 'error' : queued ? 'warning' : 'success');
     if (this.atlas) {
       const pendingAtlas = this.state.jobs.filter(j => j.status === 'completed' && ['pending', 'processing', 'failed'].includes(j.atlasStatus)).length;
-      this.log(`Atlas: ${this.atlas.atlas.noteIds.length} nota(s) | ${pendingAtlas} texto(s) pendente(s). Veja Atlas/Atlas de Conhecimento.md.`);
+      const failedAtlas=this.state.jobs.some(j=>j.atlasStatus==='failed');
+      this.log(`Atlas: ${this.atlas.atlas.noteIds.length} nota(s) | ${pendingAtlas} texto(s) pendente(s). Veja Atlas/Atlas de Conhecimento.md.`, failedAtlas ? 'error' : pendingAtlas ? 'warning' : 'success');
     }
     if (this.diary) {
       if (this.config.modularPipelineVersion) {
         const records = this.diary.state.records;
-        this.log(`Diário: ${records.length} registro(s) | ${records.filter(r=>['pending','partial','failed'].includes(r.status)).length} elaboração(ões) pendente(s). Veja Diário/Registros.`);
+        const pending=records.filter(r=>['pending','partial','failed'].includes(r.status));
+        this.log(`Diário: ${records.length} registro(s) | ${pending.length} elaboração(ões) pendente(s). Veja Diário/Registros.`, pending.some(r=>r.status==='failed') ? 'error' : pending.length ? 'warning' : 'success');
+        for(const record of pending)for(const [stage,message]of Object.entries(record.errors??{}))this.log(`Pendência de ${record.inputName} (${stage}): ${message}`, 'error');
         this.log('KeyTopics e recortes preparados. Use opções 2 e 3 para gerar conteúdos.');
         return;
       }

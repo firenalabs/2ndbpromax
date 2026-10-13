@@ -1,4 +1,5 @@
 import { saveAutomaticContents } from './conteudos-automaticos.mjs';
+import { terminalLog } from './terminal.mjs';
 import { randomUUID } from 'node:crypto';
 import { mkdir, readFile, writeFile, unlink } from 'node:fs/promises';
 import { join } from 'node:path';
@@ -8,7 +9,7 @@ import { validateDigest } from './contratos.mjs';
 import { aspectKeys, aspectLabels, validateDecision, validateAspects, validateDiaryOutput, validateBragOutput } from './contratos-diario.mjs';
 
 export class DiaryProcessor {
-  constructor(root, config, { request = fetch, log = console.log } = {}) {
+  constructor(root, config, { request = fetch, log = terminalLog } = {}) {
     this.root = root; this.config = config; this.request = request; this.log = log;
     this.statePath = join(root, 'sistema', 'diario.json');
   }
@@ -116,7 +117,7 @@ export class DiaryProcessor {
 
   async stageError(group, stage, error) {
     await writeFile(this.errorPath(group, stage), `# ${stage} pendente\n\n${error.message}\n\nOs textos do grupo ${group.id} ficaram salvos em Diário/Grupos. Reinicie com a opção “Iniciar”. O grupo em andamento e os demais inputs podem continuar.\n`, 'utf8');
-    this.log(`${stage} pendente: ${error.message}. Textos conservados.`);
+    this.log(`${stage} pendente: ${error.message}. Textos conservados.`, 'error');
   }
 
   async clearError(group, stage) { await unlink(this.errorPath(group, stage)).catch(e => { if (e.code !== 'ENOENT') throw e; }); }
@@ -149,7 +150,7 @@ export class DiaryProcessor {
           if (!group.aspects || !group.diaryOutput) throw new Error(errors.pipeline || errors.diary || 'O workflow não retornou um Diário válido.');
           await this.writeDiary(group); await this.clearError(group, 'Diário');
           group.diaryStatus = 'completed'; delete group.diaryError;
-          this.log(`Diário salvo: ${group.diaryOutput.title}`);
+          this.log(`Diário salvo: ${group.diaryOutput.title}`, 'success');
         } catch (error) { group.diaryStatus = 'failed'; group.diaryError = error.message; await this.stageError(group, 'Diário', error); }
         group.updatedAt = new Date().toISOString(); await this.save();
       }

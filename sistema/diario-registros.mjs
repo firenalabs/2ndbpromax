@@ -1,4 +1,5 @@
 import { mkdir, writeFile } from 'node:fs/promises';
+import { terminalLog } from './terminal.mjs';
 import { join } from 'node:path';
 import { readJson, writeJson } from './arquivos.mjs';
 import { validateDigest } from './contratos.mjs';
@@ -11,7 +12,7 @@ export function localDay(date, timezone = 'America/Sao_Paulo') {
 }
 
 export class DiaryRecords {
-  constructor(root, config, { request = fetch, log = console.log } = {}) {
+  constructor(root, config, { request = fetch, log = terminalLog } = {}) {
     Object.assign(this, { root, config, request, log });
     this.path = join(root, 'sistema', 'diario-registros.json');
   }
@@ -60,7 +61,9 @@ export class DiaryRecords {
       } catch (error) { record.status = 'failed'; record.errors = { pipeline: error.message }; }
       record.updatedAt = new Date().toISOString();
       await this.writeRecord(record); await this.save();
-      this.log(`Diário: ${record.inputName} — ${record.status}.`);
+      const labels={completed:'concluído',partial:'parcial',failed:'falhou'};
+      this.log(`Diário: ${record.inputName} — ${labels[record.status]??record.status}.`,record.status==='completed'?'success':record.status==='partial'?'warning':'error');
+      for(const[stage,message]of Object.entries(record.errors??{}))this.log(`Pendência de ${record.inputName} (${stage}): ${message}`, 'error');
     }
   }
   async writeRecord(record) {

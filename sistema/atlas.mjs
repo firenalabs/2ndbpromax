@@ -1,4 +1,5 @@
 import { saveAutomaticContents } from './conteudos-automaticos.mjs';
+import { terminalLog } from './terminal.mjs';
 import { randomUUID } from 'node:crypto';
 import { mkdir, writeFile, cp, unlink } from 'node:fs/promises';
 import { join } from 'node:path';
@@ -9,7 +10,7 @@ import { buildBlocks, validateBlock, validateCategories } from './contratos-atla
 import { validateZettelTree, nextNoteAddress, letterAddress, zettelFilename } from './zettelkasten.mjs';
 
 export class AtlasProcessor {
-  constructor(root, config, { request = fetch, log = console.log } = {}) {
+  constructor(root, config, { request = fetch, log = terminalLog } = {}) {
     this.root = root;
     this.config = config;
     this.request = request;
@@ -172,7 +173,7 @@ export class AtlasProcessor {
     await this.render();
     const incomplete = existing.filter(b => !['accepted', 'filtered'].includes(b.status));
     if (incomplete.length) throw new Error(failures.find(e => e.blockId === incomplete[0].id)?.message || 'Há recortes pendentes no Atlas.');
-    this.log(`Atlas atualizado: ${existing.length} recorte(s) de texto analisado(s).`);
+    this.log(`Atlas atualizado: ${existing.length} recorte(s) analisado(s), ${existing.filter(b=>b.status==='accepted').length} nota(s) e ${existing.filter(b=>b.status==='filtered').length} recorte(s) sem conhecimento para inserir.`, 'success');
   }
 
   async attach(block) {

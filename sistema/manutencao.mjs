@@ -1,6 +1,7 @@
 import { lstat, readdir, unlink, rmdir } from 'node:fs/promises';
 import { join } from 'node:path';
 import { folders, writeJson } from './arquivos.mjs';
+import { terminalLog } from './terminal.mjs';
 
 export function configureN8n(config, address) {
   let value = address.trim();
@@ -73,7 +74,7 @@ export async function resetPlan(root) {
 
 export async function resetFiles(root) { return (await resetPlan(root)).files; }
 
-export async function configureInteractive(root, config, ask, log = console.log) {
+export async function configureInteractive(root, config, ask, log = terminalLog) {
   log(`\nEndereço atual do n8n: ${currentN8nUrl(config)}`);
   const answer = await ask('Novo endereço (ex.: https://n8n.exemplo.com; Enter cancela): ');
   if (!answer.trim()) { log('Configuração mantida.'); return; }
@@ -83,10 +84,10 @@ export async function configureInteractive(root, config, ask, log = console.log)
   log('Nesse n8n, os workflows precisam estar publicados, com os mesmos caminhos de webhook e credenciais OpenRouter configuradas.');
 }
 
-export async function resetInteractive(root, ask, log = console.log) {
+export async function resetInteractive(root, ask, log = terminalLog) {
   const plan = await resetPlan(root);
   log(`\nLimpeza local: ${plan.files.length} arquivo(s) e ${plan.directories.length} pasta(s) serão apagados em:\n${resetRoots.join(', ')} e histórico em sistema.`);
-  log('Inclui os textos na Entrada, registros do Diário, recortes, pedidos e conteúdos gerados. A exclusão não pode ser desfeita.');
+  log('Inclui os textos na Entrada, registros do Diário, recortes, pedidos e conteúdos gerados. A exclusão não pode ser desfeita.','warning');
   log('Subpastas dos dados serão removidas. Pastas antigas Digestões e Geração de Conteúdos serão removidas por completo.');
   log('Código, configuração, exemplos e READMEs da raiz das pastas ativas serão mantidos. O n8n não será apagado.');
   const answer = await ask('Digite LIMPAR para apagar tudo isso (Enter cancela): ');

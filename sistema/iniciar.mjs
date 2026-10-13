@@ -8,6 +8,7 @@ import { localDay } from './diario-registros.mjs';
 import { Executor, acquireLock } from './executor.mjs';
 import { configureInteractive, resetInteractive, currentN8nUrl } from './manutencao.mjs';
 import { migrateDiaryWebhook, retireManualContentGeneration, migrateModularPipeline } from './migracoes-configuracao.mjs';
+import { terminalLog, terminalError } from './terminal.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 let release;
@@ -49,7 +50,7 @@ try {
     executor = new Executor(root, config);
     await executor.initialize();
     let stopped = false;
-    const stop = () => { stopped = true; console.log('Parando após a fonte atual…'); };
+    const stop = () => { stopped = true; terminalLog('Parando após a fonte atual…', 'warning'); };
     process.once('SIGINT', stop); process.once('SIGTERM', stop);
     const generation = new EditorialGeneration(root, config, { stop: () => stopped });
     await generation.initialize();
@@ -70,7 +71,7 @@ try {
     menu?.close();
     executor = new Executor(root, config);
     await executor.initialize();
-    const stop = () => { executor.stopping = true; console.log('\nParando após o texto em andamento…'); };
+    const stop = () => { executor.stopping = true; terminalLog('\nParando após o texto em andamento…', 'warning'); };
     process.once('SIGINT', stop);
     process.once('SIGTERM', stop);
     console.log(`\nArquivos e resultados: ${root}\n`);
@@ -80,7 +81,7 @@ try {
     else await executor.batch({ retry: mode === '--tentar-novamente' });
   }
 } catch (error) {
-  console.error(`\n${error.message}`);
+  terminalError(`\n${error.message}`);
   process.exitCode = 1;
 } finally {
   menu?.close();

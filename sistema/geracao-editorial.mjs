@@ -5,11 +5,12 @@ import { readJson, writeJson } from './arquivos.mjs';
 import { listMaterials } from './materiais.mjs';
 import { localDay } from './diario-registros.mjs';
 import { validateDecision } from './contratos-diario.mjs';
+import { terminalLog } from './terminal.mjs';
 
 const identity = text => createHash('sha256').update(text).digest('hex').slice(0, 24);
 const safe = s => String(s).normalize('NFC').replace(/[\u0000-\u001f\\/:*?"<>|]/g, '-').slice(0, 65);
 export class EditorialGeneration {
-  constructor(root, config, { request = fetch, log = console.log, stop = () => false } = {}) { Object.assign(this, { root, config, request, log, stop }); }
+  constructor(root, config, { request = fetch, log = terminalLog, stop = () => false } = {}) { Object.assign(this, { root, config, request, log, stop }); }
   async initialize() {
     await mkdir(join(this.root, 'Conteúdos Gerados'), { recursive: true });
     this.path = join(this.root, 'sistema', 'geracoes.json');
@@ -55,7 +56,7 @@ export class EditorialGeneration {
     const reviews = Object.values(this.state.units).filter(u => u.status === 'legacy_review');
     if (reviews.length) {
       await writeFile(join(this.root, 'Conteúdos Gerados', 'Conteúdos antigos para revisão.md'), '# Conteúdos antigos para revisão\n\n' + reviews.map(u => `- ${u.source.id}: ${u.reason}`).join('\n') + '\n', 'utf8');
-      this.log(`${reviews.length} recorte(s) com conteúdo antigo aguardam revisão. Veja Conteúdos Gerados/Conteúdos antigos para revisão.md.`);
+      this.log(`${reviews.length} recorte(s) com conteúdo antigo aguardam revisão. Veja Conteúdos Gerados/Conteúdos antigos para revisão.md.`, 'warning');
     }
   }
   async runDiary(day) {
@@ -112,7 +113,8 @@ export class EditorialGeneration {
         unit.executionId = result.executionId; unit.workflowId = result.workflowId;
         await writeJson(join(this.root, 'Conteúdos Gerados', batch.folder, 'Fontes', code + '-execucao.json'), result);
       } catch (error) { unit.status = 'failed'; unit.errors = [{ message: error.message }]; }
-      await this.save(); await this.manifest(batch); this.log(`${code}: ${unit.status}.`);
+      await this.save(); await this.manifest(batch); this.log(`${code}: ${unit.status}.`, unit.status==='completed'?'success':unit.status==='partial'?'warning':'error');
+      for(const error of unit.errors??[])this.log(`Pendência de ${code}: ${error.message??String(error)}`, 'error');
     }
     batch.status = batch.sources.length && batch.sources.every(s => this.state.units[s.kind + ':' + s.id]?.status === 'completed') ? 'completed' : 'partial';
     await this.save(); await this.manifest(batch);
