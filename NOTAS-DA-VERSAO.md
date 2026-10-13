@@ -1,10 +1,10 @@
-# Versão 1.1.0
+# Versão 1.1.1
 
-- Preparação compartilhada de KeyTopics e recortes, persistidos antes dos consumidores.
-- Atlas dedicado à organização de conhecimento; Diário registra cada input imediatamente.
-- Opção 2 gera recortes pendentes de qualquer data; opção 3 agrupa registros de um dia e gera por grupo.
-- Novo workflow editorial extraído do teste, preservando prompts, modelos e configurações dos Agents.
-- Pedidos de geração com documentos por rede, fontes rastreáveis e checkpoints para retomadas.
-- Migração preserva documentos anteriores e identifica conteúdos antigos cuja completude requer revisão.
+- Limpeza remove subpastas geradas, inclusive pastas vazias e READMEs internos, preservando orientações da raiz das pastas ativas.
+- Remove diretórios antigos Digestões e Geração de Conteúdos quando a limpeza é confirmada.
+- Não recria esses diretórios no processamento modular. Avisos de revisão ficam em Conteúdos Gerados.
+- Preserva código, configuração, exemplos, pastas pessoais e destinos externos de links simbólicos.
+- Documenta o agrupamento do Diário em Fontes/G01.md e G01.json de cada pedido.
+- Inclui a disposição organizada de RESUMO, STORYTELLING e OPINIÃO nos arquivos de importação do workflow editorial.
 
-O programa requer os quatro workflows atualizados e publicados no servidor n8n. Os JSONs estão no pacote Codes-n8n.zip; opção 9 atualiza somente o programa local.
+Use opção 9 para atualizar o programa e opção 7 para limpar dados. A limpeza continua exigindo a confirmação LIMPAR.

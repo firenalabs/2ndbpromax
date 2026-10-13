@@ -1350,8 +1350,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        -11104,
-        9328
+        -9904,
+        9520
       ],
       "onError": "continueRegularOutput",
       "notes": "Personalize a pergunta e os critérios deste aspecto no corpo JSON. Preserve a chave victory e o tipo noul, usados para reunir as respostas."
@@ -1369,8 +1369,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        -11856,
-        9328
+        -11224,
+        9520
       ],
       "onError": "continueRegularOutput",
       "notes": "Personalize livremente o prompt e o modelo. Não precisa de Output Parser. O Code seguinte estrutura o resultado."
@@ -1398,8 +1398,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -11456,
-        9328
+        -10696,
+        9344
       ]
     },
     {
@@ -1411,8 +1411,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -10912,
-        9328
+        -9376,
+        9344
       ]
     },
     {
@@ -1424,15 +1424,15 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -10640,
-        9328
+        -9112,
+        9344
       ]
     },
     {
       "parameters": {
         "content": "## RESUMO\nOutputs: THREAD TWITTER, cada tweet pode ter uma imagem\n\ninstagram carrossel imagem, estilo twitter\n\nlinkedin carrosel, igual o instagram, mas convertido pra PDF. O texto do post é a legenda do instagram",
         "height": 608,
-        "width": 2000
+        "width": 3328
       },
       "id": "0023b9ba-942d-4e0c-95bb-5c31672a4680",
       "name": "Sticky Note6",
@@ -1456,8 +1456,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        -10880,
-        10080
+        -9640,
+        10192
       ],
       "onError": "continueRegularOutput",
       "notes": "Personalize livremente o prompt e o modelo. Não precisa de Output Parser. O Code seguinte estrutura o resultado."
@@ -1475,8 +1475,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        -11712,
-        10112
+        -11224,
+        10192
       ],
       "onError": "continueRegularOutput",
       "notes": "Personalize livremente o prompt e o modelo. Não precisa de Output Parser. O Code seguinte estrutura o resultado."
@@ -1490,8 +1490,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -11360,
-        10080
+        -10696,
+        10000
       ]
     },
     {
@@ -1503,8 +1503,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -11104,
-        10080
+        -10432,
+        10000
       ]
     },
     {
@@ -1516,22 +1516,22 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -10480,
-        10080
+        -9112,
+        10000
       ]
     },
     {
       "parameters": {
         "content": "## OPINIÃO\n\nTWITTER: UM UNICO TEXTO COM IMAGEM\n\nLINKEDIN: POST NORMAL COM IMAGEM. SE O TEXTO TIVER MUITOS CARACTERES, É ADAPTADO\n\nINSTAGRAM: A IMAGEM É POSTADA E O TEXTO VAI PRA LEGENDA. SE O TEXTO TIVER MUITOS CARACTERES, É ADAPTADO",
-        "height": 1056,
-        "width": 2080
+        "height": 1088,
+        "width": 4160
       },
       "id": "d012bce4-f59f-487f-aaab-095c0982b7ba",
       "name": "Sticky Note7",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        -12096,
+        -12160,
         10448
       ]
     },
@@ -1548,8 +1548,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        -11984,
-        10944
+        -11488,
+        11088
       ],
       "onError": "continueRegularOutput",
       "notes": "Personalize livremente o prompt e o modelo. Não precisa de Output Parser. O Code seguinte estrutura o resultado."
@@ -1586,8 +1586,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        -11408,
-        10896
+        -10168,
+        11088
       ],
       "onError": "continueRegularOutput",
       "notes": "Personalize a pergunta e os critérios deste aspecto no corpo JSON. Preserve a chave victory e o tipo noul, usados para reunir as respostas."
@@ -1601,7 +1601,7 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -11136,
+        -9640,
         10912
       ]
     },
@@ -1633,7 +1633,7 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -10912,
+        -9376,
         10688
       ]
     },
@@ -1650,8 +1650,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        -10608,
-        10640
+        -8584,
+        10864
       ],
       "onError": "continueRegularOutput"
     },
@@ -1664,8 +1664,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -10544,
-        10816
+        -9112,
+        10864
       ]
     },
     {
@@ -1696,8 +1696,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -10912,
-        11168
+        -9376,
+        11200
       ]
     },
     {
@@ -1713,8 +1713,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        -10592,
-        11360
+        -8584,
+        11376
       ],
       "onError": "continueRegularOutput"
     },
@@ -1727,22 +1727,22 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -10640,
-        11168
+        -9112,
+        11376
       ]
     },
     {
       "parameters": {
         "content": "## STORYTELLING\n\nOutputs: \n\nINSTAGRAM CARROSSEL, feito com nosso template\n\nTWITTER = pega as imagens do instagram e posta 4 IMAGENS POR TWEET, NO PRIMEIRO TWEET COLOCAR A LEGENDA do insta, o resto dos tweets, se houverem, ficam sem texto  \n\nLINKEDIN =  CONVERTER CARROSSEL PARA PDF, TEXTO DO POST É A LEGENDA",
-        "height": 528,
-        "width": 2080
+        "height": 608,
+        "width": 3328
       },
       "id": "3dfa29c8-f886-4b42-9e0d-bd5ab1c6385b",
       "name": "Sticky Note8",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        -12080,
+        -12160,
         9760
       ]
     },
@@ -1988,8 +1988,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -11648,
-        10944
+        -10960,
+        10912
       ]
     },
     {
@@ -2053,8 +2053,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -12032,
-        9328
+        -12016,
+        9344
       ]
     },
     {
@@ -2066,8 +2066,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -11936,
-        10112
+        -12016,
+        10000
       ]
     },
     {
@@ -3471,8 +3471,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -11604,
-        9328
+        -10432,
+        9344
       ],
       "parameters": {
         "mode": "runOnceForAllItems",
@@ -3486,8 +3486,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -11364,
-        9328
+        -10168,
+        9344
       ],
       "parameters": {
         "conditions": {
@@ -3518,8 +3518,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -10844,
-        9328
+        -9640,
+        9344
       ],
       "parameters": {
         "mode": "runOnceForAllItems",
@@ -3533,8 +3533,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -12356,
-        9328
+        -11752,
+        9344
       ],
       "parameters": {
         "mode": "runOnceForAllItems",
@@ -3548,8 +3548,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -12116,
-        9328
+        -11488,
+        9344
       ],
       "parameters": {
         "conditions": {
@@ -3580,8 +3580,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -11596,
-        9328
+        -10960,
+        9344
       ],
       "parameters": {
         "mode": "runOnceForAllItems",
@@ -3595,8 +3595,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -11380,
-        10080
+        -10168,
+        10000
       ],
       "parameters": {
         "mode": "runOnceForAllItems",
@@ -3610,8 +3610,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -11140,
-        10080
+        -9904,
+        10000
       ],
       "parameters": {
         "conditions": {
@@ -3642,8 +3642,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -10620,
-        10080
+        -9376,
+        10000
       ],
       "parameters": {
         "mode": "runOnceForAllItems",
@@ -3657,8 +3657,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -12212,
-        10112
+        -11752,
+        10000
       ],
       "parameters": {
         "mode": "runOnceForAllItems",
@@ -3672,8 +3672,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -11972,
-        10112
+        -11488,
+        10000
       ],
       "parameters": {
         "conditions": {
@@ -3704,8 +3704,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -11452,
-        10112
+        -10960,
+        10000
       ],
       "parameters": {
         "mode": "runOnceForAllItems",
@@ -3719,8 +3719,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -12484,
-        10944
+        -12016,
+        10912
       ],
       "parameters": {
         "mode": "runOnceForAllItems",
@@ -3734,8 +3734,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -12244,
-        10944
+        -11752,
+        10912
       ],
       "parameters": {
         "conditions": {
@@ -3766,8 +3766,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -11724,
-        10944
+        -11224,
+        10912
       ],
       "parameters": {
         "mode": "runOnceForAllItems",
@@ -3781,8 +3781,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -11908,
-        10896
+        -10696,
+        10912
       ],
       "parameters": {
         "mode": "runOnceForAllItems",
@@ -3796,8 +3796,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -11668,
-        10896
+        -10432,
+        10912
       ],
       "parameters": {
         "conditions": {
@@ -3828,8 +3828,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -11148,
-        10896
+        -9904,
+        10912
       ],
       "parameters": {
         "mode": "runOnceForAllItems",
@@ -3843,8 +3843,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -11108,
-        10640
+        -9112,
+        10688
       ],
       "parameters": {
         "mode": "runOnceForAllItems",
@@ -3858,8 +3858,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -10868,
-        10640
+        -8848,
+        10688
       ],
       "parameters": {
         "conditions": {
@@ -3890,8 +3890,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -10348,
-        10640
+        -8320,
+        10688
       ],
       "parameters": {
         "mode": "runOnceForAllItems",
@@ -3905,8 +3905,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -11092,
-        11360
+        -9112,
+        11200
       ],
       "parameters": {
         "mode": "runOnceForAllItems",
@@ -3920,8 +3920,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -10852,
-        11360
+        -8848,
+        11200
       ],
       "parameters": {
         "conditions": {
@@ -3952,8 +3952,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -10332,
-        11360
+        -8320,
+        11200
       ],
       "parameters": {
         "mode": "runOnceForAllItems",

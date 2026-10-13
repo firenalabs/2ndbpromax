@@ -140,6 +140,14 @@ return [{json:{ok:true,...normalized,cache,workflowId:$workflow.id,executionId:$
   // Add the direct results to the collector, allowing it to emit after their downstream work ends.
   for (const name of terminals) edge(test, name, 'Ver todos os outputs dos Agents');
   for (const w of [prep, atlas, diary, test]) { delete w.activeVersion; delete w.activeVersionId; delete w.pinData; w.active = false; }
+  const layout = await read('editorial-layout.json');
+  for (const n of test.nodes) {
+    if (layout.positions[n.name]) n.position = layout.positions[n.name];
+    if (layout.notes[n.name]) {
+      const {position,width,height} = layout.notes[n.name];
+      n.position = position; n.parameters.width = width; n.parameters.height = height;
+    }
+  }
   return { prep, atlas, diary, generation: test };
 }
 export async function writeModular() {

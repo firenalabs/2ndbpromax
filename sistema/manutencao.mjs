@@ -1,4 +1,4 @@
-import { lstat, readdir, unlink } from 'node:fs/promises';
+import { lstat, readdir, unlink, rmdir } from 'node:fs/promises';
 import { join } from 'node:path';
 import { folders, writeJson } from './arquivos.mjs';
 
@@ -34,21 +34,29 @@ async function exists(path) {
   try { return await lstat(path); } catch (error) { if (error.code === 'ENOENT') return null; throw error; }
 }
 
-export async function resetFiles(root) {
-  const files = [];
-  async function visit(directory) {
+export const retiredDataFolders = ['Digestões', 'Geração de Conteúdos'];
+const resetRoots = [...new Set([...Object.values(folders), ...retiredDataFolders])];
+
+export async function resetPlan(root) {
+  const files = [], directories = [], roots = [];
+  async function visit(directory, preserveRootReadme = false) {
     for (const entry of await readdir(directory, { withFileTypes: true })) {
       const path = join(directory, entry.name);
-      if (entry.isDirectory()) await visit(path);
-      else if (entry.name !== 'README.md') files.push(path);
+      if (entry.isDirectory()) {
+        await visit(path);
+        directories.push(path);
+      } else if (!(preserveRootReadme && entry.isFile() && entry.name === 'README.md')) files.push(path);
     }
   }
-  for (const folder of Object.values(folders)) {
+  for (const folder of resetRoots) {
     const directory = join(root, folder);
     const stat = await exists(directory);
     if (!stat) continue;
     if (!stat.isDirectory() || stat.isSymbolicLink()) throw new Error(`A pasta ${folder} deve ser uma pasta local, sem links simbólicos, para realizar a limpeza.`);
-    await visit(directory);
+    roots.push(directory);
+    const retired = retiredDataFolders.includes(folder);
+    await visit(directory, !retired);
+    if (retired) directories.push(directory);
   }
   const system = await exists(join(root, 'sistema'));
   if (system && (!system.isDirectory() || system.isSymbolicLink())) throw new Error('A pasta sistema deve ser uma pasta local para realizar a limpeza.');
@@ -60,8 +68,10 @@ export async function resetFiles(root) {
       files.push(path);
     }
   }
-  return files;
+  return { files, directories, roots };
 }
+
+export async function resetFiles(root) { return (await resetPlan(root)).files; }
 
 export async function configureInteractive(root, config, ask, log = console.log) {
   log(`\nEndereço atual do n8n: ${currentN8nUrl(config)}`);
@@ -74,13 +84,20 @@ export async function configureInteractive(root, config, ask, log = console.log)
 }
 
 export async function resetInteractive(root, ask, log = console.log) {
-  const files = await resetFiles(root);
-  log(`\nLimpeza local: ${files.length} arquivo(s) serão apagados em:\n${Object.values(folders).join(', ')} e histórico em sistema.`);
-  log('Inclui os textos ainda na Entrada e o grupo aberto do Diário. A exclusão não pode ser desfeita.');
-  log('Código, configuração, exemplos, workflows e READMEs serão mantidos. O n8n não será apagado.');
+  const plan = await resetPlan(root);
+  log(`\nLimpeza local: ${plan.files.length} arquivo(s) e ${plan.directories.length} pasta(s) serão apagados em:\n${resetRoots.join(', ')} e histórico em sistema.`);
+  log('Inclui os textos na Entrada, registros do Diário, recortes, pedidos e conteúdos gerados. A exclusão não pode ser desfeita.');
+  log('Subpastas dos dados serão removidas. Pastas antigas Digestões e Geração de Conteúdos serão removidas por completo.');
+  log('Código, configuração, exemplos e READMEs da raiz das pastas ativas serão mantidos. O n8n não será apagado.');
   const answer = await ask('Digite LIMPAR para apagar tudo isso (Enter cancela): ');
-  if (answer.trim() !== 'LIMPAR') { log('Limpeza cancelada. Nenhum arquivo foi apagado.'); return false; }
-  for (const path of files) await unlink(path);
-  log('\nDados locais apagados. Inicie novamente e coloque novos textos na Entrada.');
+  if (answer.trim() !== 'LIMPAR') { log('Limpeza cancelada. Nenhum arquivo ou pasta foi apagado.'); return false; }
+  const confirmed = await resetPlan(root);
+  for (const directory of [...confirmed.roots, ...confirmed.directories]) {
+    const stat = await exists(directory);
+    if (!stat || !stat.isDirectory() || stat.isSymbolicLink()) throw new Error('Uma pasta mudou durante a confirmação. Reinicie a limpeza.');
+  }
+  for (const path of confirmed.files) await unlink(path);
+  for (const path of confirmed.directories) await rmdir(path);
+  log('\nDados e subpastas locais apagados. Inicie novamente e coloque novos textos na Entrada.');
   return true;
 }

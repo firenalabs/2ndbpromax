@@ -1,0 +1,214 @@
+{
+  "positions": {
+    "Preparar primeiro bloco da thread1": [
+      -12016,
+      9344
+    ],
+    "Conferir cache — thread1": [
+      -11752,
+      9344
+    ],
+    "Retomar resultado — thread1": [
+      -11488,
+      9344
+    ],
+    "thread1": [
+      -10960,
+      9344
+    ],
+    "Preparar partes da thread para Jev1": [
+      -10696,
+      9344
+    ],
+    "Conferir cache — Jev — CABE google imagens? (para cada tweet)2": [
+      -10432,
+      9344
+    ],
+    "Retomar resultado — Jev — CABE google imagens? (para cada tweet)2": [
+      -10168,
+      9344
+    ],
+    "Jev — CABE google imagens? (para cada tweet)2": [
+      -9640,
+      9344
+    ],
+    "Conservar decisão — imagem-thread1": [
+      -9376,
+      9344
+    ],
+    "Organizar thread completa por rede1": [
+      -9112,
+      9344
+    ],
+    "thread1 — chamada": [
+      -11224,
+      9520
+    ],
+    "Jev — CABE google imagens? (para cada tweet)2 — chamada": [
+      -9904,
+      9520
+    ],
+    "Preparar input carrossel — storytelling1": [
+      -12016,
+      10000
+    ],
+    "Conferir cache — carrossel - linguagem flesch 8-9 ano4": [
+      -11752,
+      10000
+    ],
+    "Retomar resultado — carrossel - linguagem flesch 8-9 ano4": [
+      -11488,
+      10000
+    ],
+    "carrossel - linguagem flesch 8-9 ano4": [
+      -10960,
+      10000
+    ],
+    "Preservar slides — storytelling1": [
+      -10696,
+      10000
+    ],
+    "Preparar legenda com slides1": [
+      -10432,
+      10000
+    ],
+    "Conferir cache — Legenda completa instagram1": [
+      -10168,
+      10000
+    ],
+    "Retomar resultado — Legenda completa instagram1": [
+      -9904,
+      10000
+    ],
+    "Legenda completa instagram1": [
+      -9376,
+      10000
+    ],
+    "Reunir carrossel e legenda1": [
+      -9112,
+      10000
+    ],
+    "carrossel - linguagem flesch 8-9 ano4 — chamada": [
+      -11224,
+      10192
+    ],
+    "Legenda completa instagram1 — chamada": [
+      -9640,
+      10192
+    ],
+    "Conferir cache — text-heavy1": [
+      -12016,
+      10912
+    ],
+    "Retomar resultado — text-heavy1": [
+      -11752,
+      10912
+    ],
+    "text-heavy1": [
+      -11224,
+      10912
+    ],
+    "Preparar text-heavy para decisões — Diário": [
+      -10960,
+      10912
+    ],
+    "Conferir cache — Jev — CABE google imagens? (para cada tweet)": [
+      -10696,
+      10912
+    ],
+    "Retomar resultado — Jev — CABE google imagens? (para cada tweet)": [
+      -10432,
+      10912
+    ],
+    "Jev — CABE google imagens? (para cada tweet)": [
+      -9904,
+      10912
+    ],
+    "Conservar decisão — imagem-post1": [
+      -9640,
+      10912
+    ],
+    "text-heavy1 — chamada": [
+      -11488,
+      11088
+    ],
+    "Jev — CABE google imagens? (para cada tweet) — chamada": [
+      -10168,
+      11088
+    ],
+    "Text-heavy excede 3000 caracteres — LinkedIn?1": [
+      -9376,
+      10688
+    ],
+    "Conferir cache — Adaptar text-heavy — LinkedIn1": [
+      -9112,
+      10688
+    ],
+    "Retomar resultado — Adaptar text-heavy — LinkedIn1": [
+      -8848,
+      10688
+    ],
+    "Adaptar text-heavy — LinkedIn1 — chamada": [
+      -8584,
+      10864
+    ],
+    "Adaptar text-heavy — LinkedIn1": [
+      -8320,
+      10688
+    ],
+    "Conservar texto — LinkedIn1": [
+      -9112,
+      10864
+    ],
+    "Text-heavy excede 2200 caracteres — Instagram?1": [
+      -9376,
+      11200
+    ],
+    "Conferir cache — Adaptar text-heavy — Instagram1": [
+      -9112,
+      11200
+    ],
+    "Retomar resultado — Adaptar text-heavy — Instagram1": [
+      -8848,
+      11200
+    ],
+    "Adaptar text-heavy — Instagram1 — chamada": [
+      -8584,
+      11376
+    ],
+    "Adaptar text-heavy — Instagram1": [
+      -8320,
+      11200
+    ],
+    "Conservar texto — Instagram1": [
+      -9112,
+      11376
+    ]
+  },
+  "notes": {
+    "Sticky Note6": {
+      "position": [
+        -12160,
+        9104
+      ],
+      "width": 3328,
+      "height": 608
+    },
+    "Sticky Note8": {
+      "position": [
+        -12160,
+        9760
+      ],
+      "width": 3328,
+      "height": 608
+    },
+    "Sticky Note7": {
+      "position": [
+        -12160,
+        10448
+      ],
+      "width": 4160,
+      "height": 1088
+    }
+  }
+}

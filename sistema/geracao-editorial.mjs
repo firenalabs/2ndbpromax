@@ -11,7 +11,7 @@ const safe = s => String(s).normalize('NFC').replace(/[\u0000-\u001f\\/:*?"<>|]/
 export class EditorialGeneration {
   constructor(root, config, { request = fetch, log = console.log, stop = () => false } = {}) { Object.assign(this, { root, config, request, log, stop }); }
   async initialize() {
-    await mkdir(join(this.root, 'Geração de Conteúdos'), { recursive: true });
+    await mkdir(join(this.root, 'Conteúdos Gerados'), { recursive: true });
     this.path = join(this.root, 'sistema', 'geracoes.json');
     this.state = await readJson(this.path, { schemaVersion: 1, batches: [], units: {} });
     if (this.state.schemaVersion !== 1 || !this.state.units || !Array.isArray(this.state.batches)) throw new Error('Estado editorial incompatível.');
@@ -54,8 +54,8 @@ export class EditorialGeneration {
     if (!old.length && !fresh.length) this.log('Nenhum recorte novo ou com geração pendente.');
     const reviews = Object.values(this.state.units).filter(u => u.status === 'legacy_review');
     if (reviews.length) {
-      await writeFile(join(this.root, 'Geração de Conteúdos', 'Conteúdos antigos para revisão.md'), '# Conteúdos antigos para revisão\n\n' + reviews.map(u => `- ${u.source.id}: ${u.reason}`).join('\n') + '\n', 'utf8');
-      this.log(`${reviews.length} recorte(s) com conteúdo antigo aguardam revisão. Veja Geração de Conteúdos/Conteúdos antigos para revisão.md.`);
+      await writeFile(join(this.root, 'Conteúdos Gerados', 'Conteúdos antigos para revisão.md'), '# Conteúdos antigos para revisão\n\n' + reviews.map(u => `- ${u.source.id}: ${u.reason}`).join('\n') + '\n', 'utf8');
+      this.log(`${reviews.length} recorte(s) com conteúdo antigo aguardam revisão. Veja Conteúdos Gerados/Conteúdos antigos para revisão.md.`);
     }
   }
   async runDiary(day) {

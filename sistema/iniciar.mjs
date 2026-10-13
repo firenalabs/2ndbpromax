@@ -22,7 +22,7 @@ try {
   }
   if (!config?.digestWebhook) throw new Error('A configuração do workflow não foi encontrada em sistema/configuracao.json.');
   console.log(`\nn8n configurado: ${currentN8nUrl(config)}`);
-  await ensureFolders(root);
+  await ensureFolders(root, { modular: true });
   release = await acquireLock(root);
   config = await retireManualContentGeneration(root, config);
   const migration = await migrateDiaryWebhook(root, config);

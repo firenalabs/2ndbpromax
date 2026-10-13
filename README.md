@@ -8,7 +8,7 @@ Coloque arquivos `.txt` em `Entrada` e execute `./iniciar.sh` (Linux/macOS) ou `
 4. **Ver o andamento.**
 5. **Ignorar o primeiro texto com erro e seguir.**
 6. **Configurar endereço do n8n.**
-7. **Limpar dados e começar de novo:** exige confirmação explícita e apaga dados locais.
+7. **Limpar dados e começar de novo:** exige confirmação explícita, apaga dados e subpastas geradas, incluindo redes soltas, pedidos e subpastas de recortes. Remove as pastas antigas `Digestões` e `Geração de Conteúdos`. Preserva código, configuração e pastas pessoais.
 9. **Atualizar sistema:** instala a versão publicada no GitHub. Atualizar o programa não altera os workflows do servidor n8n.
 
 Também existem comandos `npm run gerar-recortes` e `npm run gerar-diario -- 2026-10-13`. `npm run lote` e `npm run tentar-novamente` continuam disponíveis para scripts.
@@ -23,7 +23,7 @@ Também existem comandos `npm run gerar-recortes` e `npm run gerar-diario -- 202
 - `Diário/Dias`: índice diário determinístico, sem síntese por IA.
 - `Conquistas`: extrações com trecho literal que comprova a conquista.
 - `Conteúdos Gerados/gen-<data-hora>-<origem>-<id>`: um pedido de geração, com `LEIA-ME.md`, `pedido.json`, `Fontes` e pastas `Twitter`, `LinkedIn`, `Instagram` e `Blog` quando houver artigos.
-- `Geração de Conteúdos`: avisos de revisão de conteúdos antigos.
+- `Conteúdos Gerados/Conteúdos antigos para revisão.md`: avisos de revisão de conteúdos antigos.
 
 Abra o `LEIA-ME.md` de um pedido para navegar por fonte e rede. Cada `.md` representa um post; seu `.json` conserva partes, formato e rastreabilidade. Threads, sequências e carrosséis mantêm todas as partes no mesmo documento. Imagens, thumbnails e PDFs são indicações textuais; não são produzidos nesta versão.
 
@@ -43,3 +43,9 @@ Recortes concluídos não voltam à fila ao mudar prompts. Conteúdos antigos se
 4. `Protótipo local — 03 Gerar Conteúdos para Redes`: `segundo-cerebro-local-conteudos-v1`.
 
 Os JSONs de importação ficam em `sistema/workflows`. O workflow `NOVO TESTE 09.10.26 DONE` permanece intacto e fora da cadeia operacional.
+
+## Agrupamento dos registros do Diário
+
+Ao selecionar a opção 3, o programa forma os grupos e salva cada um em `Conteúdos Gerados/gen-<data-hora>-diario-<id>/Fontes/G01.md`, `G02.md` etc. O Markdown mostra os originais e o texto integral utilizado; o JSON correspondente guarda identidades, ordem e decisões de continuidade. `pedido.json` registra o conjunto completo e `LEIA-ME.md` oferece links para grupos e posts.
+
+Esses arquivos são gravados pelo programa local durante o pedido de geração. Executar apenas o workflow no editor do n8n não grava as pastas do programa.

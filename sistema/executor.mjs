@@ -34,7 +34,7 @@ export class Executor {
   }
 
   async initialize() {
-    await ensureFolders(this.root);
+    await ensureFolders(this.root, { modular: !!this.config.modularPipelineVersion });
     const now = new Date().toISOString();
     this.state = await readJson(this.statePath, {
       id: randomUUID(), createdAt: now, updatedAt: now, schemaVersion: 1,

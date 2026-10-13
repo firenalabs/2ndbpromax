@@ -3,7 +3,7 @@ import { join } from 'node:path';
 
 export const folders = {
   input: 'Entrada', originals: 'Originais', processed: 'Processados',
-  digests: 'Digestões', keytopics: 'KeyTopics Processados', cuts: 'Recortes por Assunto', generation: 'Geração de Conteúdos', atlas: 'Atlas', diary: 'Diário', achievements: 'Conquistas', errors: 'Erros', generatedContents: 'Conteúdos Gerados',
+  digests: 'Digestões', keytopics: 'KeyTopics Processados', cuts: 'Recortes por Assunto', atlas: 'Atlas', diary: 'Diário', achievements: 'Conquistas', errors: 'Erros', generatedContents: 'Conteúdos Gerados',
 };
 
 export async function readJson(path, fallback) {
@@ -17,9 +17,12 @@ export async function writeJson(path, value) {
   await rename(temporary, path);
 }
 
-export async function ensureFolders(root) {
+export async function ensureFolders(root, { modular = false } = {}) {
   await mkdir(join(root, 'sistema'), { recursive: true });
-  for (const folder of Object.values(folders)) await mkdir(join(root, folder), { recursive: true });
+  for (const folder of Object.values(folders)) {
+    if (modular && folder === folders.digests) continue;
+    await mkdir(join(root, folder), { recursive: true });
+  }
 }
 
 export function readableName(filename, date, id) {

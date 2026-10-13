@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdtemp, rm, readFile, readdir, mkdir } from 'node:fs/promises';
+import { mkdtemp, rm, readFile, readdir, mkdir, lstat } from 'node:fs/promises';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { segmentText } from '../contratos.mjs';
@@ -68,4 +68,15 @@ test('migração de configuração mantém servidor/proxy, cria webhook editoria
 test('saídas malformadas de partes não interrompem organização de outros posts',()=>{
  const result=normalizeEditorial({outputsDosAgents:[{agent:'Tweets/Stories sem angulo',run:0,item:0,output:{posts:[{text:'Válido'}]}}],resultadosFinais:[{node:'Reunir carrossel e legenda',run:0,item:0,resultado:{output:{parts:'inválido'}}}],erros:[]});
  assert.equal(result.posts.length,3);assert.equal(result.errors.length,1);
+});
+
+
+test('geração editorial não recria pasta antiga e coloca aviso de revisão em Conteúdos Gerados', async t => {
+  const root=await rootFor(t),d=digest('legacy-source');const material=await saveMaterials(root,d,'legacy-source');
+  await mkdir(join(root,'Conteúdos Gerados','Twitter'),{recursive:true});
+  await writeJson(join(root,'Conteúdos Gerados','Twitter','antigo.json'),{referenceId:material.blocks[0].id});
+  const g=new EditorialGeneration(root,config,{log(){},request:async()=>{throw new Error('Não deve regenerar conteúdo antigo');}});
+  await g.initialize();await g.runCuts();
+  await assert.rejects(lstat(join(root,'Geração de Conteúdos')),{code:'ENOENT'});
+  assert.match(await readFile(join(root,'Conteúdos Gerados','Conteúdos antigos para revisão.md'),'utf8'),/legacy-source/);
 });
