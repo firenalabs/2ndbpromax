@@ -72,18 +72,19 @@ test('um Markdown por grupo/tipo reúne todos os posts; metadados não repetem t
   const {root,g,batch,unit}=await setup(t),normalized=normalizeCentralEditorial(result);
   await g.writeContents(batch,unit,normalized.contents,{workflowId:'wf',executionId:'exec'});await g.manifest(batch);
   const dir=join(root,'Conteúdos Gerados',unit.contentFolder);
-  const md=await readFile(join(dir,'pensamento-rapido','conteudo.md'),'utf8');
+  const path=(type,key)=>join(root,'Conteúdos Gerados',unit.publicFiles.find(e=>e.contentType===type)[key]);
+  const md=await readFile(path('pensamento-rapido','contentFile'),'utf8');
   assert.equal(md.includes('Pensamento A'),true);assert.equal(md.includes('Pensamento B'),true);
   assert.equal(md.match(/Pensamento A/g).length,2); // título + corpo, sem cópias por rede
-  const metadata=JSON.parse(await readFile(join(dir,'pensamento-rapido','metadados.json')));
+  const metadata=JSON.parse(await readFile(path('pensamento-rapido','metadataFile')));
   assert.equal(metadata.posts.length,2);assert.equal(metadata.posts[0].destinations.length,3);
   assert.equal(JSON.stringify(metadata).includes('Pensamento A'),false);
   assert.deepEqual(metadata.source.sourceIds,['a','b']);
-  const heavyMd=await readFile(join(dir,'educativo','conteudo.md'),'utf8');assert.ok(heavyMd.includes(heavy.trim()));
+  const heavyMd=await readFile(path('educativo','contentFile'),'utf8');assert.ok(heavyMd.includes(heavy.trim()));
   assert.equal((await readdir(join(root,'Conteúdos Gerados',batch.folder))).includes('Twitter'),false);
-  const carousel=await readFile(join(dir,'utilidade','conteudo.md'),'utf8');
+  const carousel=await readFile(path('utilidade','contentFile'),'utf8');
   assert.match(carousel,/Bloco 1/);assert.match(carousel,/Bloco 2/);assert.match(carousel,/Legenda única/);assert.match(carousel,/Outra legenda/);
-  const origin=JSON.parse(await readFile(join(dir,'origem.json')));assert.deepEqual(origin.continuity,unit.source.continuity);
+  const origin=JSON.parse(await readFile(join(dir,'Origens',unit.id+'.json')));assert.deepEqual(origin.continuity,unit.source.continuity);
 });
 
 test('tentativas parciais conservam resultados anteriores e seus checkpoints',async t=>{
@@ -92,7 +93,7 @@ test('tentativas parciais conservam resultados anteriores e seus checkpoints',as
   g.request=async(_,options)=>{const payload=JSON.parse(options.body);if(calls)assert.deepEqual(payload.cache,{saved:{0:[{output:'Válido'}]}});calls++;
     return {ok:true,json:async()=>({contents:[calls===1?first:second],errors:calls===1?[{node:'Agent',erro:{message:'Falha temporária'}}]:[],cache:{saved:{0:[{output:'Válido'}]}},workflowId:'wf',executionId:'exec-'+calls})};};
   await g.executeBatch(batch);assert.equal(unit.status,'partial');await g.executeBatch(batch);assert.equal(unit.status,'completed');
-  const metadata=JSON.parse(await readFile(join(root,'Conteúdos Gerados',unit.contentFolder,'pensamento-rapido','metadados.json')));
+  const metadata=JSON.parse(await readFile(join(root,'Conteúdos Gerados',unit.publicFiles.find(e=>e.contentType==='pensamento-rapido').metadataFile)));
   assert.equal(metadata.posts.length,2);assert.deepEqual(metadata.posts.map(p=>p.executionId),['exec-1','exec-2']);assert.equal(calls,2);await g.executeBatch(batch);assert.equal(calls,2);
 });
 

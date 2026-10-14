@@ -21,22 +21,20 @@ async function store(g,src,contents) {
   await writeJson(join(g.root,'Conteúdos Gerados',batch.folder,'Fontes',unit.code+'-execucao.json'),{contents,errors:[],cache:unit.cache,workflowId:'wf',executionId:'exec'});
   await g.manifest(batch);return {batch,unit};
 }
-const catalog=async(root,id)=>JSON.parse(await readFile(join(root,'Conteúdos Gerados','Famílias',familyFolder(id,id+'.txt'),'familia.json')));
+const catalog=async(root,id)=>{const state=JSON.parse(await readFile(join(root,'sistema/geracoes.json')));const c=Object.values(state.collections).find(c=>c.sourceIds.includes(id)&&!state.collectionAliases[c.id]);return JSON.parse(await readFile(join(root,'Conteúdos Gerados',c.folder,'colecao.json')));};
 
-test('família reúne tipos que chegam em momentos diferentes; grupo A+B aponta ao mesmo post em A e B',async t=>{
+test('coleção reúne tipos que chegam em momentos diferentes; grupo A+B consolida A e B',async t=>{
   const {root,g}=await setup(t);
   const cut=await store(g,source('recorte','cut-A',['A']),[content('quick','pensamento-rapido','Pensamento único A')]);
   assert.deepEqual(Object.keys((await catalog(root,'A')).types),['pensamento-rapido']);
   const group=await store(g,source('grupo','group-AB',['A','B']),[content('opinion','opiniao','Opinião única A+B')]);
   const a=await catalog(root,'A'),b=await catalog(root,'B');
-  assert.deepEqual(Object.keys(a.types),['opiniao','pensamento-rapido']);assert.deepEqual(Object.keys(b.types),['opiniao']);
-  assert.equal(a.types.opiniao[0].publicationId,b.types.opiniao[0].publicationId);assert.equal(a.types.opiniao[0].shared,true);
+  assert.deepEqual(Object.keys(a.types),['opiniao','pensamento-rapido']);assert.deepEqual(Object.keys(b.types),['opiniao','pensamento-rapido']);
+  assert.equal(a.types.opiniao[0].publicationId,b.types.opiniao[0].publicationId);assert.equal(a.id,b.id);assert.deepEqual(a.sourceIds,['A','B']);
   assert.deepEqual(a.types.opiniao[0].sourceIds,['A','B']);
-  const target=(id,ref)=>resolve(root,'Conteúdos Gerados','Famílias',familyFolder(id,id+'.txt'),'opiniao',decodeURIComponent(ref.file.split('#')[0]));
-  assert.equal(target('A',a.types.opiniao[0]),target('B',b.types.opiniao[0]));
-  const index=await readFile(join(root,'Conteúdos Gerados','Famílias',familyFolder('A','A.txt'),'opiniao','índice.md'),'utf8');assert.match(index,/A.txt \+ B.txt/);
-  assert.equal((await readdir(join(root,'Conteúdos Gerados','Acervo'))).length,2);
-  assert.ok(await readFile(join(root,'Conteúdos Gerados',group.unit.contentFolder,'opiniao/conteudo.md')));
+  assert.equal(a.types.opiniao[0].file,b.types.opiniao[0].file);
+  assert.equal((await readdir(join(root,'Conteúdos Gerados','Coleções'))).filter(n=>n!=='aliases.json').length,1);
+  assert.ok(await readFile(join(root,'Conteúdos Gerados',group.unit.publicFiles[0].contentFile)));
   assert.equal(cut.unit.id,'unit-cut-A');
   await g.initialize();assert.equal((await catalog(root,'A')).types.opiniao.length,1);
 });
@@ -85,4 +83,50 @@ test('mudança de pasta de pedido se recupera após persistir o plano sem duplic
 test('famílias com mesmo nome e IDs diferentes permanecem separadas',()=>{
   assert.notEqual(familyFolder('id-a','mesmo.txt'),familyFolder('id-b','mesmo.txt'));
   assert.equal(familyFolder('id-a','../../input.txt').includes('/'),false);
+});
+
+test('consolidação preserva alias e associa resultado tardio de B à coleção A+B',async t=>{
+  const {root,g}=await setup(t);
+  const a=await store(g,source('recorte','cut-A',['A']),[content('one','ensaio','Texto A')]);
+  const b=await store(g,source('recorte','cut-B',['B']),[content('two','ensaio','Texto B')]);
+  const oldA=(await catalog(root,'A')).id,oldB=(await catalog(root,'B')).id;
+  await store(g,source('grupo','group-AB',['A','B']),[content('three','resumo','Texto AB')]);
+  const canonical=(await catalog(root,'A')).id;
+  assert.equal((await catalog(root,'B')).id,canonical);
+  assert.equal(g.state.collectionAliases[canonical===oldA?oldB:oldA],canonical);
+  await store(g,source('recorte','cut-B-late',['B']),[content('late','opiniao','Resultado tardio')]);
+  await g.initialize();await g.initialize();
+  assert.equal((await catalog(root,'A')).types.opiniao.length,1);
+  assert.deepEqual((await catalog(root,'A')).types.opiniao[0].sourceIds,['B']);
+  assert.equal((await catalog(root,'A')).types.ensaio.length,2);
+  assert.ok(await readFile(join(root,'Conteúdos Gerados',a.unit.publicFiles[0].contentFile)));
+  assert.ok(await readFile(join(root,'Conteúdos Gerados',b.unit.publicFiles[0].contentFile)));
+});
+
+test('migração do Acervo preserva edição manual, backup e metadados sem recriar conteúdo',async t=>{
+  const {root,g}=await setup(t);
+  const src=source('recorte','cut-A',['A']);
+  const {batch,unit}=await store(g,src,[content('one','resumo','Texto original')]);
+  const previous=unit.publicFiles[0],old='Acervo/'+unit.id;
+  const directory=join(root,'Conteúdos Gerados',old,'resumo');await mkdir(directory,{recursive:true});
+  const body='Fonte: [R01](../../fonte.md)\n\nTexto editado manualmente\n\n<a id="original-post"></a>\n';
+  await writeFile(join(directory,'conteudo.md'),body);
+  await writeJson(join(directory,'metadados.json'),{generationId:unit.id,generationBatchId:batch.id,posts:[{id:'original-post',contentKey:'one',destinations:[]}]});
+  await rm(join(root,'Conteúdos Gerados',previous.contentFile));await rm(join(root,'Conteúdos Gerados',previous.metadataFile));
+  unit.publicFiles=[{contentType:'resumo',contentFile:old+'/resumo/conteudo.md',metadataFile:old+'/resumo/metadados.json'}];unit.contentLayoutVersion=2;delete g.state.collectionLayoutVersion;await g.save();
+  await g.initialize();
+  const backup=g.state.collectionBackup;
+  assert.equal(await readFile(join(root,backup,'Conteúdos Gerados',old,'resumo/conteudo.md'),'utf8'),body);
+  const current=await readFile(join(root,'Conteúdos Gerados',g.state.units['recorte:'+src.id].publicFiles[0].contentFile),'utf8');assert.match(current,/Texto editado manualmente/);
+  assert.equal((await catalog(root,'A')).types.resumo[0].publicationId,'original-post');
+  await g.initialize();assert.equal(g.state.collectionBackup,backup);
+  assert.equal((await readdir(join(root,'Conteúdos Gerados'))).includes('Acervo'),false);
+});
+
+test('recorte antigo em revisão sem generationId não bloqueia inicialização',async t=>{
+  const {root,g}=await setup(t);
+  g.state.units['recorte:legacy']={status:'legacy_review',source:source('recorte','legacy',['A']),reason:'Revisar antes de regenerar.'};await g.save();
+  await g.initialize();await g.initialize();
+  assert.equal(g.state.units['recorte:legacy'].status,'legacy_review');assert.equal(g.state.units['recorte:legacy'].id,undefined);
+  assert.equal(Object.keys((await catalog(root,'A')).types).length,0);
 });

@@ -30,6 +30,9 @@ try {
   config = migration.config;
   if (migration.migrated) console.log('Diário atualizado para o workflow Posts por Rede (v2). Servidor e demais configurações preservados; configuração anterior em Atualizações/Backups/migracao-diario-social-v2.');
   config = await migrateModularPipeline(root, config);
+  // Também conclui migrações após uma atualização feita pelo iniciador antigo.
+  const presentation = new EditorialGeneration(root, config);
+  await presentation.initialize();
   let mode = process.argv[2];
   if (!mode && process.stdin.isTTY) {
     console.log('\nSegundo cérebro — protótipo local\n\n1. Iniciar\n2. Gerar conteúdos dos recortes pendentes\n3. Gerar conteúdos dos registros do Diário\n4. Ver o andamento\n5. Ignorar o primeiro texto com erro e seguir\n6. Configurar endereço do n8n\n7. Limpar dados e começar de novo\n9. Atualizar sistema\n');
@@ -75,7 +78,7 @@ try {
     process.once('SIGINT', stop);
     process.once('SIGTERM', stop);
     console.log(`\nArquivos e resultados: ${root}\n`);
-    if (mode === '--status') {const generation=new EditorialGeneration(root,config);await generation.initialize();executor.showStatus();terminalLog('Conteúdos por família: Conteúdos Gerados/índice.md.');}
+    if (mode === '--status') {const generation=new EditorialGeneration(root,config);await generation.initialize();executor.showStatus();terminalLog('Coleções editoriais: Conteúdos Gerados/índice.md.');}
     else if (mode === '--ignorar-erro') await executor.ignoreFirstError();
     else if (mode === '--escutar') await executor.watch();
     else await executor.batch({ retry: mode === '--tentar-novamente' });

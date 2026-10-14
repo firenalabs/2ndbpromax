@@ -8,7 +8,8 @@ import { validateDecision } from './contratos-diario.mjs';
 import { terminalLog } from './terminal.mjs';
 import {centralizePosts,normalizeCentralEditorial} from './conteudo-centralizado.mjs';
 import {cutsByOrigin,assertSingleCutOrigin} from './recortes-por-origem.mjs';
-import {fileLink,rebuildFamilyIndices} from './familias-editoriais.mjs';
+import {fileLink} from './familias-editoriais.mjs';
+import {rebuildCollections,backupCollectionMigration} from './colecoes-editoriais.mjs';
 
 const identity = text => createHash('sha256').update(text).digest('hex').slice(0, 24);
 const safe = s => String(s).normalize('NFC').replace(/[\u0000-\u001f\\/:*?"<>|]/g, '-').slice(0, 65);
@@ -20,12 +21,13 @@ export class EditorialGeneration {
     this.state = await readJson(this.path, { schemaVersion: 1, batches: [], units: {} });
     if (this.state.schemaVersion !== 1 || !this.state.units || !Array.isArray(this.state.batches)) throw new Error('Estado editorial incompatível.');
     for (const unit of Object.values(this.state.units)) if (unit.status === 'processing') unit.status = 'pending';
+    await backupCollectionMigration(this.root,this.state);
     await this.save();
     await this.isolateCutBatches();
     await this.organizeRequestFolders();
     await this.finishCutArchives();
     await this.reorganizeSavedOutputs();
-    await rebuildFamilyIndices(this.root,this.state);
+    await rebuildCollections(this.root,this.state);
   }
   async save() { await writeJson(this.path, this.state); }
   cutBatchFolder(date,origin,id) {
@@ -215,12 +217,12 @@ export class EditorialGeneration {
     }
     batch.status = batch.sources.length && batch.sources.every(s => this.state.units[s.kind + ':' + s.id]?.status === 'completed') ? 'completed' : 'partial';
     await this.save(); await this.manifest(batch);
-    this.log(`Resultados: Conteúdos Gerados/${batch.folder}`);
+    this.log(`Resultados: Conteúdos Gerados/índice.md. Histórico do pedido: Conteúdos Gerados/${batch.folder}`);
   }
   async reorganizeSavedOutputs() {
     for(const batch of this.state.batches)for(const source of batch.sources??[]) {
       const unit=this.state.units[source.kind+':'+source.id];
-      if(!unit||unit.batchId!==batch.id||unit.contentLayoutVersion===2||!unit.code)continue;
+      if(!unit||unit.batchId!==batch.id||unit.contentLayoutVersion>=2||!unit.code)continue;
       const result=await readJson(join(this.root,'Conteúdos Gerados',batch.folder,'Fontes',unit.code+'-execucao.json'),null);
       if(!result)continue;
       const normalized=Array.isArray(result.contents)?result:result.diagnostics?normalizeCentralEditorial(result.diagnostics):centralizePosts(result.posts??[]);
@@ -240,7 +242,7 @@ export class EditorialGeneration {
     const directory=join(this.root,'Conteúdos Gerados',batch.folder);
     if(!/^[a-zA-Z0-9_-]+$/.test(unit.id))throw new Error('Identidade de geração inválida.');
     const unitFolder='Acervo/'+unit.id;
-    if(unit.contentLayoutVersion!==2){unit.legacyFiles??=[...unit.files];if(unit.contentFolder&&!unit.contentFolder.includes('/'))unit.legacyContentFolder=unit.contentFolder;}
+    if(!(unit.contentLayoutVersion>=2)){unit.legacyFiles??=[...unit.files];if(unit.contentFolder&&!unit.contentFolder.includes('/'))unit.legacyContentFolder=unit.contentFolder;}
     unit.contentFolder=unitFolder;
     const folder=join(this.root,'Conteúdos Gerados',unitFolder);await mkdir(folder,{recursive:true});
     const {text,keytopics,bulletpoints,...origin}=unit.source;
@@ -273,7 +275,7 @@ export class EditorialGeneration {
     await writeFile(join(folder,'índice.md'),index.join('\n')+'\n','utf8');
     unit.files=files;unit.publicFiles=publicFiles;unit.contentLayoutVersion=2;await this.save();
     await this.cleanupLegacyContent(batch,unit);
-    await rebuildFamilyIndices(this.root,this.state);
+    await rebuildCollections(this.root,this.state);
   }
   async cleanupLegacyContent(batch,unit) {
     const directory=join(this.root,'Conteúdos Gerados',batch.folder);
@@ -289,7 +291,7 @@ export class EditorialGeneration {
       for(const file of [path,metadataPath])await unlink(join(directory,file)).catch(e=>{if(e.code!=='ENOENT')throw e;});
       await rmdir(join(directory,path.split('/').slice(0,-1).join('/'))).catch(e=>{if(!['ENOTEMPTY','ENOENT'].includes(e.code))throw e;});
     }
-    if(unit.legacyContentFolder){const old=join(directory,unit.legacyContentFolder);const origin=await readJson(join(old,'origem.json'),null);if(origin?.generationId===unit.id)await writeFile(join(old,'índice.md'),'# Conteúdos reorganizados\n\n[Abrir conteúdo único no Acervo]('+fileLink(old,join(this.root,'Conteúdos Gerados',unit.contentFolder,'índice.md'))+')\n','utf8');}
+    if(unit.legacyContentFolder){const old=join(directory,unit.legacyContentFolder);const origin=await readJson(join(old,'origem.json'),null);if(origin?.generationId===unit.id)await writeFile(join(old,'índice.md'),'# Conteúdos reorganizados\n\n[Abrir coleção editorial]('+fileLink(old,join(this.root,'Conteúdos Gerados',unit.contentFolder,'índice.md'))+')\n','utf8');}
     delete unit.legacyFiles;delete unit.legacyContentFolder;await this.save();
   }
   async organizeRequestFolders() {
@@ -321,6 +323,6 @@ export class EditorialGeneration {
     }
     await writeFile(join(directory, 'LEIA-ME.md'), lines.join('\n'), 'utf8');
     await writeFile(join(directory, 'índice.md'), lines.join('\n'), 'utf8');
-    if(this.state)await rebuildFamilyIndices(this.root,this.state);
+    if(this.state)await rebuildCollections(this.root,this.state);
   }
 }

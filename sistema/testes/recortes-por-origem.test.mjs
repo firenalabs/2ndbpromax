@@ -78,8 +78,8 @@ test('separa pedido antigo misturado, preserva conteúdo, códigos, status e cac
     assert.equal(unit.status,source.id==='A-2'?'partial':'completed');
     assert.equal(unit.originalGenerationBatchId,batch.id);
     const directory=join(root,'Conteúdos Gerados',child.folder);
-    assert.match(await readFile(join(root,'Conteúdos Gerados',unit.contentFolder,'opiniao/conteudo.md'),'utf8'),new RegExp(source.text));
-    const metadata=JSON.parse(await readFile(join(root,'Conteúdos Gerados',unit.contentFolder,'opiniao/metadados.json')));
+    assert.match(await readFile(join(root,'Conteúdos Gerados',unit.publicFiles.find(e=>e.contentType==='opiniao').contentFile),'utf8'),new RegExp(source.text));
+    const metadata=JSON.parse(await readFile(join(root,'Conteúdos Gerados',unit.publicFiles.find(e=>e.contentType==='opiniao').metadataFile)));
     assert.equal(metadata.generationBatchId,child.id);assert.equal(metadata.originalGenerationBatchId,batch.id);
     assert.equal(child.sourceCodes[source.id],unit.code);
   }

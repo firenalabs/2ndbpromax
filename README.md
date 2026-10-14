@@ -5,7 +5,7 @@ Coloque arquivos `.txt` em `Entrada` e execute `./iniciar.sh` (Linux/macOS) ou `
 1. **Iniciar:** tenta pendências uma vez, recebe textos existentes e aguarda novos. Prepara KeyTopics e recortes, organiza o Atlas e registra cada input no Diário imediatamente. Não gera posts automaticamente.
 2. **Gerar conteúdos dos recortes pendentes:** seleciona recortes de qualquer data cuja geração não terminou. Retoma pedidos parciais antes de criar um pedido com novos recortes.
 3. **Gerar conteúdos dos registros do Diário:** solicita um dia (`AAAA-MM-DD`, padrão hoje no fuso configurado), forma grupos por continuidade e gera uma execução por grupo. Usa originais e KeyTopics; não usa resumos do Diário.
-4. **Ver o andamento:** atualiza a organização e os índices por família, sem chamadas de IA, e mostra pendências.
+4. **Ver o andamento:** atualiza a organização e os índices por coleção, sem chamadas de IA, e mostra pendências.
 5. **Ignorar o primeiro texto com erro e seguir.**
 6. **Configurar endereço do n8n.**
 7. **Limpar dados e começar de novo:** exige confirmação explícita, apaga dados e subpastas geradas, incluindo redes soltas, pedidos e subpastas de recortes. Remove as pastas antigas `Digestões` e `Geração de Conteúdos`. Preserva código, configuração e pastas pessoais.
@@ -22,17 +22,17 @@ Também existem comandos `npm run gerar-recortes` e `npm run gerar-diario -- 202
 - `Diário/Registros`: um registro por input, sem aguardar o próximo.
 - `Diário/Dias`: índice diário determinístico, sem síntese por IA.
 - `Conquistas`: extrações com trecho literal que comprova a conquista.
-- `Conteúdos Gerados/índice.md`: entrada principal para navegar pelas famílias de input.
-- `Conteúdos Gerados/Famílias/<nome — inputId>`: reúne todos os tipos gerados a partir daquele input, tanto por recortes quanto por grupos do Diário. Cada tipo possui um índice com links para os posts.
-- `Conteúdos Gerados/Acervo/<generationId>/<contentType>/conteudo.md`: arquivo único do material e tipo, com seus posts independentes em seções P01, P02…; metadados e origem ficam ao lado.
+- `Conteúdos Gerados/índice.md`: entrada principal para navegar pelas coleções editoriais.
+- `Conteúdos Gerados/Coleções/<assunto — collectionId>/<contentType>`: documentos `.md` disponíveis diretamente, identificados por recorte/grupo e geração; metadados `.json` ao lado. Um documento reúne os posts independentes daquele material/tipo em seções.
+- `Conteúdos Gerados/Coleções/<assunto — collectionId>/Origens`: origem de cada geração e links para sua matéria-prima.
 - `Conteúdos Gerados/Pedidos/gen-...`: seleções, agrupamentos, fontes e respostas de execução para rastreamento e retomada.
 - `Conteúdos Gerados/Conteúdos antigos para revisão.md`: avisos de revisão de conteúdos antigos.
 
-Abra `Conteúdos Gerados/índice.md` e escolha um input. Seus resultados chegam progressivamente na mesma família. Um conteúdo gerado pelo grupo A+B aparece nos índices de A e de B, identificado como compartilhado, apontando para o mesmo arquivo no Acervo. Ensaios de recortes e de grupos permanecem independentes, mesmo quando têm o mesmo tipo ou texto.
+Abra `Conteúdos Gerados/índice.md` e escolha uma coleção. Os resultados dos recortes e do Diário chegam progressivamente nela, por tipo. Quando o Diário forma um grupo A+B, suas coleções são consolidadas e os documentos existentes passam à coleção canônica. Ensaios de recortes e de grupos permanecem independentes, mesmo quando têm o mesmo tipo ou texto. As origens efetivas de cada documento permanecem preservadas.
 
-Na opção 4 (ou ao iniciar 2/3), o programa reorganiza resultados já salvos sem chamar IA. Os pedidos e respostas são preservados em Pedidos; cópias da apresentação anterior ficam nesses pedidos para revisão. Limites de redes não são aplicados ao texto-base; imagens/PDFs continuam como indicações.
+A versão 1.1.12 migra a apresentação anterior automaticamente na primeira abertura após a opção 9. Antes de reorganizar, guarda backup de `Conteúdos Gerados` e do estado editorial em `Atualizações/Backups/colecoes-...`. Não exige gerar conteúdos novamente nem escolher a opção 4. Pedidos, IDs, caches e estados permanecem preservados. A navegação anterior é guardada no backup. Nenhum Agent ou workflow é alterado.
 
-A seleção, as decisões de continuidade do Diário e as chamadas individuais por recorte/grupo permanecem iguais. As famílias são uma visão por origem, independente do pedido e do momento da geração.
+As opções 2 e 3 continuam manuais no protótipo; não foi adicionada geração automática na entrada ou à meia-noite. Limites de redes não são aplicados ao texto-base; imagens/PDFs continuam como indicações. A seleção, as decisões de continuidade e as chamadas individuais por recorte/grupo permanecem iguais.
 
 ## Retomadas e histórico
 
