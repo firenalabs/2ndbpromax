@@ -22,10 +22,12 @@ Também existem comandos `npm run gerar-recortes` e `npm run gerar-diario -- 202
 - `Diário/Registros`: um registro por input, sem aguardar o próximo.
 - `Diário/Dias`: índice diário determinístico, sem síntese por IA.
 - `Conquistas`: extrações com trecho literal que comprova a conquista.
-- `Conteúdos Gerados/gen-<data-hora>-<origem>-<id>`: um pedido de geração, com `LEIA-ME.md`, `pedido.json`, `Fontes` e pastas `Twitter`, `LinkedIn`, `Instagram` e `Blog` quando houver artigos.
+- `Conteúdos Gerados/gen-<data-hora>-<origem>-<id>`: um pedido com `índice.md`, `pedido.json`, `Fontes` e pastas por grupo/recorte (`G01 — assunto` ou `R01 — assunto`). Dentro de cada fonte, os resultados são separados por `contentType`.
 - `Conteúdos Gerados/Conteúdos antigos para revisão.md`: avisos de revisão de conteúdos antigos.
 
-Abra o `LEIA-ME.md` de um pedido para navegar por fonte e rede. Cada `.md` representa um post; seu `.json` conserva partes, formato e rastreabilidade. Threads, sequências e carrosséis mantêm todas as partes no mesmo documento. Imagens, thumbnails e PDFs são indicações textuais; não são produzidos nesta versão.
+Abra o `índice.md` de um pedido para navegar por fonte e tipo de conteúdo. Cada tipo tem um único `conteudo.md`, com seções P01, P02… para posts independentes; `metadados.json` guarda destinos, formatos e rastreabilidade sem repetir o corpo textual. Threads, sequências, carrosséis e legendas preservam seus blocos. Opinião e educativo não são mais reduzidos para limites de LinkedIn/Instagram. Imagens, thumbnails e PDFs são indicações; não são produzidos nesta versão.
+
+Ao iniciar a opção 2 ou 3, o programa reorganiza também resultados já salvos, sem chamar IA. As respostas originais em `Fontes` são preservadas para auditoria. Remove somente as cópias por rede cujos IDs comprovem pertencer ao mesmo pedido. Retomadas conservam conteúdos válidos anteriores e seus checkpoints.
 
 ## Retomadas e histórico
 
@@ -33,7 +35,7 @@ Os pedidos usam uma seleção fixa de fontes. Inputs recebidos depois ficam para
 
 Resultados e respostas bem-sucedidas retornadas pelo workflow são persistidos para retomada. Uma falha em uma fonte não impede processar as seguintes. Se uma execução n8n for interrompida antes de devolver suas respostas, os estágios ainda não recebidos pelo programa podem precisar ser chamados novamente. Prompts, modelos e políticas de erro dos Agents foram preservados.
 
-Recortes concluídos não voltam à fila ao mudar prompts. Conteúdos antigos sem evidência de completude das novas saídas ficam em revisão, evitando recriação silenciosa. Os arquivos anteriores em `Digestões`, `Diário/Grupos` e `Conteúdos Gerados` são conservados.
+Recortes concluídos não voltam à fila ao mudar prompts. Conteúdos antigos sem evidência de completude das novas saídas ficam em revisão, evitando recriação silenciosa. A reorganização de pedidos com resposta salva não solicita geração nova; arquivos antigos sem origem comprovada são conservados.
 
 ## Workflows
 

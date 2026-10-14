@@ -11,8 +11,8 @@
     "type": "n8n-nodes-base.stickyNote",
     "typeVersion": 1,
     "position": [
-      -16496,
-      11632
+      -17856,
+      11616
     ]
   },
   {
@@ -256,8 +256,8 @@
     "type": "@n8n/n8n-nodes-langchain.agent",
     "typeVersion": 3.1,
     "position": [
-      -7648,
-      18528
+      -7472,
+      17936
     ],
     "notes": "Processa até 10 cortes simultaneamente usando o batching nativo do AI Agent."
   },
@@ -275,7 +275,7 @@
     "typeVersion": 3.1,
     "position": [
       -9696,
-      16592
+      16032
     ],
     "onError": "continueRegularOutput",
     "notes": "Personalize livremente o prompt e o modelo. Não precisa de Output Parser. O Code seguinte estrutura o resultado."
@@ -294,7 +294,7 @@
     "typeVersion": 3.1,
     "position": [
       -11488,
-      18928
+      18368
     ]
   },
   {
@@ -330,7 +330,7 @@
     "typeVersion": 4.4,
     "position": [
       -11488,
-      16592
+      16032
     ],
     "onError": "continueRegularOutput",
     "notes": "Personalize a pergunta e os critérios deste aspecto no corpo JSON. Preserve a chave victory e o tipo noul, usados para reunir as respostas."
@@ -368,7 +368,7 @@
     "typeVersion": 4.4,
     "position": [
       -11488,
-      16192
+      15632
     ],
     "onError": "continueRegularOutput",
     "notes": "Personalize a pergunta e os critérios deste aspecto no corpo JSON. Preserve a chave victory e o tipo noul, usados para reunir as respostas."
@@ -406,7 +406,7 @@
     "typeVersion": 4.4,
     "position": [
       -11488,
-      15792
+      15232
     ],
     "onError": "continueRegularOutput",
     "notes": "Personalize a pergunta e os critérios deste aspecto no corpo JSON. Preserve a chave victory e o tipo noul, usados para reunir as respostas."
@@ -425,7 +425,7 @@
     "typeVersion": 3.1,
     "position": [
       -8160,
-      16192
+      15632
     ],
     "onError": "continueRegularOutput",
     "notes": "Personalize livremente o prompt e o modelo. Não precisa de Output Parser. O Code seguinte estrutura o resultado."
@@ -444,7 +444,7 @@
     "typeVersion": 3.1,
     "position": [
       -9696,
-      15792
+      15232
     ],
     "onError": "continueRegularOutput",
     "notes": "Personalize livremente o prompt e o modelo. Não precisa de Output Parser. O Code seguinte estrutura o resultado."
@@ -461,7 +461,7 @@
     "typeVersion": 1,
     "position": [
       -12160,
-      15360
+      14800
     ]
   },
   {
@@ -476,12 +476,12 @@
     "typeVersion": 1,
     "position": [
       -12160,
-      18112
+      17552
     ]
   },
   {
     "parameters": {
-      "content": "## EDUCATIVO\n\nTWITTER: UM UNICO TEXTO COM IMAGEM\n\nLINKEDIN: POST NORMAL COM IMAGEM. SE O TEXTO TIVER MUITOS CARACTERES, É ADAPTADO\n\nINSTAGRAM: A IMAGEM É POSTADA E O TEXTO VAI PRA LEGENDA. SE O TEXTO TIVER MUITOS CARACTERES, É ADAPTADO",
+      "content": "## EDUCATIVO\n\nTWITTER: UM UNICO TEXTO COM IMAGEM\n\nLINKEDIN: POST NORMAL COM IMAGEM. TEXTO-BASE INTEGRAL, SEM ADAPTAÇÃO POR LIMITE NESTA ETAPA\n\nINSTAGRAM: A IMAGEM É POSTADA E O TEXTO VAI PRA LEGENDA. TEXTO-BASE INTEGRAL, SEM ADAPTAÇÃO POR LIMITE NESTA ETAPA",
       "height": 1184,
       "width": 4480
     },
@@ -491,7 +491,7 @@
     "typeVersion": 1,
     "position": [
       -12160,
-      16848
+      16288
     ]
   },
   {
@@ -508,7 +508,7 @@
     "typeVersion": 3.1,
     "position": [
       -11232,
-      17264
+      16704
     ],
     "onError": "continueRegularOutput",
     "notes": "Personalize livremente o prompt e o modelo. Não precisa de Output Parser. O Code seguinte estrutura o resultado."
@@ -526,8 +526,8 @@
     "type": "@n8n/n8n-nodes-langchain.agent",
     "typeVersion": 3.1,
     "position": [
-      -10208,
-      18928
+      -10144,
+      18368
     ],
     "onError": "continueRegularOutput",
     "notes": "Personalize livremente o prompt e o modelo. Não precisa de Output Parser. O Code seguinte estrutura o resultado."
@@ -546,7 +546,7 @@
     "typeVersion": 3.1,
     "position": [
       -11488,
-      18528
+      17968
     ],
     "onError": "continueRegularOutput",
     "notes": "Personalize livremente o prompt e o modelo. Não precisa de Output Parser. O Code seguinte estrutura o resultado."
@@ -564,8 +564,8 @@
     "type": "@n8n/n8n-nodes-langchain.agent",
     "typeVersion": 3.1,
     "position": [
-      -8928,
-      18528
+      -8816,
+      17952
     ],
     "onError": "continueRegularOutput",
     "notes": "Personalize livremente o prompt e o modelo. Não precisa de Output Parser. O Code seguinte estrutura o resultado."
@@ -573,16 +573,16 @@
   {
     "parameters": {
       "content": "## PENSAMENTOS RÁPIDOS \n\nTWITTER: tweet\n\nLINKEDIN: post simples\n\nINSTAGRAM: stories",
-      "height": 1200,
-      "width": 1456
+      "height": 912,
+      "width": 1232
     },
     "id": "6e048a20-8a52-4609-bef2-2226fdc3df37",
     "name": "Sticky Note3",
     "type": "n8n-nodes-base.stickyNote",
     "typeVersion": 1,
     "position": [
-      -11696,
-      12624
+      -12160,
+      12800
     ]
   },
   {
@@ -617,8 +617,8 @@
     "type": "@n8n/n8n-nodes-langchain.agent",
     "typeVersion": 3.1,
     "position": [
-      -11264,
-      15040
+      -11568,
+      14272
     ],
     "onError": "continueRegularOutput",
     "notes": "Personalize livremente o prompt e o modelo. Não precisa de Output Parser. O Code seguinte estrutura o resultado."
@@ -626,16 +626,16 @@
   {
     "parameters": {
       "content": "## SEQUENCIAS  DE PENSAMENTOS RÁPIDOS \n\nTWITTER: THREAD\n\nINSTAGRAM: STORIES (com delay de 5 minutos em cada)\n\nLINKEDIN: AGRUPA TUDO NUM SINGLE POST\n",
-      "height": 496,
-      "width": 784
+      "height": 576,
+      "width": 1152
     },
     "id": "bde487b4-3f78-4ed9-8997-c0e0105119c7",
     "name": "Sticky Note5",
     "type": "n8n-nodes-base.stickyNote",
     "typeVersion": 1,
     "position": [
-      -11392,
-      14752
+      -12160,
+      13968
     ]
   },
   {
@@ -652,7 +652,7 @@
     "typeVersion": 3.1,
     "position": [
       -9696,
-      16192
+      15632
     ],
     "onError": "continueRegularOutput",
     "notes": "Personalize livremente o prompt e o modelo. Não precisa de Output Parser. O Code seguinte estrutura o resultado."
@@ -690,7 +690,7 @@
     "typeVersion": 4.4,
     "position": [
       -9952,
-      17264
+      16704
     ],
     "onError": "continueRegularOutput",
     "notes": "Personalize a pergunta e os critérios deste aspecto no corpo JSON. Preserve a chave victory e o tipo noul, usados para reunir as respostas."
@@ -704,8 +704,8 @@
     "type": "n8n-nodes-base.code",
     "typeVersion": 2,
     "position": [
-      -12832,
-      13936
+      -12848,
+      13760
     ]
   },
   {
@@ -718,7 +718,7 @@
     "typeVersion": 2,
     "position": [
       -10976,
-      15616
+      15056
     ]
   },
   {
@@ -750,7 +750,7 @@
     "typeVersion": 2.3,
     "position": [
       -10720,
-      15616
+      15056
     ]
   },
   {
@@ -763,7 +763,7 @@
     "typeVersion": 2,
     "position": [
       -9184,
-      15616
+      15056
     ]
   },
   {
@@ -776,7 +776,7 @@
     "typeVersion": 2,
     "position": [
       -10464,
-      15792
+      15232
     ]
   },
   {
@@ -789,7 +789,7 @@
     "typeVersion": 2,
     "position": [
       -10976,
-      16016
+      15456
     ]
   },
   {
@@ -821,7 +821,7 @@
     "typeVersion": 2.3,
     "position": [
       -10720,
-      16016
+      15456
     ]
   },
   {
@@ -834,7 +834,7 @@
     "typeVersion": 2,
     "position": [
       -9184,
-      16016
+      15456
     ]
   },
   {
@@ -847,7 +847,7 @@
     "typeVersion": 2,
     "position": [
       -10464,
-      16192
+      15632
     ]
   },
   {
@@ -860,7 +860,7 @@
     "typeVersion": 2,
     "position": [
       -10976,
-      16416
+      15856
     ]
   },
   {
@@ -892,7 +892,7 @@
     "typeVersion": 2.3,
     "position": [
       -10720,
-      16416
+      15856
     ]
   },
   {
@@ -905,7 +905,7 @@
     "typeVersion": 2,
     "position": [
       -9184,
-      16416
+      15856
     ]
   },
   {
@@ -918,7 +918,7 @@
     "typeVersion": 2,
     "position": [
       -10464,
-      16592
+      16032
     ]
   },
   {
@@ -931,7 +931,7 @@
     "typeVersion": 2,
     "position": [
       -9440,
-      17088
+      16528
     ]
   },
   {
@@ -944,134 +944,7 @@
     "typeVersion": 2,
     "position": [
       -7648,
-      16016
-    ]
-  },
-  {
-    "parameters": {
-      "conditions": {
-        "options": {
-          "caseSensitive": true,
-          "leftValue": "",
-          "typeValidation": "strict",
-          "version": 2
-        },
-        "conditions": [
-          {
-            "leftValue": "={{ $json.error ? 0 : $json.baseText.length }}",
-            "rightValue": 3000,
-            "operator": {
-              "type": "number",
-              "operation": "gt"
-            }
-          }
-        ],
-        "combinator": "and"
-      },
-      "options": {}
-    },
-    "id": "c7b4c916-e973-4baa-9dda-42399f9f0220",
-    "name": "Text-heavy excede 3000 caracteres — LinkedIn?",
-    "type": "n8n-nodes-base.if",
-    "typeVersion": 2.3,
-    "position": [
-      -9184,
-      17088
-    ]
-  },
-  {
-    "parameters": {
-      "promptType": "define",
-      "text": "={{ $json.baseText }}",
-      "options": {
-        "systemMessage": "Adapte o texto recebido para LinkedIn com no máximo 3000 caracteres, contando espaços e quebras de linha. Preserve os fatos, a primeira pessoa, o vocabulário e o tom do autor. Reduza repetições sem inventar conteúdo. Retorne somente JSON válido {\"text\":\"texto adaptado\"}."
-      }
-    },
-    "id": "Adaptar text-heavy — LinkedIn — chamada",
-    "name": "Adaptar text-heavy — LinkedIn — chamada",
-    "type": "@n8n/n8n-nodes-langchain.agent",
-    "typeVersion": 3.1,
-    "position": [
-      -8416,
-      17264
-    ],
-    "onError": "continueRegularOutput"
-  },
-  {
-    "parameters": {
-      "jsCode": "return $input.all().map((item,index)=>({json:{...item.json,output:{text:item.json.baseText}},pairedItem:{item:index}}));"
-    },
-    "id": "16e3e908-c432-4245-8dfc-1c0bab8dafdd",
-    "name": "Conservar texto — LinkedIn",
-    "type": "n8n-nodes-base.code",
-    "typeVersion": 2,
-    "position": [
-      -8160,
-      17440
-    ]
-  },
-  {
-    "parameters": {
-      "conditions": {
-        "options": {
-          "caseSensitive": true,
-          "leftValue": "",
-          "typeValidation": "strict",
-          "version": 3
-        },
-        "conditions": [
-          {
-            "leftValue": "={{ $json.error ? 0 : $json.baseText.length }}",
-            "rightValue": 2200,
-            "operator": {
-              "type": "number",
-              "operation": "gt"
-            },
-            "id": "13feb790-70e4-40f5-ba0b-e921e374bb12"
-          }
-        ],
-        "combinator": "and"
-      },
-      "options": {}
-    },
-    "id": "8eefd355-dfb3-48bd-8852-57ed883f8e39",
-    "name": "Text-heavy excede 2200 caracteres — Instagram?",
-    "type": "n8n-nodes-base.if",
-    "typeVersion": 2.3,
-    "position": [
-      -9184,
-      17552
-    ]
-  },
-  {
-    "parameters": {
-      "promptType": "define",
-      "text": "={{ $json.baseText }}",
-      "options": {
-        "systemMessage": "Adapte o texto recebido para Instagram com no máximo 2200 caracteres, contando espaços e quebras de linha. Preserve os fatos, a primeira pessoa, o vocabulário e o tom do autor. Reduza repetições sem inventar conteúdo. Retorne somente JSON válido {\"text\":\"texto adaptado\"}."
-      }
-    },
-    "id": "Adaptar text-heavy — Instagram — chamada",
-    "name": "Adaptar text-heavy — Instagram — chamada",
-    "type": "@n8n/n8n-nodes-langchain.agent",
-    "typeVersion": 3.1,
-    "position": [
-      -8416,
-      17728
-    ],
-    "onError": "continueRegularOutput"
-  },
-  {
-    "parameters": {
-      "jsCode": "return $input.all().map((item,index)=>({json:{...item.json,output:{text:item.json.baseText}},pairedItem:{item:index}}));"
-    },
-    "id": "9891e808-0076-4db1-ba39-259234b8fb14",
-    "name": "Conservar texto — Instagram",
-    "type": "n8n-nodes-base.code",
-    "typeVersion": 2,
-    "position": [
-      -8160,
-      17904
+      15456
     ]
   },
   {
@@ -1083,8 +956,8 @@
     "type": "n8n-nodes-base.code",
     "typeVersion": 2,
     "position": [
-      -10976,
-      18752
+      -10896,
+      18192
     ]
   },
   {
@@ -1096,8 +969,8 @@
     "type": "n8n-nodes-base.code",
     "typeVersion": 2,
     "position": [
-      -9696,
-      18352
+      -9552,
+      17792
     ]
   },
   {
@@ -1109,8 +982,8 @@
     "type": "n8n-nodes-base.code",
     "typeVersion": 2,
     "position": [
-      -8416,
-      18352
+      -8240,
+      17760
     ]
   },
   {
@@ -1335,8 +1208,8 @@
     "type": "n8n-nodes-base.httpRequest",
     "typeVersion": 4.4,
     "position": [
-      -9904,
-      9520
+      -9840,
+      9120
     ],
     "onError": "continueRegularOutput",
     "notes": "Personalize a pergunta e os critérios deste aspecto no corpo JSON. Preserve a chave victory e o tipo noul, usados para reunir as respostas."
@@ -1354,8 +1227,8 @@
     "type": "@n8n/n8n-nodes-langchain.agent",
     "typeVersion": 3.1,
     "position": [
-      -11224,
-      9520
+      -11168,
+      9120
     ],
     "onError": "continueRegularOutput",
     "notes": "Personalize livremente o prompt e o modelo. Não precisa de Output Parser. O Code seguinte estrutura o resultado."
@@ -1370,8 +1243,8 @@
     "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
     "typeVersion": 1,
     "position": [
-      -12512,
-      9968
+      -12448,
+      9568
     ]
   },
   {
@@ -1383,8 +1256,8 @@
     "type": "n8n-nodes-base.code",
     "typeVersion": 2,
     "position": [
-      -10696,
-      9344
+      -10640,
+      8944
     ]
   },
   {
@@ -1396,8 +1269,8 @@
     "type": "n8n-nodes-base.code",
     "typeVersion": 2,
     "position": [
-      -9376,
-      9344
+      -9312,
+      8944
     ]
   },
   {
@@ -1409,8 +1282,8 @@
     "type": "n8n-nodes-base.code",
     "typeVersion": 2,
     "position": [
-      -9112,
-      9344
+      -9056,
+      8944
     ]
   },
   {
@@ -1424,8 +1297,8 @@
     "type": "n8n-nodes-base.stickyNote",
     "typeVersion": 1,
     "position": [
-      -12160,
-      9104
+      -12096,
+      8704
     ]
   },
   {
@@ -1441,8 +1314,8 @@
     "type": "@n8n/n8n-nodes-langchain.agent",
     "typeVersion": 3.1,
     "position": [
-      -9640,
-      10192
+      -9584,
+      9792
     ],
     "onError": "continueRegularOutput",
     "notes": "Personalize livremente o prompt e o modelo. Não precisa de Output Parser. O Code seguinte estrutura o resultado."
@@ -1460,8 +1333,8 @@
     "type": "@n8n/n8n-nodes-langchain.agent",
     "typeVersion": 3.1,
     "position": [
-      -11224,
-      10192
+      -11168,
+      9792
     ],
     "onError": "continueRegularOutput",
     "notes": "Personalize livremente o prompt e o modelo. Não precisa de Output Parser. O Code seguinte estrutura o resultado."
@@ -1475,8 +1348,8 @@
     "type": "n8n-nodes-base.code",
     "typeVersion": 2,
     "position": [
-      -10696,
-      10000
+      -10640,
+      9600
     ]
   },
   {
@@ -1488,13 +1361,13 @@
     "type": "n8n-nodes-base.code",
     "typeVersion": 2,
     "position": [
-      -9112,
-      10000
+      -9056,
+      9600
     ]
   },
   {
     "parameters": {
-      "content": "## OPINIÃO\n\nTWITTER: UM UNICO TEXTO COM IMAGEM\n\nLINKEDIN: POST NORMAL COM IMAGEM. SE O TEXTO TIVER MUITOS CARACTERES, É ADAPTADO\n\nINSTAGRAM: A IMAGEM É POSTADA E O TEXTO VAI PRA LEGENDA. SE O TEXTO TIVER MUITOS CARACTERES, É ADAPTADO",
+      "content": "## OPINIÃO\n\nTWITTER: UM UNICO TEXTO COM IMAGEM\n\nLINKEDIN: POST NORMAL COM IMAGEM. TEXTO-BASE INTEGRAL, SEM ADAPTAÇÃO POR LIMITE NESTA ETAPA\n\nINSTAGRAM: A IMAGEM É POSTADA E O TEXTO VAI PRA LEGENDA. TEXTO-BASE INTEGRAL, SEM ADAPTAÇÃO POR LIMITE NESTA ETAPA",
       "height": 1088,
       "width": 4160
     },
@@ -1503,8 +1376,8 @@
     "type": "n8n-nodes-base.stickyNote",
     "typeVersion": 1,
     "position": [
-      -12160,
-      10448
+      -12096,
+      10048
     ]
   },
   {
@@ -1520,8 +1393,8 @@
     "type": "@n8n/n8n-nodes-langchain.agent",
     "typeVersion": 3.1,
     "position": [
-      -11488,
-      11088
+      -11424,
+      10688
     ],
     "onError": "continueRegularOutput",
     "notes": "Personalize livremente o prompt e o modelo. Não precisa de Output Parser. O Code seguinte estrutura o resultado."
@@ -1558,8 +1431,8 @@
     "type": "n8n-nodes-base.httpRequest",
     "typeVersion": 4.4,
     "position": [
-      -10168,
-      11088
+      -10112,
+      10688
     ],
     "onError": "continueRegularOutput",
     "notes": "Personalize a pergunta e os critérios deste aspecto no corpo JSON. Preserve a chave victory e o tipo noul, usados para reunir as respostas."
@@ -1573,134 +1446,8 @@
     "type": "n8n-nodes-base.code",
     "typeVersion": 2,
     "position": [
-      -9640,
-      10912
-    ]
-  },
-  {
-    "parameters": {
-      "conditions": {
-        "options": {
-          "caseSensitive": true,
-          "leftValue": "",
-          "typeValidation": "strict",
-          "version": 2
-        },
-        "conditions": [
-          {
-            "leftValue": "={{ $json.error ? 0 : $json.baseText.length }}",
-            "rightValue": 3000,
-            "operator": {
-              "type": "number",
-              "operation": "gt"
-            }
-          }
-        ],
-        "combinator": "and"
-      },
-      "options": {}
-    },
-    "id": "db374483-5d2f-4057-b737-7f9f7ed47ddb",
-    "name": "Text-heavy excede 3000 caracteres — LinkedIn?1",
-    "type": "n8n-nodes-base.if",
-    "typeVersion": 2.3,
-    "position": [
-      -9376,
-      10688
-    ]
-  },
-  {
-    "parameters": {
-      "promptType": "define",
-      "text": "={{ $json.baseText }}",
-      "options": {
-        "systemMessage": "Adapte o texto do input para um máximo de 300 palavras. Preserve a maior parte do verbatim, mas reduza repetições e corte onde puder cortar sem prejudicar o conteúdo. \nRetorne somente JSON válido {\"text\":\"texto adaptado, com suas quebras de linha\"}."
-      }
-    },
-    "id": "Adaptar text-heavy — LinkedIn1 — chamada",
-    "name": "Adaptar text-heavy — LinkedIn1 — chamada",
-    "type": "@n8n/n8n-nodes-langchain.agent",
-    "typeVersion": 3.1,
-    "position": [
-      -8584,
-      10864
-    ],
-    "onError": "continueRegularOutput"
-  },
-  {
-    "parameters": {
-      "jsCode": "return $input.all().map((item,index)=>({json:{...item.json,output:{text:item.json.baseText}},pairedItem:{item:index}}));"
-    },
-    "id": "63f6b91c-0d3d-4776-9954-d24e3d81bfe4",
-    "name": "Conservar texto — LinkedIn1",
-    "type": "n8n-nodes-base.code",
-    "typeVersion": 2,
-    "position": [
-      -9112,
-      10864
-    ]
-  },
-  {
-    "parameters": {
-      "conditions": {
-        "options": {
-          "caseSensitive": true,
-          "leftValue": "",
-          "typeValidation": "strict",
-          "version": 2
-        },
-        "conditions": [
-          {
-            "leftValue": "={{ $json.error ? 0 : $json.baseText.length }}",
-            "rightValue": 2200,
-            "operator": {
-              "type": "number",
-              "operation": "gt"
-            }
-          }
-        ],
-        "combinator": "and"
-      },
-      "options": {}
-    },
-    "id": "0a04d9ad-91fc-42d4-affa-a2526f4beb0e",
-    "name": "Text-heavy excede 2200 caracteres — Instagram?1",
-    "type": "n8n-nodes-base.if",
-    "typeVersion": 2.3,
-    "position": [
-      -9376,
-      11200
-    ]
-  },
-  {
-    "parameters": {
-      "promptType": "define",
-      "text": "={{ $json.baseText }}",
-      "options": {
-        "systemMessage": "Adapte o texto do input para um máximo de 220 palavras. Preserve a maior parte do verbatim, mas reduza repetições e corte onde puder cortar sem prejudicar o conteúdo. \n\nRetorne somente JSON válido {\"text\":\"texto adaptado, com suas quebras de linha\"}."
-      }
-    },
-    "id": "Adaptar text-heavy — Instagram1 — chamada",
-    "name": "Adaptar text-heavy — Instagram1 — chamada",
-    "type": "@n8n/n8n-nodes-langchain.agent",
-    "typeVersion": 3.1,
-    "position": [
-      -8584,
-      11376
-    ],
-    "onError": "continueRegularOutput"
-  },
-  {
-    "parameters": {
-      "jsCode": "return $input.all().map((item,index)=>({json:{...item.json,output:{text:item.json.baseText}},pairedItem:{item:index}}));"
-    },
-    "id": "3836eab3-dd18-4004-a250-13d2c95a99df",
-    "name": "Conservar texto — Instagram1",
-    "type": "n8n-nodes-base.code",
-    "typeVersion": 2,
-    "position": [
-      -9112,
-      11376
+      -9584,
+      10512
     ]
   },
   {
@@ -1714,8 +1461,8 @@
     "type": "n8n-nodes-base.stickyNote",
     "typeVersion": 1,
     "position": [
-      -12160,
-      9760
+      -12096,
+      9360
     ]
   },
   {
@@ -1728,7 +1475,7 @@
     "typeVersion": 2,
     "position": [
       -12000,
-      17088
+      16528
     ]
   },
   {
@@ -1750,8 +1497,8 @@
     "type": "@n8n/n8n-nodes-langchain.agent",
     "typeVersion": 3.1,
     "position": [
-      -8848,
-      12112
+      -8784,
+      11712
     ],
     "notes": "Processa até 10 cortes simultaneamente usando o batching nativo do AI Agent."
   },
@@ -1766,8 +1513,8 @@
     "type": "n8n-nodes-base.stickyNote",
     "typeVersion": 1,
     "position": [
-      -12160,
-      11632
+      -12096,
+      11232
     ]
   },
   {
@@ -1783,8 +1530,8 @@
     "type": "@n8n/n8n-nodes-langchain.agent",
     "typeVersion": 3.1,
     "position": [
-      -11488,
-      12112
+      -11424,
+      11712
     ],
     "onError": "continueRegularOutput",
     "notes": "Personalize livremente o prompt e o modelo. Não precisa de Output Parser. O Code seguinte estrutura o resultado."
@@ -1802,8 +1549,8 @@
     "type": "@n8n/n8n-nodes-langchain.agent",
     "typeVersion": 3.1,
     "position": [
-      -10168,
-      12112
+      -10112,
+      11712
     ],
     "onError": "continueRegularOutput",
     "notes": "Personalize livremente o prompt e o modelo. Não precisa de Output Parser. O Code seguinte estrutura o resultado."
@@ -1817,8 +1564,8 @@
     "type": "n8n-nodes-base.code",
     "typeVersion": 2,
     "position": [
-      -10960,
-      11904
+      -10896,
+      11504
     ]
   },
   {
@@ -1830,8 +1577,8 @@
     "type": "n8n-nodes-base.code",
     "typeVersion": 2,
     "position": [
-      -9640,
-      11904
+      -9584,
+      11504
     ]
   },
   {
@@ -1857,7 +1604,7 @@
     "typeVersion": 2,
     "position": [
       -10720,
-      17088
+      16528
     ]
   },
   {
@@ -1869,21 +1616,21 @@
     "type": "n8n-nodes-base.code",
     "typeVersion": 2,
     "position": [
-      -10960,
-      10912
+      -10896,
+      10512
     ]
   },
   {
     "parameters": {
-      "jsCode": "// Inventário sincronizado com as conexões atuais. Não altera Agents nem decisões de roteamento.\nconst graph=[{\"source\":\"Contar palavras para conteúdo — Diário1\",\"target\":\"Rotear conteúdo por palavras — Diário1\",\"output\":0},{\"source\":\"Rotear conteúdo por palavras — Diário1\",\"target\":\"Conferir cache — Tweets/Stories sem angulo\",\"output\":0},{\"source\":\"Rotear conteúdo por palavras — Diário1\",\"target\":\"Conferir cache — Interação com seguidores\",\"output\":0},{\"source\":\"Rotear conteúdo por palavras — Diário1\",\"target\":\"Conferir cache — Jev — tutorial/how-to carrossel\",\"output\":0},{\"source\":\"Rotear conteúdo por palavras — Diário1\",\"target\":\"Conferir cache — Interação com seguidores\",\"output\":1},{\"source\":\"Rotear conteúdo por palavras — Diário1\",\"target\":\"Conferir cache — Jev — tutorial/how-to carrossel\",\"output\":1},{\"source\":\"Rotear conteúdo por palavras — Diário1\",\"target\":\"Conferir cache — Tweets/Stories sem angulo\",\"output\":1},{\"source\":\"Rotear conteúdo por palavras — Diário1\",\"target\":\"Conferir cache — Interação com seguidores\",\"output\":2},{\"source\":\"Rotear conteúdo por palavras — Diário1\",\"target\":\"Conferir cache — Sequência de pensamentos rápidos\",\"output\":2},{\"source\":\"Rotear conteúdo por palavras — Diário1\",\"target\":\"Conferir cache — Jev — tutorial/how-to carrossel\",\"output\":2},{\"source\":\"Rotear conteúdo por palavras — Diário1\",\"target\":\"Preparar julgamento de conhecimento rota1\",\"output\":2},{\"source\":\"Rotear conteúdo por palavras — Diário1\",\"target\":\"Conferir cache — Tweets/Stories sem angulo\",\"output\":2},{\"source\":\"Rotear conteúdo por palavras — Diário1\",\"target\":\"Conferir cache — Jev — tutorial/how-to carrossel\",\"output\":3},{\"source\":\"Rotear conteúdo por palavras — Diário1\",\"target\":\"Conferir cache — Interação com seguidores\",\"output\":3},{\"source\":\"Rotear conteúdo por palavras — Diário1\",\"target\":\"Conferir cache — Sequência de pensamentos rápidos\",\"output\":3},{\"source\":\"Rotear conteúdo por palavras — Diário1\",\"target\":\"Preparar julgamento de conhecimento rota1\",\"output\":3},{\"source\":\"Rotear conteúdo por palavras — Diário1\",\"target\":\"Conferir cache — Tweets/Stories sem angulo\",\"output\":3},{\"source\":\"Rotear conteúdo por palavras — Diário1\",\"target\":\"Conferir cache — Jev — tutorial/how-to carrossel\",\"output\":4},{\"source\":\"Rotear conteúdo por palavras — Diário1\",\"target\":\"Conferir cache — ensaio sem angulo\",\"output\":4},{\"source\":\"Rotear conteúdo por palavras — Diário1\",\"target\":\"Conferir cache — Interação com seguidores\",\"output\":4},{\"source\":\"Rotear conteúdo por palavras — Diário1\",\"target\":\"Conferir cache — Sequência de pensamentos rápidos\",\"output\":4},{\"source\":\"Rotear conteúdo por palavras — Diário1\",\"target\":\"Conferir cache — Tweets/Stories sem angulo\",\"output\":4},{\"source\":\"Rotear conteúdo por palavras — Diário1\",\"target\":\"Conferir cache — Angulos para long-form 3200+\",\"output\":5},{\"source\":\"Rotear conteúdo por palavras — Diário1\",\"target\":\"Conferir cache — Jev — tutorial/how-to carrossel\",\"output\":5},{\"source\":\"Rotear conteúdo por palavras — Diário1\",\"target\":\"Conferir cache — Interação com seguidores\",\"output\":5},{\"source\":\"Rotear conteúdo por palavras — Diário1\",\"target\":\"Conferir cache — Sequência de pensamentos rápidos\",\"output\":5},{\"source\":\"Rotear conteúdo por palavras — Diário1\",\"target\":\"Conferir cache — Tweets/Stories sem angulo\",\"output\":5},{\"source\":\"Rotear conteúdo por palavras — Diário1\",\"target\":\"Conferir cache — ensaio sem angulo\",\"output\":5},{\"source\":\"Rotear conteúdo por palavras — Diário1\",\"target\":\"Conferir cache — Jev — tutorial/how-to carrossel\",\"output\":6},{\"source\":\"Rotear conteúdo por palavras — Diário1\",\"target\":\"Conferir cache — Angulos para long-form 3200+\",\"output\":6},{\"source\":\"Rotear conteúdo por palavras — Diário1\",\"target\":\"Conferir cache — Interação com seguidores\",\"output\":6},{\"source\":\"Rotear conteúdo por palavras — Diário1\",\"target\":\"Conferir cache — Sequência de pensamentos rápidos\",\"output\":6},{\"source\":\"Rotear conteúdo por palavras — Diário1\",\"target\":\"Conferir cache — Tweets/Stories sem angulo\",\"output\":6},{\"source\":\"Rotear conteúdo por palavras — Diário1\",\"target\":\"Conferir cache — ensaio sem angulo\",\"output\":6},{\"source\":\"Rotear conteúdo por palavras — Diário1\",\"target\":\"Sem rota social — conservar resposta\",\"output\":7},{\"source\":\"carrossel - linguagem flesch 8-9 ano\",\"target\":\"Preservar slides — lista\",\"output\":0},{\"source\":\"Angulos para long-form 3200+\",\"target\":\"Separar ângulos de ensaios\",\"output\":0},{\"source\":\"Jev — Lista carrossel1\",\"target\":\"Conservar decisão — carousel-lista\",\"output\":0},{\"source\":\"Jev — Checklist carrossel\",\"target\":\"Conservar decisão — carousel-checklist\",\"output\":0},{\"source\":\"Jev — tutorial/how-to carrossel\",\"target\":\"Conservar decisão — carousel-tutorial\",\"output\":0},{\"source\":\"Legenda completa instagram\",\"target\":\"Reunir carrossel e legenda\",\"output\":0},{\"source\":\"carrossel - linguagem flesch 8-9 ano1\",\"target\":\"Preservar slides — tutorial\",\"output\":0},{\"source\":\"text-heavy\",\"target\":\"Preparar text-heavy para decisões\",\"output\":0},{\"source\":\"ensaio com angulo\",\"target\":\"Conservar ensaio para título\",\"output\":0},{\"source\":\"ensaio sem angulo\",\"target\":\"Conservar ensaio para título\",\"output\":0},{\"source\":\"título e subtítulo\",\"target\":\"Conservar título e ensaio para conclusão\",\"output\":0},{\"source\":\"carrossel - linguagem flesch 8-9 ano3\",\"target\":\"Preservar slides — checklist\",\"output\":0},{\"source\":\"Jev — CABE google imagens? (para cada tweet)1\",\"target\":\"Conservar decisão — imagem-post\",\"output\":0},{\"source\":\"Conservar decisão — carousel-tutorial\",\"target\":\"Formato tutorial aceito?\",\"output\":0},{\"source\":\"Conservar decisão — carousel-tutorial\",\"target\":\"Conferir cache — Jev — Checklist carrossel\",\"output\":0},{\"source\":\"Formato tutorial aceito?\",\"target\":\"Conferir cache — carrossel - linguagem flesch 8-9 ano1\",\"output\":0},{\"source\":\"Formato tutorial aceito?\",\"target\":\"Carrossel tutorial não selecionado\",\"output\":1},{\"source\":\"Preservar slides — tutorial\",\"target\":\"Conferir cache — Legenda completa instagram\",\"output\":0},{\"source\":\"Conservar decisão — carousel-checklist\",\"target\":\"Conferir cache — Jev — Lista carrossel1\",\"output\":0},{\"source\":\"Conservar decisão — carousel-checklist\",\"target\":\"Formato checklist aceito?\",\"output\":0},{\"source\":\"Formato checklist aceito?\",\"target\":\"Conferir cache — carrossel - linguagem flesch 8-9 ano3\",\"output\":0},{\"source\":\"Formato checklist aceito?\",\"target\":\"Carrossel checklist não selecionado\",\"output\":1},{\"source\":\"Preservar slides — checklist\",\"target\":\"Conferir cache — Legenda completa instagram\",\"output\":0},{\"source\":\"Conservar decisão — carousel-lista\",\"target\":\"Formato lista aceito?\",\"output\":0},{\"source\":\"Formato lista aceito?\",\"target\":\"Conferir cache — carrossel - linguagem flesch 8-9 ano\",\"output\":0},{\"source\":\"Formato lista aceito?\",\"target\":\"Carrossel lista não selecionado\",\"output\":1},{\"source\":\"Preservar slides — lista\",\"target\":\"Conferir cache — Legenda completa instagram\",\"output\":0},{\"source\":\"Conservar decisão — imagem-post\",\"target\":\"Text-heavy excede 3000 caracteres — LinkedIn?\",\"output\":0},{\"source\":\"Conservar decisão — imagem-post\",\"target\":\"Text-heavy excede 2200 caracteres — Instagram?\",\"output\":0},{\"source\":\"Text-heavy excede 3000 caracteres — LinkedIn?\",\"target\":\"Conferir cache — Adaptar text-heavy — LinkedIn\",\"output\":0},{\"source\":\"Text-heavy excede 3000 caracteres — LinkedIn?\",\"target\":\"Conservar texto — LinkedIn\",\"output\":1},{\"source\":\"Text-heavy excede 2200 caracteres — Instagram?\",\"target\":\"Conferir cache — Adaptar text-heavy — Instagram\",\"output\":0},{\"source\":\"Text-heavy excede 2200 caracteres — Instagram?\",\"target\":\"Conservar texto — Instagram\",\"output\":1},{\"source\":\"Separar ângulos de ensaios\",\"target\":\"Conferir cache — ensaio com angulo\",\"output\":0},{\"source\":\"Conservar ensaio para título\",\"target\":\"Conferir cache — título e subtítulo\",\"output\":0},{\"source\":\"Conservar título e ensaio para conclusão\",\"target\":\"Conferir cache — SOFT CTA PARA O PROPRIO TEXTO\",\"output\":0},{\"source\":\"Rotear conteúdo por palavras — Diário\",\"target\":\"Grupo curto sem saída editorial\",\"output\":0},{\"source\":\"Rotear conteúdo por palavras — Diário\",\"target\":\"Grupo curto sem saída editorial\",\"output\":1},{\"source\":\"Rotear conteúdo por palavras — Diário\",\"target\":\"Conferir cache — text-heavy1\",\"output\":2},{\"source\":\"Rotear conteúdo por palavras — Diário\",\"target\":\"Conferir cache — carrossel - linguagem flesch 8-9 ano4\",\"output\":2},{\"source\":\"Rotear conteúdo por palavras — Diário\",\"target\":\"Conferir cache — text-heavy1\",\"output\":3},{\"source\":\"Rotear conteúdo por palavras — Diário\",\"target\":\"Conferir cache — thread1\",\"output\":3},{\"source\":\"Rotear conteúdo por palavras — Diário\",\"target\":\"Conferir cache — carrossel - linguagem flesch 8-9 ano4\",\"output\":3},{\"source\":\"Rotear conteúdo por palavras — Diário\",\"target\":\"Conferir cache — text-heavy1\",\"output\":4},{\"source\":\"Rotear conteúdo por palavras — Diário\",\"target\":\"Conferir cache — ensaio sem angulo1\",\"output\":4},{\"source\":\"Rotear conteúdo por palavras — Diário\",\"target\":\"Conferir cache — thread1\",\"output\":4},{\"source\":\"Rotear conteúdo por palavras — Diário\",\"target\":\"Conferir cache — carrossel - linguagem flesch 8-9 ano4\",\"output\":4},{\"source\":\"Rotear conteúdo por palavras — Diário\",\"target\":\"Conferir cache — text-heavy1\",\"output\":5},{\"source\":\"Rotear conteúdo por palavras — Diário\",\"target\":\"Conferir cache — ensaio sem angulo1\",\"output\":5},{\"source\":\"Rotear conteúdo por palavras — Diário\",\"target\":\"Conferir cache — thread1\",\"output\":5},{\"source\":\"Rotear conteúdo por palavras — Diário\",\"target\":\"Conferir cache — carrossel - linguagem flesch 8-9 ano4\",\"output\":5},{\"source\":\"Rotear conteúdo por palavras — Diário\",\"target\":\"Conferir cache — text-heavy1\",\"output\":6},{\"source\":\"Rotear conteúdo por palavras — Diário\",\"target\":\"Conferir cache — ensaio sem angulo1\",\"output\":6},{\"source\":\"Rotear conteúdo por palavras — Diário\",\"target\":\"Conferir cache — thread1\",\"output\":6},{\"source\":\"Rotear conteúdo por palavras — Diário\",\"target\":\"Conferir cache — carrossel - linguagem flesch 8-9 ano4\",\"output\":6},{\"source\":\"Jev — CABE google imagens? (para cada tweet)2\",\"target\":\"Conservar decisão — imagem-thread1\",\"output\":0},{\"source\":\"thread1\",\"target\":\"Preparar partes da thread para Jev1\",\"output\":0},{\"source\":\"Preparar partes da thread para Jev1\",\"target\":\"Conferir cache — Jev — CABE google imagens? (para cada tweet)2\",\"output\":0},{\"source\":\"Conservar decisão — imagem-thread1\",\"target\":\"Organizar thread completa por rede1\",\"output\":0},{\"source\":\"Legenda completa instagram1\",\"target\":\"Reunir carrossel e legenda1\",\"output\":0},{\"source\":\"carrossel - linguagem flesch 8-9 ano4\",\"target\":\"Preservar slides — storytelling1\",\"output\":0},{\"source\":\"Preservar slides — storytelling1\",\"target\":\"Conferir cache — Legenda completa instagram1\",\"output\":0},{\"source\":\"text-heavy1\",\"target\":\"Preparar text-heavy para decisões — Diário\",\"output\":0},{\"source\":\"Jev — CABE google imagens? (para cada tweet)\",\"target\":\"Conservar decisão — imagem-post1\",\"output\":0},{\"source\":\"Conservar decisão — imagem-post1\",\"target\":\"Text-heavy excede 3000 caracteres — LinkedIn?1\",\"output\":0},{\"source\":\"Conservar decisão — imagem-post1\",\"target\":\"Text-heavy excede 2200 caracteres — Instagram?1\",\"output\":0},{\"source\":\"Text-heavy excede 3000 caracteres — LinkedIn?1\",\"target\":\"Conferir cache — Adaptar text-heavy — LinkedIn1\",\"output\":0},{\"source\":\"Text-heavy excede 3000 caracteres — LinkedIn?1\",\"target\":\"Conservar texto — LinkedIn1\",\"output\":1},{\"source\":\"Text-heavy excede 2200 caracteres — Instagram?1\",\"target\":\"Conferir cache — Adaptar text-heavy — Instagram1\",\"output\":0},{\"source\":\"Text-heavy excede 2200 caracteres — Instagram?1\",\"target\":\"Conservar texto — Instagram1\",\"output\":1},{\"source\":\"Preparar julgamento de conhecimento rota1\",\"target\":\"Conferir cache — text-heavy\",\"output\":0},{\"source\":\"ensaio sem angulo1\",\"target\":\"Conservar ensaio para título1\",\"output\":0},{\"source\":\"título e subtítulo1\",\"target\":\"Conservar título e ensaio para conclusão1\",\"output\":0},{\"source\":\"Conservar ensaio para título1\",\"target\":\"Conferir cache — título e subtítulo1\",\"output\":0},{\"source\":\"Conservar título e ensaio para conclusão1\",\"target\":\"Conferir cache — SOFT CTA PARA O PROPRIO TEXTO1\",\"output\":0},{\"source\":\"Contar palavras para conteúdo — Diário\",\"target\":\"Rotear conteúdo por palavras — Diário\",\"output\":0},{\"source\":\"Preparar text-heavy para decisões\",\"target\":\"Conferir cache — Jev — CABE google imagens? (para cada tweet)1\",\"output\":0},{\"source\":\"Preparar text-heavy para decisões — Diário\",\"target\":\"Conferir cache — Jev — CABE google imagens? (para cada tweet)\",\"output\":0},{\"source\":\"Receber pedido editorial\",\"target\":\"Preparar texto de teste\",\"output\":0},{\"source\":\"Preparar texto de teste\",\"target\":\"Comparar continuidade editorial?\",\"output\":0},{\"source\":\"Comparar continuidade editorial?\",\"target\":\"Preparar comparação de textos\",\"output\":0},{\"source\":\"Comparar continuidade editorial?\",\"target\":\"Gerar a partir de recorte?\",\"output\":1},{\"source\":\"Gerar a partir de recorte?\",\"target\":\"Contar palavras para conteúdo — Diário1\",\"output\":0},{\"source\":\"Gerar a partir de recorte?\",\"target\":\"Contar palavras para conteúdo — Diário\",\"output\":1},{\"source\":\"Preparar comparação de textos\",\"target\":\"Conferir cache — Jev — Continuidade entre inputs\",\"output\":0},{\"source\":\"Jev — Continuidade entre inputs\",\"target\":\"Validar decisão de continuidade\",\"output\":0},{\"source\":\"Conferir cache — Interação com seguidores\",\"target\":\"Retomar resultado — Interação com seguidores\",\"output\":0},{\"source\":\"Interação com seguidores — chamada\",\"target\":\"Interação com seguidores\",\"output\":0},{\"source\":\"Retomar resultado — Interação com seguidores\",\"target\":\"Interação com seguidores\",\"output\":0},{\"source\":\"Retomar resultado — Interação com seguidores\",\"target\":\"Interação com seguidores — chamada\",\"output\":1},{\"source\":\"Conferir cache — SOFT CTA PARA O PROPRIO TEXTO\",\"target\":\"Retomar resultado — SOFT CTA PARA O PROPRIO TEXTO\",\"output\":0},{\"source\":\"SOFT CTA PARA O PROPRIO TEXTO — chamada\",\"target\":\"SOFT CTA PARA O PROPRIO TEXTO\",\"output\":0},{\"source\":\"Retomar resultado — SOFT CTA PARA O PROPRIO TEXTO\",\"target\":\"SOFT CTA PARA O PROPRIO TEXTO\",\"output\":0},{\"source\":\"Retomar resultado — SOFT CTA PARA O PROPRIO TEXTO\",\"target\":\"SOFT CTA PARA O PROPRIO TEXTO — chamada\",\"output\":1},{\"source\":\"Conferir cache — carrossel - linguagem flesch 8-9 ano\",\"target\":\"Retomar resultado — carrossel - linguagem flesch 8-9 ano\",\"output\":0},{\"source\":\"carrossel - linguagem flesch 8-9 ano — chamada\",\"target\":\"carrossel - linguagem flesch 8-9 ano\",\"output\":0},{\"source\":\"Retomar resultado — carrossel - linguagem flesch 8-9 ano\",\"target\":\"carrossel - linguagem flesch 8-9 ano\",\"output\":0},{\"source\":\"Retomar resultado — carrossel - linguagem flesch 8-9 ano\",\"target\":\"carrossel - linguagem flesch 8-9 ano — chamada\",\"output\":1},{\"source\":\"Conferir cache — Angulos para long-form 3200+\",\"target\":\"Retomar resultado — Angulos para long-form 3200+\",\"output\":0},{\"source\":\"Angulos para long-form 3200+ — chamada\",\"target\":\"Angulos para long-form 3200+\",\"output\":0},{\"source\":\"Retomar resultado — Angulos para long-form 3200+\",\"target\":\"Angulos para long-form 3200+\",\"output\":0},{\"source\":\"Retomar resultado — Angulos para long-form 3200+\",\"target\":\"Angulos para long-form 3200+ — chamada\",\"output\":1},{\"source\":\"Conferir cache — Jev — Lista carrossel1\",\"target\":\"Retomar resultado — Jev — Lista carrossel1\",\"output\":0},{\"source\":\"Jev — Lista carrossel1 — chamada\",\"target\":\"Jev — Lista carrossel1\",\"output\":0},{\"source\":\"Retomar resultado — Jev — Lista carrossel1\",\"target\":\"Jev — Lista carrossel1\",\"output\":0},{\"source\":\"Retomar resultado — Jev — Lista carrossel1\",\"target\":\"Jev — Lista carrossel1 — chamada\",\"output\":1},{\"source\":\"Conferir cache — Jev — Checklist carrossel\",\"target\":\"Retomar resultado — Jev — Checklist carrossel\",\"output\":0},{\"source\":\"Jev — Checklist carrossel — chamada\",\"target\":\"Jev — Checklist carrossel\",\"output\":0},{\"source\":\"Retomar resultado — Jev — Checklist carrossel\",\"target\":\"Jev — Checklist carrossel\",\"output\":0},{\"source\":\"Retomar resultado — Jev — Checklist carrossel\",\"target\":\"Jev — Checklist carrossel — chamada\",\"output\":1},{\"source\":\"Conferir cache — Jev — tutorial/how-to carrossel\",\"target\":\"Retomar resultado — Jev — tutorial/how-to carrossel\",\"output\":0},{\"source\":\"Jev — tutorial/how-to carrossel — chamada\",\"target\":\"Jev — tutorial/how-to carrossel\",\"output\":0},{\"source\":\"Retomar resultado — Jev — tutorial/how-to carrossel\",\"target\":\"Jev — tutorial/how-to carrossel\",\"output\":0},{\"source\":\"Retomar resultado — Jev — tutorial/how-to carrossel\",\"target\":\"Jev — tutorial/how-to carrossel — chamada\",\"output\":1},{\"source\":\"Conferir cache — Legenda completa instagram\",\"target\":\"Retomar resultado — Legenda completa instagram\",\"output\":0},{\"source\":\"Legenda completa instagram — chamada\",\"target\":\"Legenda completa instagram\",\"output\":0},{\"source\":\"Retomar resultado — Legenda completa instagram\",\"target\":\"Legenda completa instagram\",\"output\":0},{\"source\":\"Retomar resultado — Legenda completa instagram\",\"target\":\"Legenda completa instagram — chamada\",\"output\":1},{\"source\":\"Conferir cache — carrossel - linguagem flesch 8-9 ano1\",\"target\":\"Retomar resultado — carrossel - linguagem flesch 8-9 ano1\",\"output\":0},{\"source\":\"carrossel - linguagem flesch 8-9 ano1 — chamada\",\"target\":\"carrossel - linguagem flesch 8-9 ano1\",\"output\":0},{\"source\":\"Retomar resultado — carrossel - linguagem flesch 8-9 ano1\",\"target\":\"carrossel - linguagem flesch 8-9 ano1\",\"output\":0},{\"source\":\"Retomar resultado — carrossel - linguagem flesch 8-9 ano1\",\"target\":\"carrossel - linguagem flesch 8-9 ano1 — chamada\",\"output\":1},{\"source\":\"Conferir cache — text-heavy\",\"target\":\"Retomar resultado — text-heavy\",\"output\":0},{\"source\":\"text-heavy — chamada\",\"target\":\"text-heavy\",\"output\":0},{\"source\":\"Retomar resultado — text-heavy\",\"target\":\"text-heavy\",\"output\":0},{\"source\":\"Retomar resultado — text-heavy\",\"target\":\"text-heavy — chamada\",\"output\":1},{\"source\":\"Conferir cache — ensaio com angulo\",\"target\":\"Retomar resultado — ensaio com angulo\",\"output\":0},{\"source\":\"ensaio com angulo — chamada\",\"target\":\"ensaio com angulo\",\"output\":0},{\"source\":\"Retomar resultado — ensaio com angulo\",\"target\":\"ensaio com angulo\",\"output\":0},{\"source\":\"Retomar resultado — ensaio com angulo\",\"target\":\"ensaio com angulo — chamada\",\"output\":1},{\"source\":\"Conferir cache — ensaio sem angulo\",\"target\":\"Retomar resultado — ensaio sem angulo\",\"output\":0},{\"source\":\"ensaio sem angulo — chamada\",\"target\":\"ensaio sem angulo\",\"output\":0},{\"source\":\"Retomar resultado — ensaio sem angulo\",\"target\":\"ensaio sem angulo\",\"output\":0},{\"source\":\"Retomar resultado — ensaio sem angulo\",\"target\":\"ensaio sem angulo — chamada\",\"output\":1},{\"source\":\"Conferir cache — título e subtítulo\",\"target\":\"Retomar resultado — título e subtítulo\",\"output\":0},{\"source\":\"título e subtítulo — chamada\",\"target\":\"título e subtítulo\",\"output\":0},{\"source\":\"Retomar resultado — título e subtítulo\",\"target\":\"título e subtítulo\",\"output\":0},{\"source\":\"Retomar resultado — título e subtítulo\",\"target\":\"título e subtítulo — chamada\",\"output\":1},{\"source\":\"Conferir cache — Tweets/Stories sem angulo\",\"target\":\"Retomar resultado — Tweets/Stories sem angulo\",\"output\":0},{\"source\":\"Tweets/Stories sem angulo — chamada\",\"target\":\"Tweets/Stories sem angulo\",\"output\":0},{\"source\":\"Retomar resultado — Tweets/Stories sem angulo\",\"target\":\"Tweets/Stories sem angulo\",\"output\":0},{\"source\":\"Retomar resultado — Tweets/Stories sem angulo\",\"target\":\"Tweets/Stories sem angulo — chamada\",\"output\":1},{\"source\":\"Conferir cache — Sequência de pensamentos rápidos\",\"target\":\"Retomar resultado — Sequência de pensamentos rápidos\",\"output\":0},{\"source\":\"Sequência de pensamentos rápidos — chamada\",\"target\":\"Sequência de pensamentos rápidos\",\"output\":0},{\"source\":\"Retomar resultado — Sequência de pensamentos rápidos\",\"target\":\"Sequência de pensamentos rápidos\",\"output\":0},{\"source\":\"Retomar resultado — Sequência de pensamentos rápidos\",\"target\":\"Sequência de pensamentos rápidos — chamada\",\"output\":1},{\"source\":\"Conferir cache — carrossel - linguagem flesch 8-9 ano3\",\"target\":\"Retomar resultado — carrossel - linguagem flesch 8-9 ano3\",\"output\":0},{\"source\":\"carrossel - linguagem flesch 8-9 ano3 — chamada\",\"target\":\"carrossel - linguagem flesch 8-9 ano3\",\"output\":0},{\"source\":\"Retomar resultado — carrossel - linguagem flesch 8-9 ano3\",\"target\":\"carrossel - linguagem flesch 8-9 ano3\",\"output\":0},{\"source\":\"Retomar resultado — carrossel - linguagem flesch 8-9 ano3\",\"target\":\"carrossel - linguagem flesch 8-9 ano3 — chamada\",\"output\":1},{\"source\":\"Conferir cache — Jev — CABE google imagens? (para cada tweet)1\",\"target\":\"Retomar resultado — Jev — CABE google imagens? (para cada tweet)1\",\"output\":0},{\"source\":\"Jev — CABE google imagens? (para cada tweet)1 — chamada\",\"target\":\"Jev — CABE google imagens? (para cada tweet)1\",\"output\":0},{\"source\":\"Retomar resultado — Jev — CABE google imagens? (para cada tweet)1\",\"target\":\"Jev — CABE google imagens? (para cada tweet)1\",\"output\":0},{\"source\":\"Retomar resultado — Jev — CABE google imagens? (para cada tweet)1\",\"target\":\"Jev — CABE google imagens? (para cada tweet)1 — chamada\",\"output\":1},{\"source\":\"Conferir cache — Adaptar text-heavy — LinkedIn\",\"target\":\"Retomar resultado — Adaptar text-heavy — LinkedIn\",\"output\":0},{\"source\":\"Adaptar text-heavy — LinkedIn — chamada\",\"target\":\"Adaptar text-heavy — LinkedIn\",\"output\":0},{\"source\":\"Retomar resultado — Adaptar text-heavy — LinkedIn\",\"target\":\"Adaptar text-heavy — LinkedIn\",\"output\":0},{\"source\":\"Retomar resultado — Adaptar text-heavy — LinkedIn\",\"target\":\"Adaptar text-heavy — LinkedIn — chamada\",\"output\":1},{\"source\":\"Conferir cache — Adaptar text-heavy — Instagram\",\"target\":\"Retomar resultado — Adaptar text-heavy — Instagram\",\"output\":0},{\"source\":\"Adaptar text-heavy — Instagram — chamada\",\"target\":\"Adaptar text-heavy — Instagram\",\"output\":0},{\"source\":\"Retomar resultado — Adaptar text-heavy — Instagram\",\"target\":\"Adaptar text-heavy — Instagram\",\"output\":0},{\"source\":\"Retomar resultado — Adaptar text-heavy — Instagram\",\"target\":\"Adaptar text-heavy — Instagram — chamada\",\"output\":1},{\"source\":\"Conferir cache — Jev — CABE google imagens? (para cada tweet)2\",\"target\":\"Retomar resultado — Jev — CABE google imagens? (para cada tweet)2\",\"output\":0},{\"source\":\"Jev — CABE google imagens? (para cada tweet)2 — chamada\",\"target\":\"Jev — CABE google imagens? (para cada tweet)2\",\"output\":0},{\"source\":\"Retomar resultado — Jev — CABE google imagens? (para cada tweet)2\",\"target\":\"Jev — CABE google imagens? (para cada tweet)2\",\"output\":0},{\"source\":\"Retomar resultado — Jev — CABE google imagens? (para cada tweet)2\",\"target\":\"Jev — CABE google imagens? (para cada tweet)2 — chamada\",\"output\":1},{\"source\":\"Conferir cache — thread1\",\"target\":\"Retomar resultado — thread1\",\"output\":0},{\"source\":\"thread1 — chamada\",\"target\":\"thread1\",\"output\":0},{\"source\":\"Retomar resultado — thread1\",\"target\":\"thread1\",\"output\":0},{\"source\":\"Retomar resultado — thread1\",\"target\":\"thread1 — chamada\",\"output\":1},{\"source\":\"Conferir cache — Legenda completa instagram1\",\"target\":\"Retomar resultado — Legenda completa instagram1\",\"output\":0},{\"source\":\"Legenda completa instagram1 — chamada\",\"target\":\"Legenda completa instagram1\",\"output\":0},{\"source\":\"Retomar resultado — Legenda completa instagram1\",\"target\":\"Legenda completa instagram1\",\"output\":0},{\"source\":\"Retomar resultado — Legenda completa instagram1\",\"target\":\"Legenda completa instagram1 — chamada\",\"output\":1},{\"source\":\"Conferir cache — carrossel - linguagem flesch 8-9 ano4\",\"target\":\"Retomar resultado — carrossel - linguagem flesch 8-9 ano4\",\"output\":0},{\"source\":\"carrossel - linguagem flesch 8-9 ano4 — chamada\",\"target\":\"carrossel - linguagem flesch 8-9 ano4\",\"output\":0},{\"source\":\"Retomar resultado — carrossel - linguagem flesch 8-9 ano4\",\"target\":\"carrossel - linguagem flesch 8-9 ano4\",\"output\":0},{\"source\":\"Retomar resultado — carrossel - linguagem flesch 8-9 ano4\",\"target\":\"carrossel - linguagem flesch 8-9 ano4 — chamada\",\"output\":1},{\"source\":\"Conferir cache — text-heavy1\",\"target\":\"Retomar resultado — text-heavy1\",\"output\":0},{\"source\":\"text-heavy1 — chamada\",\"target\":\"text-heavy1\",\"output\":0},{\"source\":\"Retomar resultado — text-heavy1\",\"target\":\"text-heavy1\",\"output\":0},{\"source\":\"Retomar resultado — text-heavy1\",\"target\":\"text-heavy1 — chamada\",\"output\":1},{\"source\":\"Conferir cache — Jev — CABE google imagens? (para cada tweet)\",\"target\":\"Retomar resultado — Jev — CABE google imagens? (para cada tweet)\",\"output\":0},{\"source\":\"Jev — CABE google imagens? (para cada tweet) — chamada\",\"target\":\"Jev — CABE google imagens? (para cada tweet)\",\"output\":0},{\"source\":\"Retomar resultado — Jev — CABE google imagens? (para cada tweet)\",\"target\":\"Jev — CABE google imagens? (para cada tweet)\",\"output\":0},{\"source\":\"Retomar resultado — Jev — CABE google imagens? (para cada tweet)\",\"target\":\"Jev — CABE google imagens? (para cada tweet) — chamada\",\"output\":1},{\"source\":\"Conferir cache — Adaptar text-heavy — LinkedIn1\",\"target\":\"Retomar resultado — Adaptar text-heavy — LinkedIn1\",\"output\":0},{\"source\":\"Adaptar text-heavy — LinkedIn1 — chamada\",\"target\":\"Adaptar text-heavy — LinkedIn1\",\"output\":0},{\"source\":\"Retomar resultado — Adaptar text-heavy — LinkedIn1\",\"target\":\"Adaptar text-heavy — LinkedIn1\",\"output\":0},{\"source\":\"Retomar resultado — Adaptar text-heavy — LinkedIn1\",\"target\":\"Adaptar text-heavy — LinkedIn1 — chamada\",\"output\":1},{\"source\":\"Conferir cache — Adaptar text-heavy — Instagram1\",\"target\":\"Retomar resultado — Adaptar text-heavy — Instagram1\",\"output\":0},{\"source\":\"Adaptar text-heavy — Instagram1 — chamada\",\"target\":\"Adaptar text-heavy — Instagram1\",\"output\":0},{\"source\":\"Retomar resultado — Adaptar text-heavy — Instagram1\",\"target\":\"Adaptar text-heavy — Instagram1\",\"output\":0},{\"source\":\"Retomar resultado — Adaptar text-heavy — Instagram1\",\"target\":\"Adaptar text-heavy — Instagram1 — chamada\",\"output\":1},{\"source\":\"Conferir cache — SOFT CTA PARA O PROPRIO TEXTO1\",\"target\":\"Retomar resultado — SOFT CTA PARA O PROPRIO TEXTO1\",\"output\":0},{\"source\":\"SOFT CTA PARA O PROPRIO TEXTO1 — chamada\",\"target\":\"SOFT CTA PARA O PROPRIO TEXTO1\",\"output\":0},{\"source\":\"Retomar resultado — SOFT CTA PARA O PROPRIO TEXTO1\",\"target\":\"SOFT CTA PARA O PROPRIO TEXTO1\",\"output\":0},{\"source\":\"Retomar resultado — SOFT CTA PARA O PROPRIO TEXTO1\",\"target\":\"SOFT CTA PARA O PROPRIO TEXTO1 — chamada\",\"output\":1},{\"source\":\"Conferir cache — ensaio sem angulo1\",\"target\":\"Retomar resultado — ensaio sem angulo1\",\"output\":0},{\"source\":\"ensaio sem angulo1 — chamada\",\"target\":\"ensaio sem angulo1\",\"output\":0},{\"source\":\"Retomar resultado — ensaio sem angulo1\",\"target\":\"ensaio sem angulo1\",\"output\":0},{\"source\":\"Retomar resultado — ensaio sem angulo1\",\"target\":\"ensaio sem angulo1 — chamada\",\"output\":1},{\"source\":\"Conferir cache — título e subtítulo1\",\"target\":\"Retomar resultado — título e subtítulo1\",\"output\":0},{\"source\":\"título e subtítulo1 — chamada\",\"target\":\"título e subtítulo1\",\"output\":0},{\"source\":\"Retomar resultado — título e subtítulo1\",\"target\":\"título e subtítulo1\",\"output\":0},{\"source\":\"Retomar resultado — título e subtítulo1\",\"target\":\"título e subtítulo1 — chamada\",\"output\":1},{\"source\":\"Conferir cache — Jev — Continuidade entre inputs\",\"target\":\"Retomar resultado — Jev — Continuidade entre inputs\",\"output\":0},{\"source\":\"Jev — Continuidade entre inputs — chamada\",\"target\":\"Jev — Continuidade entre inputs\",\"output\":0},{\"source\":\"Retomar resultado — Jev — Continuidade entre inputs\",\"target\":\"Jev — Continuidade entre inputs\",\"output\":0},{\"source\":\"Retomar resultado — Jev — Continuidade entre inputs\",\"target\":\"Jev — Continuidade entre inputs — chamada\",\"output\":1}];\nconst names=[\"Contar palavras para conteúdo — Diário1\",\"Rotear conteúdo por palavras — Diário1\",\"Interação com seguidores — chamada\",\"SOFT CTA PARA O PROPRIO TEXTO — chamada\",\"carrossel - linguagem flesch 8-9 ano — chamada\",\"Angulos para long-form 3200+ — chamada\",\"Jev — Lista carrossel1 — chamada\",\"Jev — Checklist carrossel — chamada\",\"Jev — tutorial/how-to carrossel — chamada\",\"Legenda completa instagram — chamada\",\"carrossel - linguagem flesch 8-9 ano1 — chamada\",\"text-heavy — chamada\",\"ensaio com angulo — chamada\",\"ensaio sem angulo — chamada\",\"título e subtítulo — chamada\",\"Tweets/Stories sem angulo — chamada\",\"Sequência de pensamentos rápidos — chamada\",\"carrossel - linguagem flesch 8-9 ano3 — chamada\",\"Jev — CABE google imagens? (para cada tweet)1 — chamada\",\"Sem rota social — conservar resposta\",\"Conservar decisão — carousel-tutorial\",\"Formato tutorial aceito?\",\"Preservar slides — tutorial\",\"Carrossel tutorial não selecionado\",\"Conservar decisão — carousel-checklist\",\"Formato checklist aceito?\",\"Preservar slides — checklist\",\"Carrossel checklist não selecionado\",\"Conservar decisão — carousel-lista\",\"Formato lista aceito?\",\"Preservar slides — lista\",\"Carrossel lista não selecionado\",\"Conservar decisão — imagem-post\",\"Reunir carrossel e legenda\",\"Text-heavy excede 3000 caracteres — LinkedIn?\",\"Adaptar text-heavy — LinkedIn — chamada\",\"Conservar texto — LinkedIn\",\"Text-heavy excede 2200 caracteres — Instagram?\",\"Adaptar text-heavy — Instagram — chamada\",\"Conservar texto — Instagram\",\"Separar ângulos de ensaios\",\"Conservar ensaio para título\",\"Conservar título e ensaio para conclusão\",\"Rotear conteúdo por palavras — Diário\",\"Jev — CABE google imagens? (para cada tweet)2 — chamada\",\"thread1 — chamada\",\"Preparar partes da thread para Jev1\",\"Conservar decisão — imagem-thread1\",\"Organizar thread completa por rede1\",\"Legenda completa instagram1 — chamada\",\"carrossel - linguagem flesch 8-9 ano4 — chamada\",\"Preservar slides — storytelling1\",\"Reunir carrossel e legenda1\",\"text-heavy1 — chamada\",\"Jev — CABE google imagens? (para cada tweet) — chamada\",\"Conservar decisão — imagem-post1\",\"Text-heavy excede 3000 caracteres — LinkedIn?1\",\"Adaptar text-heavy — LinkedIn1 — chamada\",\"Conservar texto — LinkedIn1\",\"Text-heavy excede 2200 caracteres — Instagram?1\",\"Adaptar text-heavy — Instagram1 — chamada\",\"Conservar texto — Instagram1\",\"Preparar julgamento de conhecimento rota1\",\"SOFT CTA PARA O PROPRIO TEXTO1 — chamada\",\"ensaio sem angulo1 — chamada\",\"título e subtítulo1 — chamada\",\"Conservar ensaio para título1\",\"Conservar título e ensaio para conclusão1\",\"Contar palavras para conteúdo — Diário\",\"Preparar text-heavy para decisões\",\"Preparar text-heavy para decisões — Diário\",\"Receber pedido editorial\",\"Preparar texto de teste\",\"Comparar continuidade editorial?\",\"Gerar a partir de recorte?\",\"Grupo curto sem saída editorial\",\"Conferir cache — Interação com seguidores\",\"Retomar resultado — Interação com seguidores\",\"Interação com seguidores\",\"Conferir cache — SOFT CTA PARA O PROPRIO TEXTO\",\"Retomar resultado — SOFT CTA PARA O PROPRIO TEXTO\",\"SOFT CTA PARA O PROPRIO TEXTO\",\"Conferir cache — carrossel - linguagem flesch 8-9 ano\",\"Retomar resultado — carrossel - linguagem flesch 8-9 ano\",\"carrossel - linguagem flesch 8-9 ano\",\"Conferir cache — Angulos para long-form 3200+\",\"Retomar resultado — Angulos para long-form 3200+\",\"Angulos para long-form 3200+\",\"Conferir cache — Jev — Lista carrossel1\",\"Retomar resultado — Jev — Lista carrossel1\",\"Jev — Lista carrossel1\",\"Conferir cache — Jev — Checklist carrossel\",\"Retomar resultado — Jev — Checklist carrossel\",\"Jev — Checklist carrossel\",\"Conferir cache — Jev — tutorial/how-to carrossel\",\"Retomar resultado — Jev — tutorial/how-to carrossel\",\"Jev — tutorial/how-to carrossel\",\"Conferir cache — Legenda completa instagram\",\"Retomar resultado — Legenda completa instagram\",\"Legenda completa instagram\",\"Conferir cache — carrossel - linguagem flesch 8-9 ano1\",\"Retomar resultado — carrossel - linguagem flesch 8-9 ano1\",\"carrossel - linguagem flesch 8-9 ano1\",\"Conferir cache — text-heavy\",\"Retomar resultado — text-heavy\",\"text-heavy\",\"Conferir cache — ensaio com angulo\",\"Retomar resultado — ensaio com angulo\",\"ensaio com angulo\",\"Conferir cache — ensaio sem angulo\",\"Retomar resultado — ensaio sem angulo\",\"ensaio sem angulo\",\"Conferir cache — título e subtítulo\",\"Retomar resultado — título e subtítulo\",\"título e subtítulo\",\"Conferir cache — Tweets/Stories sem angulo\",\"Retomar resultado — Tweets/Stories sem angulo\",\"Tweets/Stories sem angulo\",\"Conferir cache — Sequência de pensamentos rápidos\",\"Retomar resultado — Sequência de pensamentos rápidos\",\"Sequência de pensamentos rápidos\",\"Conferir cache — carrossel - linguagem flesch 8-9 ano3\",\"Retomar resultado — carrossel - linguagem flesch 8-9 ano3\",\"carrossel - linguagem flesch 8-9 ano3\",\"Conferir cache — Jev — CABE google imagens? (para cada tweet)1\",\"Retomar resultado — Jev — CABE google imagens? (para cada tweet)1\",\"Jev — CABE google imagens? (para cada tweet)1\",\"Conferir cache — Adaptar text-heavy — LinkedIn\",\"Retomar resultado — Adaptar text-heavy — LinkedIn\",\"Adaptar text-heavy — LinkedIn\",\"Conferir cache — Adaptar text-heavy — Instagram\",\"Retomar resultado — Adaptar text-heavy — Instagram\",\"Adaptar text-heavy — Instagram\",\"Conferir cache — Jev — CABE google imagens? (para cada tweet)2\",\"Retomar resultado — Jev — CABE google imagens? (para cada tweet)2\",\"Jev — CABE google imagens? (para cada tweet)2\",\"Conferir cache — thread1\",\"Retomar resultado — thread1\",\"thread1\",\"Conferir cache — Legenda completa instagram1\",\"Retomar resultado — Legenda completa instagram1\",\"Legenda completa instagram1\",\"Conferir cache — carrossel - linguagem flesch 8-9 ano4\",\"Retomar resultado — carrossel - linguagem flesch 8-9 ano4\",\"carrossel - linguagem flesch 8-9 ano4\",\"Conferir cache — text-heavy1\",\"Retomar resultado — text-heavy1\",\"text-heavy1\",\"Conferir cache — Jev — CABE google imagens? (para cada tweet)\",\"Retomar resultado — Jev — CABE google imagens? (para cada tweet)\",\"Jev — CABE google imagens? (para cada tweet)\",\"Conferir cache — Adaptar text-heavy — LinkedIn1\",\"Retomar resultado — Adaptar text-heavy — LinkedIn1\",\"Adaptar text-heavy — LinkedIn1\",\"Conferir cache — Adaptar text-heavy — Instagram1\",\"Retomar resultado — Adaptar text-heavy — Instagram1\",\"Adaptar text-heavy — Instagram1\",\"Conferir cache — SOFT CTA PARA O PROPRIO TEXTO1\",\"Retomar resultado — SOFT CTA PARA O PROPRIO TEXTO1\",\"SOFT CTA PARA O PROPRIO TEXTO1\",\"Conferir cache — ensaio sem angulo1\",\"Retomar resultado — ensaio sem angulo1\",\"ensaio sem angulo1\",\"Conferir cache — título e subtítulo1\",\"Retomar resultado — título e subtítulo1\",\"título e subtítulo1\",\"Conferir cache — Jev — Continuidade entre inputs\"];\nconst avisos=[];const existing=new Map();function exists(name){if(existing.has(name))return existing.get(name);try{$(name).isExecuted;existing.set(name,true);return true;}catch{existing.set(name,false);avisos.push({node:name,mensagem:'Node ausente nesta versão; referência ignorada pelo coletor.'});return false;}}\nconst cache=new Map();function runs(name){if(cache.has(name))return cache.get(name);const values=[];if(!exists(name)){cache.set(name,values);return values;}if($(name).isExecuted){for(let run=0;run<10000;run++){try{const items=$(name).all(0,run);if(values.includes(items)){let expected=0;for(const edge of graph.filter(e=>e.target===name&&exists(e.source)))for(let r=0;r<runs(edge.source).length;r++){try{if($(edge.source).all(edge.output,r).length)expected++;}catch{}}values.length=Math.min(values.length,Math.max(1,expected));while(values.length<expected)values.push(items);break;}values.push(items);}catch{break;}}}cache.set(name,values);return values;}\nif($runIndex>0){for(let run=0;run<$runIndex;run++){let previous=[];try{previous=$('Ver todos os outputs dos Agents').all(0,run);}catch{}if(previous.length)return [];}}\nfor(const name of names){if(!exists(name))continue;let expected=0;for(const edge of graph.filter(e=>e.target===name)){for(let run=0;run<runs(edge.source).length;run++){let items=[];try{items=$(edge.source).all(edge.output,run);}catch{}if(items.length)expected++;}}if(runs(name).length<expected)return [];}\nfunction parse(output){if(typeof output!=='string')return output;try{return JSON.parse(output.trim().replace(/^```(?:json)?\\s*\\n?([\\s\\S]*?)\\n?```$/i,'$1'));}catch{return output;}}\nconst agentNames=[\"Interação com seguidores\",\"SOFT CTA PARA O PROPRIO TEXTO\",\"carrossel - linguagem flesch 8-9 ano\",\"Angulos para long-form 3200+\",\"Legenda completa instagram\",\"carrossel - linguagem flesch 8-9 ano1\",\"text-heavy\",\"ensaio com angulo\",\"ensaio sem angulo\",\"título e subtítulo\",\"Tweets/Stories sem angulo\",\"Sequência de pensamentos rápidos\",\"carrossel - linguagem flesch 8-9 ano3\",\"Adaptar text-heavy — LinkedIn\",\"Adaptar text-heavy — Instagram\",\"thread1\",\"Legenda completa instagram1\",\"carrossel - linguagem flesch 8-9 ano4\",\"text-heavy1\",\"Adaptar text-heavy — LinkedIn1\",\"Adaptar text-heavy — Instagram1\",\"SOFT CTA PARA O PROPRIO TEXTO1\",\"ensaio sem angulo1\",\"título e subtítulo1\"],jevNames=[\"Jev — Lista carrossel1\",\"Jev — Checklist carrossel\",\"Jev — tutorial/how-to carrossel\",\"Jev — CABE google imagens? (para cada tweet)1\",\"Jev — CABE google imagens? (para cada tweet)2\",\"Jev — CABE google imagens? (para cada tweet)\",\"Jev — Tem conhecimento?\"];\nconst outputsDosAgents=agentNames.flatMap(agent=>runs(agent).flatMap((items,run)=>items.map((item,index)=>({agent,run,item:index,output:item?.json?.output??null,outputEstruturado:parse(item?.json?.output??null),erro:item?.json?.error??null}))));\nconst outputsPorAgent=Object.fromEntries(agentNames.filter(name=>runs(name).length).map(name=>[name,outputsDosAgents.filter(item=>item.agent===name)]));\nconst avaliacoesJev=jevNames.flatMap(node=>runs(node).flatMap((items,run)=>items.map((item,index)=>({node,run,item:index,resposta:item?.json??null}))));\nconst resultadosFinais=[\"Conservar decisão — imagem-post\",\"Conservar decisão — imagem-post1\",\"Conservar título e ensaio para conclusão\",\"Conservar título e ensaio para conclusão1\",\"Interação com seguidores\",\"SOFT CTA PARA O PROPRIO TEXTO\",\"Tweets/Stories sem angulo\",\"Sequência de pensamentos rápidos\",\"Sem rota social — conservar resposta\",\"Carrossel tutorial não selecionado\",\"Carrossel checklist não selecionado\",\"Carrossel lista não selecionado\",\"Reunir carrossel e legenda\",\"Adaptar text-heavy — LinkedIn\",\"Conservar texto — LinkedIn\",\"Adaptar text-heavy — Instagram\",\"Conservar texto — Instagram\",\"Organizar thread completa por rede1\",\"Reunir carrossel e legenda1\",\"Adaptar text-heavy — LinkedIn1\",\"Conservar texto — LinkedIn1\",\"Adaptar text-heavy — Instagram1\",\"Conservar texto — Instagram1\",\"SOFT CTA PARA O PROPRIO TEXTO1\"].flatMap(node=>runs(node).flatMap((items,run)=>items.map((item,index)=>({node,run,item:index,resultado:item?.json??null}))));\nconst errosBrutos=outputsDosAgents.filter(item=>item.erro).map(item=>({node:item.agent,erro:item.erro}));\nfor(const node of names)for(const items of runs(node))for(const item of items){\n  const value=item?.json??{};\n  if(value.error)errosBrutos.push({node,erro:value.error});if(value.decision?.error)errosBrutos.push({node,erro:{message:value.decision.error}});const stages=Array.isArray(value.stageErrors)?value.stageErrors:[];\n  for(const error of stages)errosBrutos.push({node:error.stage??node,erro:error});\n}\nconst vistos=new Set();\nconst erros=errosBrutos.filter(value=>{const key=JSON.stringify([value.node,value.erro?.referenceId??null,value.erro?.message??value.erro]);if(vistos.has(key))return false;vistos.add(key);return true;});\nreturn [{json:{textoOriginal:runs('Preparar texto de teste')[0]?.[0]?.json?.text??runs('Validar entrada e adicionar SEGs1')[0]?.[0]?.json?.text??null,digestao:runs('Validar e montar digestão1')[0]?.[0]?.json??null,resumo:{agentsExecutados:Object.keys(outputsPorAgent).length,outputs:outputsDosAgents.length,avaliacoes:avaliacoesJev.length,erros:erros.length},outputsDosAgents,outputsPorAgent,avaliacoesJev,resultadosFinais,erros,avisos}}];\n"
+      "jsCode": "// Inventário sincronizado com as conexões atuais. Não altera Agents nem decisões de roteamento.\nconst graph=[{\"source\":\"Contar palavras para conteúdo — Diário1\",\"target\":\"Rotear conteúdo por palavras — Diário1\",\"output\":0},{\"source\":\"Rotear conteúdo por palavras — Diário1\",\"target\":\"Conferir cache — Tweets/Stories sem angulo\",\"output\":0},{\"source\":\"Rotear conteúdo por palavras — Diário1\",\"target\":\"Conferir cache — Interação com seguidores\",\"output\":0},{\"source\":\"Rotear conteúdo por palavras — Diário1\",\"target\":\"Conferir cache — Jev — tutorial/how-to carrossel\",\"output\":0},{\"source\":\"Rotear conteúdo por palavras — Diário1\",\"target\":\"Conferir cache — Interação com seguidores\",\"output\":1},{\"source\":\"Rotear conteúdo por palavras — Diário1\",\"target\":\"Conferir cache — Jev — tutorial/how-to carrossel\",\"output\":1},{\"source\":\"Rotear conteúdo por palavras — Diário1\",\"target\":\"Conferir cache — Tweets/Stories sem angulo\",\"output\":1},{\"source\":\"Rotear conteúdo por palavras — Diário1\",\"target\":\"Conferir cache — Interação com seguidores\",\"output\":2},{\"source\":\"Rotear conteúdo por palavras — Diário1\",\"target\":\"Conferir cache — Sequência de pensamentos rápidos\",\"output\":2},{\"source\":\"Rotear conteúdo por palavras — Diário1\",\"target\":\"Conferir cache — Jev — tutorial/how-to carrossel\",\"output\":2},{\"source\":\"Rotear conteúdo por palavras — Diário1\",\"target\":\"Preparar julgamento de conhecimento rota1\",\"output\":2},{\"source\":\"Rotear conteúdo por palavras — Diário1\",\"target\":\"Conferir cache — Tweets/Stories sem angulo\",\"output\":2},{\"source\":\"Rotear conteúdo por palavras — Diário1\",\"target\":\"Conferir cache — Jev — tutorial/how-to carrossel\",\"output\":3},{\"source\":\"Rotear conteúdo por palavras — Diário1\",\"target\":\"Conferir cache — Interação com seguidores\",\"output\":3},{\"source\":\"Rotear conteúdo por palavras — Diário1\",\"target\":\"Conferir cache — Sequência de pensamentos rápidos\",\"output\":3},{\"source\":\"Rotear conteúdo por palavras — Diário1\",\"target\":\"Preparar julgamento de conhecimento rota1\",\"output\":3},{\"source\":\"Rotear conteúdo por palavras — Diário1\",\"target\":\"Conferir cache — Tweets/Stories sem angulo\",\"output\":3},{\"source\":\"Rotear conteúdo por palavras — Diário1\",\"target\":\"Conferir cache — Jev — tutorial/how-to carrossel\",\"output\":4},{\"source\":\"Rotear conteúdo por palavras — Diário1\",\"target\":\"Conferir cache — ensaio sem angulo\",\"output\":4},{\"source\":\"Rotear conteúdo por palavras — Diário1\",\"target\":\"Conferir cache — Interação com seguidores\",\"output\":4},{\"source\":\"Rotear conteúdo por palavras — Diário1\",\"target\":\"Conferir cache — Sequência de pensamentos rápidos\",\"output\":4},{\"source\":\"Rotear conteúdo por palavras — Diário1\",\"target\":\"Conferir cache — Tweets/Stories sem angulo\",\"output\":4},{\"source\":\"Rotear conteúdo por palavras — Diário1\",\"target\":\"Conferir cache — Angulos para long-form 3200+\",\"output\":5},{\"source\":\"Rotear conteúdo por palavras — Diário1\",\"target\":\"Conferir cache — Jev — tutorial/how-to carrossel\",\"output\":5},{\"source\":\"Rotear conteúdo por palavras — Diário1\",\"target\":\"Conferir cache — Interação com seguidores\",\"output\":5},{\"source\":\"Rotear conteúdo por palavras — Diário1\",\"target\":\"Conferir cache — Sequência de pensamentos rápidos\",\"output\":5},{\"source\":\"Rotear conteúdo por palavras — Diário1\",\"target\":\"Conferir cache — Tweets/Stories sem angulo\",\"output\":5},{\"source\":\"Rotear conteúdo por palavras — Diário1\",\"target\":\"Conferir cache — ensaio sem angulo\",\"output\":5},{\"source\":\"Rotear conteúdo por palavras — Diário1\",\"target\":\"Conferir cache — Jev — tutorial/how-to carrossel\",\"output\":6},{\"source\":\"Rotear conteúdo por palavras — Diário1\",\"target\":\"Conferir cache — Angulos para long-form 3200+\",\"output\":6},{\"source\":\"Rotear conteúdo por palavras — Diário1\",\"target\":\"Conferir cache — Interação com seguidores\",\"output\":6},{\"source\":\"Rotear conteúdo por palavras — Diário1\",\"target\":\"Conferir cache — Sequência de pensamentos rápidos\",\"output\":6},{\"source\":\"Rotear conteúdo por palavras — Diário1\",\"target\":\"Conferir cache — Tweets/Stories sem angulo\",\"output\":6},{\"source\":\"Rotear conteúdo por palavras — Diário1\",\"target\":\"Conferir cache — ensaio sem angulo\",\"output\":6},{\"source\":\"Rotear conteúdo por palavras — Diário1\",\"target\":\"Sem rota social — conservar resposta\",\"output\":7},{\"source\":\"carrossel - linguagem flesch 8-9 ano\",\"target\":\"Preservar slides — lista\",\"output\":0},{\"source\":\"Angulos para long-form 3200+\",\"target\":\"Separar ângulos de ensaios\",\"output\":0},{\"source\":\"Jev — Lista carrossel1\",\"target\":\"Conservar decisão — carousel-lista\",\"output\":0},{\"source\":\"Jev — Checklist carrossel\",\"target\":\"Conservar decisão — carousel-checklist\",\"output\":0},{\"source\":\"Jev — tutorial/how-to carrossel\",\"target\":\"Conservar decisão — carousel-tutorial\",\"output\":0},{\"source\":\"Legenda completa instagram\",\"target\":\"Reunir carrossel e legenda\",\"output\":0},{\"source\":\"carrossel - linguagem flesch 8-9 ano1\",\"target\":\"Preservar slides — tutorial\",\"output\":0},{\"source\":\"text-heavy\",\"target\":\"Preparar text-heavy para decisões\",\"output\":0},{\"source\":\"ensaio com angulo\",\"target\":\"Conservar ensaio para título\",\"output\":0},{\"source\":\"ensaio sem angulo\",\"target\":\"Conservar ensaio para título\",\"output\":0},{\"source\":\"título e subtítulo\",\"target\":\"Conservar título e ensaio para conclusão\",\"output\":0},{\"source\":\"carrossel - linguagem flesch 8-9 ano3\",\"target\":\"Preservar slides — checklist\",\"output\":0},{\"source\":\"Jev — CABE google imagens? (para cada tweet)1\",\"target\":\"Conservar decisão — imagem-post\",\"output\":0},{\"source\":\"Conservar decisão — carousel-tutorial\",\"target\":\"Formato tutorial aceito?\",\"output\":0},{\"source\":\"Conservar decisão — carousel-tutorial\",\"target\":\"Conferir cache — Jev — Checklist carrossel\",\"output\":0},{\"source\":\"Formato tutorial aceito?\",\"target\":\"Conferir cache — carrossel - linguagem flesch 8-9 ano1\",\"output\":0},{\"source\":\"Formato tutorial aceito?\",\"target\":\"Carrossel tutorial não selecionado\",\"output\":1},{\"source\":\"Preservar slides — tutorial\",\"target\":\"Conferir cache — Legenda completa instagram\",\"output\":0},{\"source\":\"Conservar decisão — carousel-checklist\",\"target\":\"Conferir cache — Jev — Lista carrossel1\",\"output\":0},{\"source\":\"Conservar decisão — carousel-checklist\",\"target\":\"Formato checklist aceito?\",\"output\":0},{\"source\":\"Formato checklist aceito?\",\"target\":\"Conferir cache — carrossel - linguagem flesch 8-9 ano3\",\"output\":0},{\"source\":\"Formato checklist aceito?\",\"target\":\"Carrossel checklist não selecionado\",\"output\":1},{\"source\":\"Preservar slides — checklist\",\"target\":\"Conferir cache — Legenda completa instagram\",\"output\":0},{\"source\":\"Conservar decisão — carousel-lista\",\"target\":\"Formato lista aceito?\",\"output\":0},{\"source\":\"Formato lista aceito?\",\"target\":\"Conferir cache — carrossel - linguagem flesch 8-9 ano\",\"output\":0},{\"source\":\"Formato lista aceito?\",\"target\":\"Carrossel lista não selecionado\",\"output\":1},{\"source\":\"Preservar slides — lista\",\"target\":\"Conferir cache — Legenda completa instagram\",\"output\":0},{\"source\":\"Separar ângulos de ensaios\",\"target\":\"Conferir cache — ensaio com angulo\",\"output\":0},{\"source\":\"Conservar ensaio para título\",\"target\":\"Conferir cache — título e subtítulo\",\"output\":0},{\"source\":\"Conservar título e ensaio para conclusão\",\"target\":\"Conferir cache — SOFT CTA PARA O PROPRIO TEXTO\",\"output\":0},{\"source\":\"Rotear conteúdo por palavras — Diário\",\"target\":\"Grupo curto sem saída editorial\",\"output\":0},{\"source\":\"Rotear conteúdo por palavras — Diário\",\"target\":\"Grupo curto sem saída editorial\",\"output\":1},{\"source\":\"Rotear conteúdo por palavras — Diário\",\"target\":\"Conferir cache — text-heavy1\",\"output\":2},{\"source\":\"Rotear conteúdo por palavras — Diário\",\"target\":\"Conferir cache — carrossel - linguagem flesch 8-9 ano4\",\"output\":2},{\"source\":\"Rotear conteúdo por palavras — Diário\",\"target\":\"Conferir cache — text-heavy1\",\"output\":3},{\"source\":\"Rotear conteúdo por palavras — Diário\",\"target\":\"Conferir cache — thread1\",\"output\":3},{\"source\":\"Rotear conteúdo por palavras — Diário\",\"target\":\"Conferir cache — carrossel - linguagem flesch 8-9 ano4\",\"output\":3},{\"source\":\"Rotear conteúdo por palavras — Diário\",\"target\":\"Conferir cache — text-heavy1\",\"output\":4},{\"source\":\"Rotear conteúdo por palavras — Diário\",\"target\":\"Conferir cache — ensaio sem angulo1\",\"output\":4},{\"source\":\"Rotear conteúdo por palavras — Diário\",\"target\":\"Conferir cache — thread1\",\"output\":4},{\"source\":\"Rotear conteúdo por palavras — Diário\",\"target\":\"Conferir cache — carrossel - linguagem flesch 8-9 ano4\",\"output\":4},{\"source\":\"Rotear conteúdo por palavras — Diário\",\"target\":\"Conferir cache — text-heavy1\",\"output\":5},{\"source\":\"Rotear conteúdo por palavras — Diário\",\"target\":\"Conferir cache — ensaio sem angulo1\",\"output\":5},{\"source\":\"Rotear conteúdo por palavras — Diário\",\"target\":\"Conferir cache — thread1\",\"output\":5},{\"source\":\"Rotear conteúdo por palavras — Diário\",\"target\":\"Conferir cache — carrossel - linguagem flesch 8-9 ano4\",\"output\":5},{\"source\":\"Rotear conteúdo por palavras — Diário\",\"target\":\"Conferir cache — text-heavy1\",\"output\":6},{\"source\":\"Rotear conteúdo por palavras — Diário\",\"target\":\"Conferir cache — ensaio sem angulo1\",\"output\":6},{\"source\":\"Rotear conteúdo por palavras — Diário\",\"target\":\"Conferir cache — thread1\",\"output\":6},{\"source\":\"Rotear conteúdo por palavras — Diário\",\"target\":\"Conferir cache — carrossel - linguagem flesch 8-9 ano4\",\"output\":6},{\"source\":\"Jev — CABE google imagens? (para cada tweet)2\",\"target\":\"Conservar decisão — imagem-thread1\",\"output\":0},{\"source\":\"thread1\",\"target\":\"Preparar partes da thread para Jev1\",\"output\":0},{\"source\":\"Preparar partes da thread para Jev1\",\"target\":\"Conferir cache — Jev — CABE google imagens? (para cada tweet)2\",\"output\":0},{\"source\":\"Conservar decisão — imagem-thread1\",\"target\":\"Organizar thread completa por rede1\",\"output\":0},{\"source\":\"Legenda completa instagram1\",\"target\":\"Reunir carrossel e legenda1\",\"output\":0},{\"source\":\"carrossel - linguagem flesch 8-9 ano4\",\"target\":\"Preservar slides — storytelling1\",\"output\":0},{\"source\":\"Preservar slides — storytelling1\",\"target\":\"Conferir cache — Legenda completa instagram1\",\"output\":0},{\"source\":\"text-heavy1\",\"target\":\"Preparar text-heavy para decisões — Diário\",\"output\":0},{\"source\":\"Jev — CABE google imagens? (para cada tweet)\",\"target\":\"Conservar decisão — imagem-post1\",\"output\":0},{\"source\":\"Preparar julgamento de conhecimento rota1\",\"target\":\"Conferir cache — text-heavy\",\"output\":0},{\"source\":\"ensaio sem angulo1\",\"target\":\"Conservar ensaio para título1\",\"output\":0},{\"source\":\"título e subtítulo1\",\"target\":\"Conservar título e ensaio para conclusão1\",\"output\":0},{\"source\":\"Conservar ensaio para título1\",\"target\":\"Conferir cache — título e subtítulo1\",\"output\":0},{\"source\":\"Conservar título e ensaio para conclusão1\",\"target\":\"Conferir cache — SOFT CTA PARA O PROPRIO TEXTO1\",\"output\":0},{\"source\":\"Contar palavras para conteúdo — Diário\",\"target\":\"Rotear conteúdo por palavras — Diário\",\"output\":0},{\"source\":\"Preparar text-heavy para decisões\",\"target\":\"Conferir cache — Jev — CABE google imagens? (para cada tweet)1\",\"output\":0},{\"source\":\"Preparar text-heavy para decisões — Diário\",\"target\":\"Conferir cache — Jev — CABE google imagens? (para cada tweet)\",\"output\":0},{\"source\":\"Receber pedido editorial\",\"target\":\"Preparar texto de teste\",\"output\":0},{\"source\":\"Preparar texto de teste\",\"target\":\"Comparar continuidade editorial?\",\"output\":0},{\"source\":\"Comparar continuidade editorial?\",\"target\":\"Preparar comparação de textos\",\"output\":0},{\"source\":\"Comparar continuidade editorial?\",\"target\":\"Gerar a partir de recorte?\",\"output\":1},{\"source\":\"Gerar a partir de recorte?\",\"target\":\"Contar palavras para conteúdo — Diário1\",\"output\":0},{\"source\":\"Gerar a partir de recorte?\",\"target\":\"Contar palavras para conteúdo — Diário\",\"output\":1},{\"source\":\"Preparar comparação de textos\",\"target\":\"Conferir cache — Jev — Continuidade entre inputs\",\"output\":0},{\"source\":\"Jev — Continuidade entre inputs\",\"target\":\"Validar decisão de continuidade\",\"output\":0},{\"source\":\"Conferir cache — Interação com seguidores\",\"target\":\"Retomar resultado — Interação com seguidores\",\"output\":0},{\"source\":\"Interação com seguidores — chamada\",\"target\":\"Interação com seguidores\",\"output\":0},{\"source\":\"Retomar resultado — Interação com seguidores\",\"target\":\"Interação com seguidores\",\"output\":0},{\"source\":\"Retomar resultado — Interação com seguidores\",\"target\":\"Interação com seguidores — chamada\",\"output\":1},{\"source\":\"Conferir cache — SOFT CTA PARA O PROPRIO TEXTO\",\"target\":\"Retomar resultado — SOFT CTA PARA O PROPRIO TEXTO\",\"output\":0},{\"source\":\"SOFT CTA PARA O PROPRIO TEXTO — chamada\",\"target\":\"SOFT CTA PARA O PROPRIO TEXTO\",\"output\":0},{\"source\":\"Retomar resultado — SOFT CTA PARA O PROPRIO TEXTO\",\"target\":\"SOFT CTA PARA O PROPRIO TEXTO\",\"output\":0},{\"source\":\"Retomar resultado — SOFT CTA PARA O PROPRIO TEXTO\",\"target\":\"SOFT CTA PARA O PROPRIO TEXTO — chamada\",\"output\":1},{\"source\":\"Conferir cache — carrossel - linguagem flesch 8-9 ano\",\"target\":\"Retomar resultado — carrossel - linguagem flesch 8-9 ano\",\"output\":0},{\"source\":\"carrossel - linguagem flesch 8-9 ano — chamada\",\"target\":\"carrossel - linguagem flesch 8-9 ano\",\"output\":0},{\"source\":\"Retomar resultado — carrossel - linguagem flesch 8-9 ano\",\"target\":\"carrossel - linguagem flesch 8-9 ano\",\"output\":0},{\"source\":\"Retomar resultado — carrossel - linguagem flesch 8-9 ano\",\"target\":\"carrossel - linguagem flesch 8-9 ano — chamada\",\"output\":1},{\"source\":\"Conferir cache — Angulos para long-form 3200+\",\"target\":\"Retomar resultado — Angulos para long-form 3200+\",\"output\":0},{\"source\":\"Angulos para long-form 3200+ — chamada\",\"target\":\"Angulos para long-form 3200+\",\"output\":0},{\"source\":\"Retomar resultado — Angulos para long-form 3200+\",\"target\":\"Angulos para long-form 3200+\",\"output\":0},{\"source\":\"Retomar resultado — Angulos para long-form 3200+\",\"target\":\"Angulos para long-form 3200+ — chamada\",\"output\":1},{\"source\":\"Conferir cache — Jev — Lista carrossel1\",\"target\":\"Retomar resultado — Jev — Lista carrossel1\",\"output\":0},{\"source\":\"Jev — Lista carrossel1 — chamada\",\"target\":\"Jev — Lista carrossel1\",\"output\":0},{\"source\":\"Retomar resultado — Jev — Lista carrossel1\",\"target\":\"Jev — Lista carrossel1\",\"output\":0},{\"source\":\"Retomar resultado — Jev — Lista carrossel1\",\"target\":\"Jev — Lista carrossel1 — chamada\",\"output\":1},{\"source\":\"Conferir cache — Jev — Checklist carrossel\",\"target\":\"Retomar resultado — Jev — Checklist carrossel\",\"output\":0},{\"source\":\"Jev — Checklist carrossel — chamada\",\"target\":\"Jev — Checklist carrossel\",\"output\":0},{\"source\":\"Retomar resultado — Jev — Checklist carrossel\",\"target\":\"Jev — Checklist carrossel\",\"output\":0},{\"source\":\"Retomar resultado — Jev — Checklist carrossel\",\"target\":\"Jev — Checklist carrossel — chamada\",\"output\":1},{\"source\":\"Conferir cache — Jev — tutorial/how-to carrossel\",\"target\":\"Retomar resultado — Jev — tutorial/how-to carrossel\",\"output\":0},{\"source\":\"Jev — tutorial/how-to carrossel — chamada\",\"target\":\"Jev — tutorial/how-to carrossel\",\"output\":0},{\"source\":\"Retomar resultado — Jev — tutorial/how-to carrossel\",\"target\":\"Jev — tutorial/how-to carrossel\",\"output\":0},{\"source\":\"Retomar resultado — Jev — tutorial/how-to carrossel\",\"target\":\"Jev — tutorial/how-to carrossel — chamada\",\"output\":1},{\"source\":\"Conferir cache — Legenda completa instagram\",\"target\":\"Retomar resultado — Legenda completa instagram\",\"output\":0},{\"source\":\"Legenda completa instagram — chamada\",\"target\":\"Legenda completa instagram\",\"output\":0},{\"source\":\"Retomar resultado — Legenda completa instagram\",\"target\":\"Legenda completa instagram\",\"output\":0},{\"source\":\"Retomar resultado — Legenda completa instagram\",\"target\":\"Legenda completa instagram — chamada\",\"output\":1},{\"source\":\"Conferir cache — carrossel - linguagem flesch 8-9 ano1\",\"target\":\"Retomar resultado — carrossel - linguagem flesch 8-9 ano1\",\"output\":0},{\"source\":\"carrossel - linguagem flesch 8-9 ano1 — chamada\",\"target\":\"carrossel - linguagem flesch 8-9 ano1\",\"output\":0},{\"source\":\"Retomar resultado — carrossel - linguagem flesch 8-9 ano1\",\"target\":\"carrossel - linguagem flesch 8-9 ano1\",\"output\":0},{\"source\":\"Retomar resultado — carrossel - linguagem flesch 8-9 ano1\",\"target\":\"carrossel - linguagem flesch 8-9 ano1 — chamada\",\"output\":1},{\"source\":\"Conferir cache — text-heavy\",\"target\":\"Retomar resultado — text-heavy\",\"output\":0},{\"source\":\"text-heavy — chamada\",\"target\":\"text-heavy\",\"output\":0},{\"source\":\"Retomar resultado — text-heavy\",\"target\":\"text-heavy\",\"output\":0},{\"source\":\"Retomar resultado — text-heavy\",\"target\":\"text-heavy — chamada\",\"output\":1},{\"source\":\"Conferir cache — ensaio com angulo\",\"target\":\"Retomar resultado — ensaio com angulo\",\"output\":0},{\"source\":\"ensaio com angulo — chamada\",\"target\":\"ensaio com angulo\",\"output\":0},{\"source\":\"Retomar resultado — ensaio com angulo\",\"target\":\"ensaio com angulo\",\"output\":0},{\"source\":\"Retomar resultado — ensaio com angulo\",\"target\":\"ensaio com angulo — chamada\",\"output\":1},{\"source\":\"Conferir cache — ensaio sem angulo\",\"target\":\"Retomar resultado — ensaio sem angulo\",\"output\":0},{\"source\":\"ensaio sem angulo — chamada\",\"target\":\"ensaio sem angulo\",\"output\":0},{\"source\":\"Retomar resultado — ensaio sem angulo\",\"target\":\"ensaio sem angulo\",\"output\":0},{\"source\":\"Retomar resultado — ensaio sem angulo\",\"target\":\"ensaio sem angulo — chamada\",\"output\":1},{\"source\":\"Conferir cache — título e subtítulo\",\"target\":\"Retomar resultado — título e subtítulo\",\"output\":0},{\"source\":\"título e subtítulo — chamada\",\"target\":\"título e subtítulo\",\"output\":0},{\"source\":\"Retomar resultado — título e subtítulo\",\"target\":\"título e subtítulo\",\"output\":0},{\"source\":\"Retomar resultado — título e subtítulo\",\"target\":\"título e subtítulo — chamada\",\"output\":1},{\"source\":\"Conferir cache — Tweets/Stories sem angulo\",\"target\":\"Retomar resultado — Tweets/Stories sem angulo\",\"output\":0},{\"source\":\"Tweets/Stories sem angulo — chamada\",\"target\":\"Tweets/Stories sem angulo\",\"output\":0},{\"source\":\"Retomar resultado — Tweets/Stories sem angulo\",\"target\":\"Tweets/Stories sem angulo\",\"output\":0},{\"source\":\"Retomar resultado — Tweets/Stories sem angulo\",\"target\":\"Tweets/Stories sem angulo — chamada\",\"output\":1},{\"source\":\"Conferir cache — Sequência de pensamentos rápidos\",\"target\":\"Retomar resultado — Sequência de pensamentos rápidos\",\"output\":0},{\"source\":\"Sequência de pensamentos rápidos — chamada\",\"target\":\"Sequência de pensamentos rápidos\",\"output\":0},{\"source\":\"Retomar resultado — Sequência de pensamentos rápidos\",\"target\":\"Sequência de pensamentos rápidos\",\"output\":0},{\"source\":\"Retomar resultado — Sequência de pensamentos rápidos\",\"target\":\"Sequência de pensamentos rápidos — chamada\",\"output\":1},{\"source\":\"Conferir cache — carrossel - linguagem flesch 8-9 ano3\",\"target\":\"Retomar resultado — carrossel - linguagem flesch 8-9 ano3\",\"output\":0},{\"source\":\"carrossel - linguagem flesch 8-9 ano3 — chamada\",\"target\":\"carrossel - linguagem flesch 8-9 ano3\",\"output\":0},{\"source\":\"Retomar resultado — carrossel - linguagem flesch 8-9 ano3\",\"target\":\"carrossel - linguagem flesch 8-9 ano3\",\"output\":0},{\"source\":\"Retomar resultado — carrossel - linguagem flesch 8-9 ano3\",\"target\":\"carrossel - linguagem flesch 8-9 ano3 — chamada\",\"output\":1},{\"source\":\"Conferir cache — Jev — CABE google imagens? (para cada tweet)1\",\"target\":\"Retomar resultado — Jev — CABE google imagens? (para cada tweet)1\",\"output\":0},{\"source\":\"Jev — CABE google imagens? (para cada tweet)1 — chamada\",\"target\":\"Jev — CABE google imagens? (para cada tweet)1\",\"output\":0},{\"source\":\"Retomar resultado — Jev — CABE google imagens? (para cada tweet)1\",\"target\":\"Jev — CABE google imagens? (para cada tweet)1\",\"output\":0},{\"source\":\"Retomar resultado — Jev — CABE google imagens? (para cada tweet)1\",\"target\":\"Jev — CABE google imagens? (para cada tweet)1 — chamada\",\"output\":1},{\"source\":\"Conferir cache — Jev — CABE google imagens? (para cada tweet)2\",\"target\":\"Retomar resultado — Jev — CABE google imagens? (para cada tweet)2\",\"output\":0},{\"source\":\"Jev — CABE google imagens? (para cada tweet)2 — chamada\",\"target\":\"Jev — CABE google imagens? (para cada tweet)2\",\"output\":0},{\"source\":\"Retomar resultado — Jev — CABE google imagens? (para cada tweet)2\",\"target\":\"Jev — CABE google imagens? (para cada tweet)2\",\"output\":0},{\"source\":\"Retomar resultado — Jev — CABE google imagens? (para cada tweet)2\",\"target\":\"Jev — CABE google imagens? (para cada tweet)2 — chamada\",\"output\":1},{\"source\":\"Conferir cache — thread1\",\"target\":\"Retomar resultado — thread1\",\"output\":0},{\"source\":\"thread1 — chamada\",\"target\":\"thread1\",\"output\":0},{\"source\":\"Retomar resultado — thread1\",\"target\":\"thread1\",\"output\":0},{\"source\":\"Retomar resultado — thread1\",\"target\":\"thread1 — chamada\",\"output\":1},{\"source\":\"Conferir cache — Legenda completa instagram1\",\"target\":\"Retomar resultado — Legenda completa instagram1\",\"output\":0},{\"source\":\"Legenda completa instagram1 — chamada\",\"target\":\"Legenda completa instagram1\",\"output\":0},{\"source\":\"Retomar resultado — Legenda completa instagram1\",\"target\":\"Legenda completa instagram1\",\"output\":0},{\"source\":\"Retomar resultado — Legenda completa instagram1\",\"target\":\"Legenda completa instagram1 — chamada\",\"output\":1},{\"source\":\"Conferir cache — carrossel - linguagem flesch 8-9 ano4\",\"target\":\"Retomar resultado — carrossel - linguagem flesch 8-9 ano4\",\"output\":0},{\"source\":\"carrossel - linguagem flesch 8-9 ano4 — chamada\",\"target\":\"carrossel - linguagem flesch 8-9 ano4\",\"output\":0},{\"source\":\"Retomar resultado — carrossel - linguagem flesch 8-9 ano4\",\"target\":\"carrossel - linguagem flesch 8-9 ano4\",\"output\":0},{\"source\":\"Retomar resultado — carrossel - linguagem flesch 8-9 ano4\",\"target\":\"carrossel - linguagem flesch 8-9 ano4 — chamada\",\"output\":1},{\"source\":\"Conferir cache — text-heavy1\",\"target\":\"Retomar resultado — text-heavy1\",\"output\":0},{\"source\":\"text-heavy1 — chamada\",\"target\":\"text-heavy1\",\"output\":0},{\"source\":\"Retomar resultado — text-heavy1\",\"target\":\"text-heavy1\",\"output\":0},{\"source\":\"Retomar resultado — text-heavy1\",\"target\":\"text-heavy1 — chamada\",\"output\":1},{\"source\":\"Conferir cache — Jev — CABE google imagens? (para cada tweet)\",\"target\":\"Retomar resultado — Jev — CABE google imagens? (para cada tweet)\",\"output\":0},{\"source\":\"Jev — CABE google imagens? (para cada tweet) — chamada\",\"target\":\"Jev — CABE google imagens? (para cada tweet)\",\"output\":0},{\"source\":\"Retomar resultado — Jev — CABE google imagens? (para cada tweet)\",\"target\":\"Jev — CABE google imagens? (para cada tweet)\",\"output\":0},{\"source\":\"Retomar resultado — Jev — CABE google imagens? (para cada tweet)\",\"target\":\"Jev — CABE google imagens? (para cada tweet) — chamada\",\"output\":1},{\"source\":\"Conferir cache — SOFT CTA PARA O PROPRIO TEXTO1\",\"target\":\"Retomar resultado — SOFT CTA PARA O PROPRIO TEXTO1\",\"output\":0},{\"source\":\"SOFT CTA PARA O PROPRIO TEXTO1 — chamada\",\"target\":\"SOFT CTA PARA O PROPRIO TEXTO1\",\"output\":0},{\"source\":\"Retomar resultado — SOFT CTA PARA O PROPRIO TEXTO1\",\"target\":\"SOFT CTA PARA O PROPRIO TEXTO1\",\"output\":0},{\"source\":\"Retomar resultado — SOFT CTA PARA O PROPRIO TEXTO1\",\"target\":\"SOFT CTA PARA O PROPRIO TEXTO1 — chamada\",\"output\":1},{\"source\":\"Conferir cache — ensaio sem angulo1\",\"target\":\"Retomar resultado — ensaio sem angulo1\",\"output\":0},{\"source\":\"ensaio sem angulo1 — chamada\",\"target\":\"ensaio sem angulo1\",\"output\":0},{\"source\":\"Retomar resultado — ensaio sem angulo1\",\"target\":\"ensaio sem angulo1\",\"output\":0},{\"source\":\"Retomar resultado — ensaio sem angulo1\",\"target\":\"ensaio sem angulo1 — chamada\",\"output\":1},{\"source\":\"Conferir cache — título e subtítulo1\",\"target\":\"Retomar resultado — título e subtítulo1\",\"output\":0},{\"source\":\"título e subtítulo1 — chamada\",\"target\":\"título e subtítulo1\",\"output\":0},{\"source\":\"Retomar resultado — título e subtítulo1\",\"target\":\"título e subtítulo1\",\"output\":0},{\"source\":\"Retomar resultado — título e subtítulo1\",\"target\":\"título e subtítulo1 — chamada\",\"output\":1},{\"source\":\"Conferir cache — Jev — Continuidade entre inputs\",\"target\":\"Retomar resultado — Jev — Continuidade entre inputs\",\"output\":0},{\"source\":\"Jev — Continuidade entre inputs — chamada\",\"target\":\"Jev — Continuidade entre inputs\",\"output\":0},{\"source\":\"Retomar resultado — Jev — Continuidade entre inputs\",\"target\":\"Jev — Continuidade entre inputs\",\"output\":0},{\"source\":\"Retomar resultado — Jev — Continuidade entre inputs\",\"target\":\"Jev — Continuidade entre inputs — chamada\",\"output\":1}];\nconst names=[\"Contar palavras para conteúdo — Diário1\",\"Rotear conteúdo por palavras — Diário1\",\"Interação com seguidores — chamada\",\"SOFT CTA PARA O PROPRIO TEXTO — chamada\",\"carrossel - linguagem flesch 8-9 ano — chamada\",\"Angulos para long-form 3200+ — chamada\",\"Jev — Lista carrossel1 — chamada\",\"Jev — Checklist carrossel — chamada\",\"Jev — tutorial/how-to carrossel — chamada\",\"Legenda completa instagram — chamada\",\"carrossel - linguagem flesch 8-9 ano1 — chamada\",\"text-heavy — chamada\",\"ensaio com angulo — chamada\",\"ensaio sem angulo — chamada\",\"título e subtítulo — chamada\",\"Tweets/Stories sem angulo — chamada\",\"Sequência de pensamentos rápidos — chamada\",\"carrossel - linguagem flesch 8-9 ano3 — chamada\",\"Jev — CABE google imagens? (para cada tweet)1 — chamada\",\"Sem rota social — conservar resposta\",\"Conservar decisão — carousel-tutorial\",\"Formato tutorial aceito?\",\"Preservar slides — tutorial\",\"Carrossel tutorial não selecionado\",\"Conservar decisão — carousel-checklist\",\"Formato checklist aceito?\",\"Preservar slides — checklist\",\"Carrossel checklist não selecionado\",\"Conservar decisão — carousel-lista\",\"Formato lista aceito?\",\"Preservar slides — lista\",\"Carrossel lista não selecionado\",\"Conservar decisão — imagem-post\",\"Reunir carrossel e legenda\",\"Separar ângulos de ensaios\",\"Conservar ensaio para título\",\"Conservar título e ensaio para conclusão\",\"Rotear conteúdo por palavras — Diário\",\"Jev — CABE google imagens? (para cada tweet)2 — chamada\",\"thread1 — chamada\",\"Preparar partes da thread para Jev1\",\"Conservar decisão — imagem-thread1\",\"Organizar thread completa por rede1\",\"Legenda completa instagram1 — chamada\",\"carrossel - linguagem flesch 8-9 ano4 — chamada\",\"Preservar slides — storytelling1\",\"Reunir carrossel e legenda1\",\"text-heavy1 — chamada\",\"Jev — CABE google imagens? (para cada tweet) — chamada\",\"Conservar decisão — imagem-post1\",\"Preparar julgamento de conhecimento rota1\",\"SOFT CTA PARA O PROPRIO TEXTO1 — chamada\",\"ensaio sem angulo1 — chamada\",\"título e subtítulo1 — chamada\",\"Conservar ensaio para título1\",\"Conservar título e ensaio para conclusão1\",\"Contar palavras para conteúdo — Diário\",\"Preparar text-heavy para decisões\",\"Preparar text-heavy para decisões — Diário\",\"Receber pedido editorial\",\"Preparar texto de teste\",\"Comparar continuidade editorial?\",\"Gerar a partir de recorte?\",\"Grupo curto sem saída editorial\",\"Conferir cache — Interação com seguidores\",\"Retomar resultado — Interação com seguidores\",\"Interação com seguidores\",\"Conferir cache — SOFT CTA PARA O PROPRIO TEXTO\",\"Retomar resultado — SOFT CTA PARA O PROPRIO TEXTO\",\"SOFT CTA PARA O PROPRIO TEXTO\",\"Conferir cache — carrossel - linguagem flesch 8-9 ano\",\"Retomar resultado — carrossel - linguagem flesch 8-9 ano\",\"carrossel - linguagem flesch 8-9 ano\",\"Conferir cache — Angulos para long-form 3200+\",\"Retomar resultado — Angulos para long-form 3200+\",\"Angulos para long-form 3200+\",\"Conferir cache — Jev — Lista carrossel1\",\"Retomar resultado — Jev — Lista carrossel1\",\"Jev — Lista carrossel1\",\"Conferir cache — Jev — Checklist carrossel\",\"Retomar resultado — Jev — Checklist carrossel\",\"Jev — Checklist carrossel\",\"Conferir cache — Jev — tutorial/how-to carrossel\",\"Retomar resultado — Jev — tutorial/how-to carrossel\",\"Jev — tutorial/how-to carrossel\",\"Conferir cache — Legenda completa instagram\",\"Retomar resultado — Legenda completa instagram\",\"Legenda completa instagram\",\"Conferir cache — carrossel - linguagem flesch 8-9 ano1\",\"Retomar resultado — carrossel - linguagem flesch 8-9 ano1\",\"carrossel - linguagem flesch 8-9 ano1\",\"Conferir cache — text-heavy\",\"Retomar resultado — text-heavy\",\"text-heavy\",\"Conferir cache — ensaio com angulo\",\"Retomar resultado — ensaio com angulo\",\"ensaio com angulo\",\"Conferir cache — ensaio sem angulo\",\"Retomar resultado — ensaio sem angulo\",\"ensaio sem angulo\",\"Conferir cache — título e subtítulo\",\"Retomar resultado — título e subtítulo\",\"título e subtítulo\",\"Conferir cache — Tweets/Stories sem angulo\",\"Retomar resultado — Tweets/Stories sem angulo\",\"Tweets/Stories sem angulo\",\"Conferir cache — Sequência de pensamentos rápidos\",\"Retomar resultado — Sequência de pensamentos rápidos\",\"Sequência de pensamentos rápidos\",\"Conferir cache — carrossel - linguagem flesch 8-9 ano3\",\"Retomar resultado — carrossel - linguagem flesch 8-9 ano3\",\"carrossel - linguagem flesch 8-9 ano3\",\"Conferir cache — Jev — CABE google imagens? (para cada tweet)1\",\"Retomar resultado — Jev — CABE google imagens? (para cada tweet)1\",\"Jev — CABE google imagens? (para cada tweet)1\",\"Conferir cache — Jev — CABE google imagens? (para cada tweet)2\",\"Retomar resultado — Jev — CABE google imagens? (para cada tweet)2\",\"Jev — CABE google imagens? (para cada tweet)2\",\"Conferir cache — thread1\",\"Retomar resultado — thread1\",\"thread1\",\"Conferir cache — Legenda completa instagram1\",\"Retomar resultado — Legenda completa instagram1\",\"Legenda completa instagram1\",\"Conferir cache — carrossel - linguagem flesch 8-9 ano4\",\"Retomar resultado — carrossel - linguagem flesch 8-9 ano4\",\"carrossel - linguagem flesch 8-9 ano4\",\"Conferir cache — text-heavy1\",\"Retomar resultado — text-heavy1\",\"text-heavy1\",\"Conferir cache — Jev — CABE google imagens? (para cada tweet)\",\"Retomar resultado — Jev — CABE google imagens? (para cada tweet)\",\"Jev — CABE google imagens? (para cada tweet)\",\"Conferir cache — SOFT CTA PARA O PROPRIO TEXTO1\",\"Retomar resultado — SOFT CTA PARA O PROPRIO TEXTO1\",\"SOFT CTA PARA O PROPRIO TEXTO1\",\"Conferir cache — ensaio sem angulo1\",\"Retomar resultado — ensaio sem angulo1\",\"ensaio sem angulo1\",\"Conferir cache — título e subtítulo1\",\"Retomar resultado — título e subtítulo1\",\"título e subtítulo1\",\"Conferir cache — Jev — Continuidade entre inputs\"];\nconst avisos=[];const existing=new Map();function exists(name){if(existing.has(name))return existing.get(name);try{$(name).isExecuted;existing.set(name,true);return true;}catch{existing.set(name,false);avisos.push({node:name,mensagem:'Node ausente nesta versão; referência ignorada pelo coletor.'});return false;}}\nconst cache=new Map();function runs(name){if(cache.has(name))return cache.get(name);const values=[];if(!exists(name)){cache.set(name,values);return values;}if($(name).isExecuted){for(let run=0;run<10000;run++){try{const items=$(name).all(0,run);if(values.includes(items)){let expected=0;for(const edge of graph.filter(e=>e.target===name&&exists(e.source)))for(let r=0;r<runs(edge.source).length;r++){try{if($(edge.source).all(edge.output,r).length)expected++;}catch{}}values.length=Math.min(values.length,Math.max(1,expected));while(values.length<expected)values.push(items);break;}values.push(items);}catch{break;}}}cache.set(name,values);return values;}\nif($runIndex>0){for(let run=0;run<$runIndex;run++){let previous=[];try{previous=$('Ver todos os outputs dos Agents').all(0,run);}catch{}if(previous.length)return [];}}\nfor(const name of names){if(!exists(name))continue;let expected=0;for(const edge of graph.filter(e=>e.target===name)){for(let run=0;run<runs(edge.source).length;run++){let items=[];try{items=$(edge.source).all(edge.output,run);}catch{}if(items.length)expected++;}}if(runs(name).length<expected)return [];}\nfunction parse(output){if(typeof output!=='string')return output;try{return JSON.parse(output.trim().replace(/^```(?:json)?\\s*\\n?([\\s\\S]*?)\\n?```$/i,'$1'));}catch{return output;}}\nconst agentNames=[\"Interação com seguidores\",\"SOFT CTA PARA O PROPRIO TEXTO\",\"carrossel - linguagem flesch 8-9 ano\",\"Angulos para long-form 3200+\",\"Legenda completa instagram\",\"carrossel - linguagem flesch 8-9 ano1\",\"text-heavy\",\"ensaio com angulo\",\"ensaio sem angulo\",\"título e subtítulo\",\"Tweets/Stories sem angulo\",\"Sequência de pensamentos rápidos\",\"carrossel - linguagem flesch 8-9 ano3\",\"thread1\",\"Legenda completa instagram1\",\"carrossel - linguagem flesch 8-9 ano4\",\"text-heavy1\",\"SOFT CTA PARA O PROPRIO TEXTO1\",\"ensaio sem angulo1\",\"título e subtítulo1\"],jevNames=[\"Jev — Lista carrossel1\",\"Jev — Checklist carrossel\",\"Jev — tutorial/how-to carrossel\",\"Jev — CABE google imagens? (para cada tweet)1\",\"Jev — CABE google imagens? (para cada tweet)2\",\"Jev — CABE google imagens? (para cada tweet)\",\"Jev — Tem conhecimento?\"];\nconst outputsDosAgents=agentNames.flatMap(agent=>runs(agent).flatMap((items,run)=>items.map((item,index)=>({agent,run,item:index,output:item?.json?.output??null,outputEstruturado:parse(item?.json?.output??null),erro:item?.json?.error??null}))));\nconst outputsPorAgent=Object.fromEntries(agentNames.filter(name=>runs(name).length).map(name=>[name,outputsDosAgents.filter(item=>item.agent===name)]));\nconst avaliacoesJev=jevNames.flatMap(node=>runs(node).flatMap((items,run)=>items.map((item,index)=>({node,run,item:index,resposta:item?.json??null}))));\nconst resultadosFinais=[\"Conservar decisão — imagem-post\",\"Conservar decisão — imagem-post1\",\"Conservar título e ensaio para conclusão\",\"Conservar título e ensaio para conclusão1\",\"Interação com seguidores\",\"SOFT CTA PARA O PROPRIO TEXTO\",\"Tweets/Stories sem angulo\",\"Sequência de pensamentos rápidos\",\"Sem rota social — conservar resposta\",\"Carrossel tutorial não selecionado\",\"Carrossel checklist não selecionado\",\"Carrossel lista não selecionado\",\"Reunir carrossel e legenda\",\"Organizar thread completa por rede1\",\"Reunir carrossel e legenda1\",\"SOFT CTA PARA O PROPRIO TEXTO1\"].flatMap(node=>runs(node).flatMap((items,run)=>items.map((item,index)=>({node,run,item:index,resultado:item?.json??null}))));\nconst errosBrutos=outputsDosAgents.filter(item=>item.erro).map(item=>({node:item.agent,erro:item.erro}));\nfor(const node of names)for(const items of runs(node))for(const item of items){\n  const value=item?.json??{};\n  if(value.error)errosBrutos.push({node,erro:value.error});if(value.decision?.error)errosBrutos.push({node,erro:{message:value.decision.error}});const stages=Array.isArray(value.stageErrors)?value.stageErrors:[];\n  for(const error of stages)errosBrutos.push({node:error.stage??node,erro:error});\n}\nconst vistos=new Set();\nconst erros=errosBrutos.filter(value=>{const key=JSON.stringify([value.node,value.erro?.referenceId??null,value.erro?.message??value.erro]);if(vistos.has(key))return false;vistos.add(key);return true;});\nreturn [{json:{textoOriginal:runs('Preparar texto de teste')[0]?.[0]?.json?.text??runs('Validar entrada e adicionar SEGs1')[0]?.[0]?.json?.text??null,digestao:runs('Validar e montar digestão1')[0]?.[0]?.json??null,resumo:{agentsExecutados:Object.keys(outputsPorAgent).length,outputs:outputsDosAgents.length,avaliacoes:avaliacoesJev.length,erros:erros.length},outputsDosAgents,outputsPorAgent,avaliacoesJev,resultadosFinais,erros,avisos}}];\n"
     },
     "id": "53bb18c1-8757-47bc-896e-712ef4cc41f5",
     "name": "Ver todos os outputs dos Agents",
     "type": "n8n-nodes-base.code",
     "typeVersion": 2,
     "position": [
-      -8304,
-      13728
+      -6080,
+      13408
     ]
   },
   {
@@ -1891,8 +1638,8 @@
     "type": "n8n-nodes-base.webhook",
     "typeVersion": 2.1,
     "position": [
-      -1200,
-      0
+      -17728,
+      12112
     ],
     "parameters": {
       "httpMethod": "POST",
@@ -1907,8 +1654,8 @@
     "type": "n8n-nodes-base.code",
     "typeVersion": 2,
     "position": [
-      -950,
-      0
+      -17472,
+      12112
     ],
     "parameters": {
       "mode": "runOnceForAllItems",
@@ -1922,8 +1669,8 @@
     "type": "n8n-nodes-base.if",
     "typeVersion": 2.3,
     "position": [
-      -700,
-      0
+      -17232,
+      12112
     ],
     "parameters": {
       "conditions": {
@@ -1954,8 +1701,8 @@
     "type": "n8n-nodes-base.if",
     "typeVersion": 2.3,
     "position": [
-      -450,
-      0
+      -16432,
+      12112
     ],
     "parameters": {
       "conditions": {
@@ -1989,8 +1736,8 @@
     "type": "n8n-nodes-base.code",
     "typeVersion": 2,
     "position": [
-      2768,
-      1680
+      -16752,
+      11392
     ]
   },
   {
@@ -2025,8 +1772,8 @@
     "type": "n8n-nodes-base.httpRequest",
     "typeVersion": 4.4,
     "position": [
-      3008,
-      1680
+      -15776,
+      11392
     ],
     "onError": "continueRegularOutput"
   },
@@ -2039,8 +1786,8 @@
     "type": "n8n-nodes-base.code",
     "typeVersion": 2,
     "position": [
-      3248,
-      1680
+      -15296,
+      11392
     ]
   },
   {
@@ -2048,8 +1795,8 @@
     "type": "n8n-nodes-base.respondToWebhook",
     "typeVersion": 1.5,
     "position": [
-      4000,
-      0
+      -15040,
+      11392
     ],
     "parameters": {
       "respondWith": "firstIncomingItem",
@@ -2064,8 +1811,8 @@
     "type": "n8n-nodes-base.code",
     "typeVersion": 2,
     "position": [
-      500,
-      0
+      -11968,
+      11968
     ],
     "parameters": {
       "mode": "runOnceForAllItems",
@@ -2079,7 +1826,7 @@
     "type": "n8n-nodes-base.code",
     "typeVersion": 2,
     "position": [
-      -12052,
+      -12048,
       13456
     ],
     "parameters": {
@@ -2094,7 +1841,7 @@
     "type": "n8n-nodes-base.if",
     "typeVersion": 2.3,
     "position": [
-      -11812,
+      -11808,
       13456
     ],
     "parameters": {
@@ -2126,7 +1873,7 @@
     "type": "n8n-nodes-base.code",
     "typeVersion": 2,
     "position": [
-      -11292,
+      -11296,
       13456
     ],
     "parameters": {
@@ -2141,8 +1888,8 @@
     "type": "n8n-nodes-base.code",
     "typeVersion": 2,
     "position": [
-      -8160,
-      18352
+      -7984,
+      17760
     ],
     "parameters": {
       "mode": "runOnceForAllItems",
@@ -2156,8 +1903,8 @@
     "type": "n8n-nodes-base.if",
     "typeVersion": 2.3,
     "position": [
-      -7904,
-      18352
+      -7728,
+      17760
     ],
     "parameters": {
       "conditions": {
@@ -2188,8 +1935,8 @@
     "type": "n8n-nodes-base.code",
     "typeVersion": 2,
     "position": [
-      -7392,
-      18352
+      -7216,
+      17760
     ],
     "parameters": {
       "mode": "runOnceForAllItems",
@@ -2204,7 +1951,7 @@
     "typeVersion": 2,
     "position": [
       -10208,
-      16416
+      15856
     ],
     "parameters": {
       "mode": "runOnceForAllItems",
@@ -2219,7 +1966,7 @@
     "typeVersion": 2.3,
     "position": [
       -9952,
-      16416
+      15856
     ],
     "parameters": {
       "conditions": {
@@ -2251,7 +1998,7 @@
     "typeVersion": 2,
     "position": [
       -9440,
-      16416
+      15856
     ],
     "parameters": {
       "mode": "runOnceForAllItems",
@@ -2266,7 +2013,7 @@
     "typeVersion": 2,
     "position": [
       -12000,
-      18752
+      18192
     ],
     "parameters": {
       "mode": "runOnceForAllItems",
@@ -2281,7 +2028,7 @@
     "typeVersion": 2.3,
     "position": [
       -11744,
-      18752
+      18192
     ],
     "parameters": {
       "conditions": {
@@ -2312,8 +2059,8 @@
     "type": "n8n-nodes-base.code",
     "typeVersion": 2,
     "position": [
-      -11232,
-      18752
+      -11136,
+      18192
     ],
     "parameters": {
       "mode": "runOnceForAllItems",
@@ -2328,7 +2075,7 @@
     "typeVersion": 2,
     "position": [
       -12000,
-      16416
+      15856
     ],
     "parameters": {
       "mode": "runOnceForAllItems",
@@ -2343,7 +2090,7 @@
     "typeVersion": 2.3,
     "position": [
       -11744,
-      16416
+      15856
     ],
     "parameters": {
       "conditions": {
@@ -2375,7 +2122,7 @@
     "typeVersion": 2,
     "position": [
       -11232,
-      16416
+      15856
     ],
     "parameters": {
       "mode": "runOnceForAllItems",
@@ -2390,7 +2137,7 @@
     "typeVersion": 2,
     "position": [
       -12000,
-      16016
+      15456
     ],
     "parameters": {
       "mode": "runOnceForAllItems",
@@ -2405,7 +2152,7 @@
     "typeVersion": 2.3,
     "position": [
       -11744,
-      16016
+      15456
     ],
     "parameters": {
       "conditions": {
@@ -2437,7 +2184,7 @@
     "typeVersion": 2,
     "position": [
       -11232,
-      16016
+      15456
     ],
     "parameters": {
       "mode": "runOnceForAllItems",
@@ -2452,7 +2199,7 @@
     "typeVersion": 2,
     "position": [
       -12000,
-      15616
+      15056
     ],
     "parameters": {
       "mode": "runOnceForAllItems",
@@ -2467,7 +2214,7 @@
     "typeVersion": 2.3,
     "position": [
       -11744,
-      15616
+      15056
     ],
     "parameters": {
       "conditions": {
@@ -2499,7 +2246,7 @@
     "typeVersion": 2,
     "position": [
       -11232,
-      15616
+      15056
     ],
     "parameters": {
       "mode": "runOnceForAllItems",
@@ -2514,7 +2261,7 @@
     "typeVersion": 2,
     "position": [
       -8672,
-      16016
+      15456
     ],
     "parameters": {
       "mode": "runOnceForAllItems",
@@ -2529,7 +2276,7 @@
     "typeVersion": 2.3,
     "position": [
       -8416,
-      16016
+      15456
     ],
     "parameters": {
       "conditions": {
@@ -2561,7 +2308,7 @@
     "typeVersion": 2,
     "position": [
       -7904,
-      16016
+      15456
     ],
     "parameters": {
       "mode": "runOnceForAllItems",
@@ -2576,7 +2323,7 @@
     "typeVersion": 2,
     "position": [
       -10208,
-      15616
+      15056
     ],
     "parameters": {
       "mode": "runOnceForAllItems",
@@ -2591,7 +2338,7 @@
     "typeVersion": 2.3,
     "position": [
       -9952,
-      15616
+      15056
     ],
     "parameters": {
       "conditions": {
@@ -2623,7 +2370,7 @@
     "typeVersion": 2,
     "position": [
       -9440,
-      15616
+      15056
     ],
     "parameters": {
       "mode": "runOnceForAllItems",
@@ -2638,7 +2385,7 @@
     "typeVersion": 2,
     "position": [
       -11744,
-      17088
+      16528
     ],
     "parameters": {
       "mode": "runOnceForAllItems",
@@ -2653,7 +2400,7 @@
     "typeVersion": 2.3,
     "position": [
       -11488,
-      17088
+      16528
     ],
     "parameters": {
       "conditions": {
@@ -2685,7 +2432,7 @@
     "typeVersion": 2,
     "position": [
       -10976,
-      17088
+      16528
     ],
     "parameters": {
       "mode": "runOnceForAllItems",
@@ -2699,8 +2446,8 @@
     "type": "n8n-nodes-base.code",
     "typeVersion": 2,
     "position": [
-      -10720,
-      18752
+      -10656,
+      18192
     ],
     "parameters": {
       "mode": "runOnceForAllItems",
@@ -2714,8 +2461,8 @@
     "type": "n8n-nodes-base.if",
     "typeVersion": 2.3,
     "position": [
-      -10464,
-      18752
+      -10400,
+      18192
     ],
     "parameters": {
       "conditions": {
@@ -2746,8 +2493,8 @@
     "type": "n8n-nodes-base.code",
     "typeVersion": 2,
     "position": [
-      -9952,
-      18752
+      -9808,
+      18192
     ],
     "parameters": {
       "mode": "runOnceForAllItems",
@@ -2762,7 +2509,7 @@
     "typeVersion": 2,
     "position": [
       -12000,
-      18352
+      17792
     ],
     "parameters": {
       "mode": "runOnceForAllItems",
@@ -2777,7 +2524,7 @@
     "typeVersion": 2.3,
     "position": [
       -11744,
-      18352
+      17792
     ],
     "parameters": {
       "conditions": {
@@ -2808,8 +2555,8 @@
     "type": "n8n-nodes-base.code",
     "typeVersion": 2,
     "position": [
-      -11232,
-      18352
+      -11136,
+      17792
     ],
     "parameters": {
       "mode": "runOnceForAllItems",
@@ -2823,8 +2570,8 @@
     "type": "n8n-nodes-base.code",
     "typeVersion": 2,
     "position": [
-      -9440,
-      18352
+      -9296,
+      17792
     ],
     "parameters": {
       "mode": "runOnceForAllItems",
@@ -2838,8 +2585,8 @@
     "type": "n8n-nodes-base.if",
     "typeVersion": 2.3,
     "position": [
-      -9184,
-      18352
+      -9040,
+      17792
     ],
     "parameters": {
       "conditions": {
@@ -2870,8 +2617,8 @@
     "type": "n8n-nodes-base.code",
     "typeVersion": 2,
     "position": [
-      -8672,
-      18352
+      -8496,
+      17760
     ],
     "parameters": {
       "mode": "runOnceForAllItems",
@@ -2885,7 +2632,7 @@
     "type": "n8n-nodes-base.code",
     "typeVersion": 2,
     "position": [
-      -12068,
+      -12064,
       13120
     ],
     "parameters": {
@@ -2900,7 +2647,7 @@
     "type": "n8n-nodes-base.if",
     "typeVersion": 2.3,
     "position": [
-      -11828,
+      -11824,
       13120
     ],
     "parameters": {
@@ -2932,7 +2679,7 @@
     "type": "n8n-nodes-base.code",
     "typeVersion": 2,
     "position": [
-      -11308,
+      -11312,
       13120
     ],
     "parameters": {
@@ -2947,8 +2694,8 @@
     "type": "n8n-nodes-base.code",
     "typeVersion": 2,
     "position": [
-      -11764,
-      15040
+      -12064,
+      14272
     ],
     "parameters": {
       "mode": "runOnceForAllItems",
@@ -2962,8 +2709,8 @@
     "type": "n8n-nodes-base.if",
     "typeVersion": 2.3,
     "position": [
-      -11524,
-      15040
+      -11824,
+      14272
     ],
     "parameters": {
       "conditions": {
@@ -2994,8 +2741,8 @@
     "type": "n8n-nodes-base.code",
     "typeVersion": 2,
     "position": [
-      -11004,
-      15040
+      -11312,
+      14272
     ],
     "parameters": {
       "mode": "runOnceForAllItems",
@@ -3010,7 +2757,7 @@
     "typeVersion": 2,
     "position": [
       -10208,
-      16016
+      15456
     ],
     "parameters": {
       "mode": "runOnceForAllItems",
@@ -3025,7 +2772,7 @@
     "typeVersion": 2.3,
     "position": [
       -9952,
-      16016
+      15456
     ],
     "parameters": {
       "conditions": {
@@ -3057,7 +2804,7 @@
     "typeVersion": 2,
     "position": [
       -9440,
-      16016
+      15456
     ],
     "parameters": {
       "mode": "runOnceForAllItems",
@@ -3072,7 +2819,7 @@
     "typeVersion": 2,
     "position": [
       -10464,
-      17088
+      16528
     ],
     "parameters": {
       "mode": "runOnceForAllItems",
@@ -3087,7 +2834,7 @@
     "typeVersion": 2.3,
     "position": [
       -10208,
-      17088
+      16528
     ],
     "parameters": {
       "conditions": {
@@ -3119,7 +2866,7 @@
     "typeVersion": 2,
     "position": [
       -9696,
-      17088
+      16528
     ],
     "parameters": {
       "mode": "runOnceForAllItems",
@@ -3128,137 +2875,13 @@
     }
   },
   {
-    "name": "Conferir cache — Adaptar text-heavy — LinkedIn",
-    "id": "Conferir cache — Adaptar text-heavy — LinkedIn",
-    "type": "n8n-nodes-base.code",
-    "typeVersion": 2,
-    "position": [
-      -8928,
-      17088
-    ],
-    "parameters": {
-      "mode": "runOnceForAllItems",
-      "language": "javaScript",
-      "jsCode": "const cache=$('Preparar texto de teste').first().json.cache?.[\"Adaptar text-heavy — LinkedIn\"]?.[$runIndex];return $input.all().map((item,index)=>({json:{...item.json,_replayStage:Array.isArray(cache)},pairedItem:{item:index}}));"
-    }
-  },
-  {
-    "name": "Retomar resultado — Adaptar text-heavy — LinkedIn",
-    "id": "Retomar resultado — Adaptar text-heavy — LinkedIn",
-    "type": "n8n-nodes-base.if",
-    "typeVersion": 2.3,
-    "position": [
-      -8672,
-      17088
-    ],
-    "parameters": {
-      "conditions": {
-        "options": {
-          "caseSensitive": true,
-          "leftValue": "",
-          "typeValidation": "strict",
-          "version": 3
-        },
-        "conditions": [
-          {
-            "leftValue": "={{ $json._replayStage === true }}",
-            "rightValue": true,
-            "operator": {
-              "type": "boolean",
-              "operation": "equals"
-            }
-          }
-        ],
-        "combinator": "and"
-      },
-      "options": {}
-    }
-  },
-  {
-    "name": "Adaptar text-heavy — LinkedIn",
-    "id": "Adaptar text-heavy — LinkedIn",
-    "type": "n8n-nodes-base.code",
-    "typeVersion": 2,
-    "position": [
-      -8160,
-      17088
-    ],
-    "parameters": {
-      "mode": "runOnceForAllItems",
-      "language": "javaScript",
-      "jsCode": "const cache=$('Preparar texto de teste').first().json.cache?.[\"Adaptar text-heavy — LinkedIn\"]?.[$runIndex];\nif(Array.isArray(cache))return cache.map((json,item)=>({json,pairedItem:{item:Math.min(item,$input.all().length-1)}}));\nreturn $input.all();"
-    }
-  },
-  {
-    "name": "Conferir cache — Adaptar text-heavy — Instagram",
-    "id": "Conferir cache — Adaptar text-heavy — Instagram",
-    "type": "n8n-nodes-base.code",
-    "typeVersion": 2,
-    "position": [
-      -8928,
-      17552
-    ],
-    "parameters": {
-      "mode": "runOnceForAllItems",
-      "language": "javaScript",
-      "jsCode": "const cache=$('Preparar texto de teste').first().json.cache?.[\"Adaptar text-heavy — Instagram\"]?.[$runIndex];return $input.all().map((item,index)=>({json:{...item.json,_replayStage:Array.isArray(cache)},pairedItem:{item:index}}));"
-    }
-  },
-  {
-    "name": "Retomar resultado — Adaptar text-heavy — Instagram",
-    "id": "Retomar resultado — Adaptar text-heavy — Instagram",
-    "type": "n8n-nodes-base.if",
-    "typeVersion": 2.3,
-    "position": [
-      -8672,
-      17552
-    ],
-    "parameters": {
-      "conditions": {
-        "options": {
-          "caseSensitive": true,
-          "leftValue": "",
-          "typeValidation": "strict",
-          "version": 3
-        },
-        "conditions": [
-          {
-            "leftValue": "={{ $json._replayStage === true }}",
-            "rightValue": true,
-            "operator": {
-              "type": "boolean",
-              "operation": "equals"
-            }
-          }
-        ],
-        "combinator": "and"
-      },
-      "options": {}
-    }
-  },
-  {
-    "name": "Adaptar text-heavy — Instagram",
-    "id": "Adaptar text-heavy — Instagram",
-    "type": "n8n-nodes-base.code",
-    "typeVersion": 2,
-    "position": [
-      -8160,
-      17552
-    ],
-    "parameters": {
-      "mode": "runOnceForAllItems",
-      "language": "javaScript",
-      "jsCode": "const cache=$('Preparar texto de teste').first().json.cache?.[\"Adaptar text-heavy — Instagram\"]?.[$runIndex];\nif(Array.isArray(cache))return cache.map((json,item)=>({json,pairedItem:{item:Math.min(item,$input.all().length-1)}}));\nreturn $input.all();"
-    }
-  },
-  {
     "name": "Conferir cache — Jev — CABE google imagens? (para cada tweet)2",
     "id": "Conferir cache — Jev — CABE google imagens? (para cada tweet)2",
     "type": "n8n-nodes-base.code",
     "typeVersion": 2,
     "position": [
-      -10432,
-      9344
+      -10368,
+      8944
     ],
     "parameters": {
       "mode": "runOnceForAllItems",
@@ -3272,8 +2895,8 @@
     "type": "n8n-nodes-base.if",
     "typeVersion": 2.3,
     "position": [
-      -10168,
-      9344
+      -10112,
+      8944
     ],
     "parameters": {
       "conditions": {
@@ -3304,8 +2927,8 @@
     "type": "n8n-nodes-base.code",
     "typeVersion": 2,
     "position": [
-      -9640,
-      9344
+      -9584,
+      8944
     ],
     "parameters": {
       "mode": "runOnceForAllItems",
@@ -3319,8 +2942,8 @@
     "type": "n8n-nodes-base.code",
     "typeVersion": 2,
     "position": [
-      -11752,
-      9344
+      -11696,
+      8944
     ],
     "parameters": {
       "mode": "runOnceForAllItems",
@@ -3334,8 +2957,8 @@
     "type": "n8n-nodes-base.if",
     "typeVersion": 2.3,
     "position": [
-      -11488,
-      9344
+      -11424,
+      8944
     ],
     "parameters": {
       "conditions": {
@@ -3366,8 +2989,8 @@
     "type": "n8n-nodes-base.code",
     "typeVersion": 2,
     "position": [
-      -10960,
-      9344
+      -10896,
+      8944
     ],
     "parameters": {
       "mode": "runOnceForAllItems",
@@ -3381,8 +3004,8 @@
     "type": "n8n-nodes-base.code",
     "typeVersion": 2,
     "position": [
-      -10168,
-      10000
+      -10112,
+      9600
     ],
     "parameters": {
       "mode": "runOnceForAllItems",
@@ -3396,8 +3019,8 @@
     "type": "n8n-nodes-base.if",
     "typeVersion": 2.3,
     "position": [
-      -9904,
-      10000
+      -9840,
+      9600
     ],
     "parameters": {
       "conditions": {
@@ -3428,8 +3051,8 @@
     "type": "n8n-nodes-base.code",
     "typeVersion": 2,
     "position": [
-      -9376,
-      10000
+      -9312,
+      9600
     ],
     "parameters": {
       "mode": "runOnceForAllItems",
@@ -3443,8 +3066,8 @@
     "type": "n8n-nodes-base.code",
     "typeVersion": 2,
     "position": [
-      -11752,
-      10000
+      -11696,
+      9600
     ],
     "parameters": {
       "mode": "runOnceForAllItems",
@@ -3458,8 +3081,8 @@
     "type": "n8n-nodes-base.if",
     "typeVersion": 2.3,
     "position": [
-      -11488,
-      10000
+      -11424,
+      9600
     ],
     "parameters": {
       "conditions": {
@@ -3490,8 +3113,8 @@
     "type": "n8n-nodes-base.code",
     "typeVersion": 2,
     "position": [
-      -10960,
-      10000
+      -10896,
+      9600
     ],
     "parameters": {
       "mode": "runOnceForAllItems",
@@ -3505,8 +3128,8 @@
     "type": "n8n-nodes-base.code",
     "typeVersion": 2,
     "position": [
-      -12016,
-      10912
+      -11952,
+      10512
     ],
     "parameters": {
       "mode": "runOnceForAllItems",
@@ -3520,8 +3143,8 @@
     "type": "n8n-nodes-base.if",
     "typeVersion": 2.3,
     "position": [
-      -11752,
-      10912
+      -11696,
+      10512
     ],
     "parameters": {
       "conditions": {
@@ -3552,8 +3175,8 @@
     "type": "n8n-nodes-base.code",
     "typeVersion": 2,
     "position": [
-      -11224,
-      10912
+      -11168,
+      10512
     ],
     "parameters": {
       "mode": "runOnceForAllItems",
@@ -3567,8 +3190,8 @@
     "type": "n8n-nodes-base.code",
     "typeVersion": 2,
     "position": [
-      -10696,
-      10912
+      -10640,
+      10512
     ],
     "parameters": {
       "mode": "runOnceForAllItems",
@@ -3582,8 +3205,8 @@
     "type": "n8n-nodes-base.if",
     "typeVersion": 2.3,
     "position": [
-      -10432,
-      10912
+      -10368,
+      10512
     ],
     "parameters": {
       "conditions": {
@@ -3614,8 +3237,8 @@
     "type": "n8n-nodes-base.code",
     "typeVersion": 2,
     "position": [
-      -9904,
-      10912
+      -9840,
+      10512
     ],
     "parameters": {
       "mode": "runOnceForAllItems",
@@ -3624,137 +3247,13 @@
     }
   },
   {
-    "name": "Conferir cache — Adaptar text-heavy — LinkedIn1",
-    "id": "Conferir cache — Adaptar text-heavy — LinkedIn1",
-    "type": "n8n-nodes-base.code",
-    "typeVersion": 2,
-    "position": [
-      -9112,
-      10688
-    ],
-    "parameters": {
-      "mode": "runOnceForAllItems",
-      "language": "javaScript",
-      "jsCode": "const cache=$('Preparar texto de teste').first().json.cache?.[\"Adaptar text-heavy — LinkedIn1\"]?.[$runIndex];return $input.all().map((item,index)=>({json:{...item.json,_replayStage:Array.isArray(cache)},pairedItem:{item:index}}));"
-    }
-  },
-  {
-    "name": "Retomar resultado — Adaptar text-heavy — LinkedIn1",
-    "id": "Retomar resultado — Adaptar text-heavy — LinkedIn1",
-    "type": "n8n-nodes-base.if",
-    "typeVersion": 2.3,
-    "position": [
-      -8848,
-      10688
-    ],
-    "parameters": {
-      "conditions": {
-        "options": {
-          "caseSensitive": true,
-          "leftValue": "",
-          "typeValidation": "strict",
-          "version": 3
-        },
-        "conditions": [
-          {
-            "leftValue": "={{ $json._replayStage === true }}",
-            "rightValue": true,
-            "operator": {
-              "type": "boolean",
-              "operation": "equals"
-            }
-          }
-        ],
-        "combinator": "and"
-      },
-      "options": {}
-    }
-  },
-  {
-    "name": "Adaptar text-heavy — LinkedIn1",
-    "id": "Adaptar text-heavy — LinkedIn1",
-    "type": "n8n-nodes-base.code",
-    "typeVersion": 2,
-    "position": [
-      -8320,
-      10688
-    ],
-    "parameters": {
-      "mode": "runOnceForAllItems",
-      "language": "javaScript",
-      "jsCode": "const cache=$('Preparar texto de teste').first().json.cache?.[\"Adaptar text-heavy — LinkedIn1\"]?.[$runIndex];\nif(Array.isArray(cache))return cache.map((json,item)=>({json,pairedItem:{item:Math.min(item,$input.all().length-1)}}));\nreturn $input.all();"
-    }
-  },
-  {
-    "name": "Conferir cache — Adaptar text-heavy — Instagram1",
-    "id": "Conferir cache — Adaptar text-heavy — Instagram1",
-    "type": "n8n-nodes-base.code",
-    "typeVersion": 2,
-    "position": [
-      -9112,
-      11200
-    ],
-    "parameters": {
-      "mode": "runOnceForAllItems",
-      "language": "javaScript",
-      "jsCode": "const cache=$('Preparar texto de teste').first().json.cache?.[\"Adaptar text-heavy — Instagram1\"]?.[$runIndex];return $input.all().map((item,index)=>({json:{...item.json,_replayStage:Array.isArray(cache)},pairedItem:{item:index}}));"
-    }
-  },
-  {
-    "name": "Retomar resultado — Adaptar text-heavy — Instagram1",
-    "id": "Retomar resultado — Adaptar text-heavy — Instagram1",
-    "type": "n8n-nodes-base.if",
-    "typeVersion": 2.3,
-    "position": [
-      -8848,
-      11200
-    ],
-    "parameters": {
-      "conditions": {
-        "options": {
-          "caseSensitive": true,
-          "leftValue": "",
-          "typeValidation": "strict",
-          "version": 3
-        },
-        "conditions": [
-          {
-            "leftValue": "={{ $json._replayStage === true }}",
-            "rightValue": true,
-            "operator": {
-              "type": "boolean",
-              "operation": "equals"
-            }
-          }
-        ],
-        "combinator": "and"
-      },
-      "options": {}
-    }
-  },
-  {
-    "name": "Adaptar text-heavy — Instagram1",
-    "id": "Adaptar text-heavy — Instagram1",
-    "type": "n8n-nodes-base.code",
-    "typeVersion": 2,
-    "position": [
-      -8320,
-      11200
-    ],
-    "parameters": {
-      "mode": "runOnceForAllItems",
-      "language": "javaScript",
-      "jsCode": "const cache=$('Preparar texto de teste').first().json.cache?.[\"Adaptar text-heavy — Instagram1\"]?.[$runIndex];\nif(Array.isArray(cache))return cache.map((json,item)=>({json,pairedItem:{item:Math.min(item,$input.all().length-1)}}));\nreturn $input.all();"
-    }
-  },
-  {
     "name": "Conferir cache — SOFT CTA PARA O PROPRIO TEXTO1",
     "id": "Conferir cache — SOFT CTA PARA O PROPRIO TEXTO1",
     "type": "n8n-nodes-base.code",
     "typeVersion": 2,
     "position": [
-      -9376,
-      11904
+      -9312,
+      11504
     ],
     "parameters": {
       "mode": "runOnceForAllItems",
@@ -3768,8 +3267,8 @@
     "type": "n8n-nodes-base.if",
     "typeVersion": 2.3,
     "position": [
-      -9112,
-      11904
+      -9056,
+      11504
     ],
     "parameters": {
       "conditions": {
@@ -3800,8 +3299,8 @@
     "type": "n8n-nodes-base.code",
     "typeVersion": 2,
     "position": [
-      -8584,
-      11904
+      -8528,
+      11504
     ],
     "parameters": {
       "mode": "runOnceForAllItems",
@@ -3815,8 +3314,8 @@
     "type": "n8n-nodes-base.code",
     "typeVersion": 2,
     "position": [
-      -12016,
-      11904
+      -11952,
+      11504
     ],
     "parameters": {
       "mode": "runOnceForAllItems",
@@ -3830,8 +3329,8 @@
     "type": "n8n-nodes-base.if",
     "typeVersion": 2.3,
     "position": [
-      -11752,
-      11904
+      -11696,
+      11504
     ],
     "parameters": {
       "conditions": {
@@ -3862,8 +3361,8 @@
     "type": "n8n-nodes-base.code",
     "typeVersion": 2,
     "position": [
-      -11224,
-      11904
+      -11168,
+      11504
     ],
     "parameters": {
       "mode": "runOnceForAllItems",
@@ -3877,8 +3376,8 @@
     "type": "n8n-nodes-base.code",
     "typeVersion": 2,
     "position": [
-      -10696,
-      11904
+      -10640,
+      11504
     ],
     "parameters": {
       "mode": "runOnceForAllItems",
@@ -3892,8 +3391,8 @@
     "type": "n8n-nodes-base.if",
     "typeVersion": 2.3,
     "position": [
-      -10432,
-      11904
+      -10368,
+      11504
     ],
     "parameters": {
       "conditions": {
@@ -3924,8 +3423,8 @@
     "type": "n8n-nodes-base.code",
     "typeVersion": 2,
     "position": [
-      -9904,
-      11904
+      -9840,
+      11504
     ],
     "parameters": {
       "mode": "runOnceForAllItems",
@@ -3939,8 +3438,8 @@
     "type": "n8n-nodes-base.code",
     "typeVersion": 2,
     "position": [
-      2508,
-      1680
+      -16480,
+      11392
     ],
     "parameters": {
       "mode": "runOnceForAllItems",
@@ -3954,8 +3453,8 @@
     "type": "n8n-nodes-base.if",
     "typeVersion": 2.3,
     "position": [
-      2748,
-      1680
+      -16096,
+      11392
     ],
     "parameters": {
       "conditions": {
@@ -3986,8 +3485,8 @@
     "type": "n8n-nodes-base.code",
     "typeVersion": 2,
     "position": [
-      3268,
-      1680
+      -15520,
+      11392
     ],
     "parameters": {
       "mode": "runOnceForAllItems",
@@ -4001,13 +3500,13 @@
     "type": "n8n-nodes-base.code",
     "typeVersion": 2,
     "position": [
-      4100,
-      0
+      -5744,
+      13408
     ],
     "parameters": {
       "mode": "runOnceForAllItems",
       "language": "javaScript",
-      "jsCode": "function normalizeEditorial(result) {\n  const posts = [], errors = [...(result.erros ?? [])];\n  const parse = value => {\n    if (typeof value !== 'string') return value;\n    const text = value.trim().replace(/^```(?:json)?\\s*\\n?([\\s\\S]*?)\\n?```$/i, '$1');\n    try { return JSON.parse(text); } catch { return text; }\n  };\n  const textOf = v => typeof v === 'string' ? v.trim() : typeof v?.text === 'string' ? v.text.trim() : typeof v?.body === 'string' ? v.body.trim() : '';\n  const partsOf = v => { const p = parse(v); const parts = Array.isArray(p) ? p : p?.parts ?? p?.slides ?? (typeof p === 'string' ? p.split(/^\\s*---\\s*$/m) : [p]); return Array.isArray(parts) ? parts.map(textOf).filter(Boolean) : []; };\n  const add = (key, type, networks, parts, extra = {}) => {\n    if (!parts.length) { errors.push({ node: key, erro: { message: 'Conteúdo final vazio.' } }); return; }\n    for (const [platform, format] of Object.entries(networks)) {\n      const body = platform === 'LinkedIn' && type === 'sequencia' ? parts.join('\\n\\n') : parts.map((p, i) => parts.length > 1 ? `### Parte ${i + 1}\\n\\n${p}` : p).join('\\n\\n---\\n\\n');\n      posts.push({ contentKey: key + ':' + platform, platform, format, contentType: type, parts,\n        title: extra.title || parts[0].split('\\n')[0].replace(/^#+\\s*/, '').slice(0, 150), body,\n        ...extra });\n    }\n  };\n  const shortNetworks = { Twitter: 'single_text', LinkedIn: 'single_text', Instagram: 'stories' };\n  for (const item of result.outputsDosAgents ?? []) {\n    if (item.erro) continue;\n    if (!['Tweets/Stories sem angulo', 'Interação com seguidores', 'Sequência de pensamentos rápidos'].includes(item.agent)) continue;\n    const key = `${item.agent}:${item.run}:${item.item}`;\n    const output = parse(item.output);\n    if (item.agent === 'Sequência de pensamentos rápidos') add(key, 'sequencia', { Twitter: 'thread', LinkedIn: 'single_text', Instagram: 'stories' }, partsOf(output));\n    else for (const [i, post] of (Array.isArray(output) ? output : output?.posts ?? [output]).entries()) add(key + ':' + i,\n      item.agent === 'Interação com seguidores' ? 'interacao' : 'pensamento-rapido', shortNetworks, [textOf(post)].filter(Boolean));\n    if (!posts.some(p=>p.contentKey.startsWith(key))) errors.push({node:item.agent,erro:{message:'Agent retornou saída sem texto utilizável.'}});\n  }\n  for (const item of result.resultadosFinais ?? []) {\n    const v = item.resultado ?? {}, key = `${item.node}:${item.run}:${item.item}`;\n    if (item.node.startsWith('Reunir carrossel e legenda')) {\n      if (v.error) continue;\n      const parts = partsOf(v.partsOutput ?? v.output);\n      add(key, item.node.endsWith('1') ? 'storytelling' : 'utilidade', { Twitter: 'carousel', LinkedIn: 'carousel', Instagram: 'carousel' }, parts,\n        { caption: v.caption ?? '', variant: v.carouselVariant ?? null, mediaPending: true, twitterImagesPerTweet: 4, linkedinPdfPending: true });\n    } else if (item.node === 'Organizar thread completa por rede1') {\n      for (const c of v.generatedContents ?? []) add(key + ':' + c.socialNetwork, 'resumo', { [c.socialNetwork]: c.socialNetwork === 'Twitter' ? 'thread' : 'carousel' }, c.parts ?? [], { mediaPending: true, imageDecisions: c.media?.sourceDecision ?? null });\n    } else if (item.node.startsWith('Conservar decisão — imagem-post')) {\n      if (!v.error && v.baseText) add(key, item.node.endsWith('1') ? 'opiniao' : 'educativo', { Twitter: 'single_text' }, [v.baseText], { mediaPending: true, imageDecisions: v.imageDecision });\n    } else if (/^(Adaptar text-heavy|Conservar texto) — (LinkedIn|Instagram)/.test(item.node)) {\n      if (v.error) continue;\n      const network = item.node.includes('LinkedIn') ? 'LinkedIn' : 'Instagram';\n      const text = textOf(parse(v.output));\n      if (text.length > (network === 'LinkedIn' ? 3000 : 2200)) { errors.push({node:item.node,erro:{message:'Texto adaptado excede limite de caracteres.'}}); continue; }\n      add(key, item.node.endsWith('1') ? 'opiniao' : 'educativo', { [network]: 'single_text' }, [text].filter(Boolean), { mediaPending: true });\n    } else if (item.node.startsWith('Conservar título e ensaio para conclusão')) {\n      if (!v.essayBody) continue;\n      const heading = parse(v.headline) ?? {};\n      add(key, 'ensaio', { Twitter: 'article', LinkedIn: 'article', Blog: 'article' }, [v.essayBody], { title: heading.title, subtitle: heading.subtitle ?? '' });\n      const suffix = item.node.endsWith('1') ? '1' : '';\n      const cta = (result.outputsDosAgents ?? []).find(a => a.agent === 'SOFT CTA PARA O PROPRIO TEXTO' + suffix && a.run === item.run && a.item === item.item);\n      if (cta && !cta.erro) add(key + ':chamada', 'chamada-ensaio', { Instagram: 'thumbnail' }, [textOf(parse(cta.output))].filter(Boolean), { articleContentKey: key, mediaPending: true });\n    }\n  }\n  return { posts, errors };\n}\nfunction validEditorialCheckpoint(name, values) {\n  const parse = value => { if (typeof value !== 'string') return value; try { return JSON.parse(value.trim().replace(/^```(?:json)?\\s*\\n?([\\s\\S]*?)\\n?```$/i, '$1')); } catch { return value; } };\n  const text = value => typeof value === 'string' ? value.trim() : typeof value?.text === 'string' ? value.text.trim() : typeof value?.body === 'string' ? value.body.trim() : '';\n  return Array.isArray(values) && values.length > 0 && values.every(v => {\n    if (v.error) return false;\n    if (name.startsWith('Jev')) return v.answers && Object.values(v.answers).length && Object.values(v.answers).every(a => a.type === 'noul' && Number.isFinite(a.noul) && a.noul >= 0 && a.noul <= 1);\n    const o = parse(v.output);\n    if (name.startsWith('título')) return typeof o?.title === 'string' && !!o.title.trim();\n    if (/carrossel|thread|Sequência/.test(name)) {\n      const parts = o?.parts ?? o?.slides ?? (typeof o === 'string' ? o.split(/^\\s*---\\s*$/m) : null);\n      return Array.isArray(parts) && parts.length > 0 && parts.every(p => !!text(p));\n    }\n    if (/Tweets\\/Stories|Interação/.test(name)) return Array.isArray(o?.posts) && o.posts.length > 0 && o.posts.every(p => !!text(p));\n    if (name.startsWith('Angulos')) return typeof o === 'string' && !!o.trim() || Array.isArray(o) && o.length > 0 || Array.isArray(o?.angles) && o.angles.length > 0;\n    return !!text(o);\n  });\n}\nconst result=$input.first().json;const normalized=normalizeEditorial(result);const cache={};\nfor(const name of [\"Interação com seguidores\",\"SOFT CTA PARA O PROPRIO TEXTO\",\"carrossel - linguagem flesch 8-9 ano\",\"Angulos para long-form 3200+\",\"Jev — Lista carrossel1\",\"Jev — Checklist carrossel\",\"Jev — tutorial/how-to carrossel\",\"Legenda completa instagram\",\"carrossel - linguagem flesch 8-9 ano1\",\"text-heavy\",\"ensaio com angulo\",\"ensaio sem angulo\",\"título e subtítulo\",\"Tweets/Stories sem angulo\",\"Sequência de pensamentos rápidos\",\"carrossel - linguagem flesch 8-9 ano3\",\"Jev — CABE google imagens? (para cada tweet)1\",\"Adaptar text-heavy — LinkedIn\",\"Adaptar text-heavy — Instagram\",\"Jev — CABE google imagens? (para cada tweet)2\",\"thread1\",\"Legenda completa instagram1\",\"carrossel - linguagem flesch 8-9 ano4\",\"text-heavy1\",\"Jev — CABE google imagens? (para cada tweet)\",\"Adaptar text-heavy — LinkedIn1\",\"Adaptar text-heavy — Instagram1\",\"SOFT CTA PARA O PROPRIO TEXTO1\",\"ensaio sem angulo1\",\"título e subtítulo1\",\"Jev — Continuidade entre inputs\"]){if(!$(name).isExecuted)continue;cache[name]=[];for(let run=0;run<256;run++){try{const values=$(name).all(0,run).map(i=>i.json);cache[name][run]=validEditorialCheckpoint(name,values)&&!normalized.errors.some(e=>e.node===name)?values:null;}catch{break;}}}\nfor(const name of Object.keys(cache))cache[name]=Object.fromEntries(cache[name].flatMap((v,i)=>v?[[i,v]]:[]));\nreturn [{json:{ok:true,...normalized,cache,workflowId:$workflow.id,executionId:$execution.id,diagnostics:result}}];"
+      "jsCode": "function normalizeEditorial(result) {\n  const posts = [], errors = [...(result.erros ?? [])];\n  const parse = value => {\n    if (typeof value !== 'string') return value;\n    const text = value.trim().replace(/^```(?:json)?\\s*\\n?([\\s\\S]*?)\\n?```$/i, '$1');\n    try { return JSON.parse(text); } catch { return text; }\n  };\n  const textOf = v => typeof v === 'string' ? v.trim() : typeof v?.text === 'string' ? v.text.trim() : typeof v?.body === 'string' ? v.body.trim() : '';\n  const partsOf = v => { const p = parse(v); const parts = Array.isArray(p) ? p : p?.parts ?? p?.slides ?? (typeof p === 'string' ? p.split(/^\\s*---\\s*$/m) : [p]); return Array.isArray(parts) ? parts.map(textOf).filter(Boolean) : []; };\n  const add = (key, type, networks, parts, extra = {}) => {\n    if (!parts.length) { errors.push({ node: key, erro: { message: 'Conteúdo final vazio.' } }); return; }\n    for (const [platform, format] of Object.entries(networks)) {\n      const body = platform === 'LinkedIn' && type === 'sequencia' ? parts.join('\\n\\n') : parts.map((p, i) => parts.length > 1 ? `### Parte ${i + 1}\\n\\n${p}` : p).join('\\n\\n---\\n\\n');\n      posts.push({ contentKey: key + ':' + platform, baseContentKey: key, platform, format, contentType: type, parts,\n        title: extra.title || parts[0].split('\\n')[0].replace(/^#+\\s*/, '').slice(0, 150), body,\n        ...extra });\n    }\n  };\n  const shortNetworks = { Twitter: 'single_text', LinkedIn: 'single_text', Instagram: 'stories' };\n  for (const item of result.outputsDosAgents ?? []) {\n    if (item.erro) continue;\n    if (!['Tweets/Stories sem angulo', 'Interação com seguidores', 'Sequência de pensamentos rápidos'].includes(item.agent)) continue;\n    const key = `${item.agent}:${item.run}:${item.item}`;\n    const output = parse(item.output);\n    if (item.agent === 'Sequência de pensamentos rápidos') add(key, 'sequencia', { Twitter: 'thread', LinkedIn: 'single_text', Instagram: 'stories' }, partsOf(output));\n    else for (const [i, post] of (Array.isArray(output) ? output : output?.posts ?? [output]).entries()) add(key + ':' + i,\n      item.agent === 'Interação com seguidores' ? 'interacao' : 'pensamento-rapido', shortNetworks, [textOf(post)].filter(Boolean));\n    if (!posts.some(p=>p.contentKey.startsWith(key))) errors.push({node:item.agent,erro:{message:'Agent retornou saída sem texto utilizável.'}});\n  }\n  for (const item of result.resultadosFinais ?? []) {\n    const v = item.resultado ?? {}, key = `${item.node}:${item.run}:${item.item}`;\n    if (item.node.startsWith('Reunir carrossel e legenda')) {\n      if (v.error) continue;\n      const parts = partsOf(v.partsOutput ?? v.output);\n      add(key, item.node.endsWith('1') ? 'storytelling' : 'utilidade', { Twitter: 'carousel', LinkedIn: 'carousel', Instagram: 'carousel' }, parts,\n        { caption: v.caption ?? '', variant: v.carouselVariant ?? null, mediaPending: true, twitterImagesPerTweet: 4, linkedinPdfPending: true });\n    } else if (item.node === 'Organizar thread completa por rede1') {\n      for (const c of v.generatedContents ?? []) add(key, 'resumo', { [c.socialNetwork]: c.socialNetwork === 'Twitter' ? 'thread' : 'carousel' }, c.parts ?? [], { mediaPending: true, imageDecisions: c.media?.sourceDecision ?? null });\n    } else if (item.node.startsWith('Conservar decisão — imagem-post')) {\n      if (!v.error && v.baseText) add(key, item.node.endsWith('1') ? 'opiniao' : 'educativo', { Twitter: 'single_text', LinkedIn: 'single_text', Instagram: 'single_text' }, [v.baseText], { mediaPending: true, imageDecisions: v.imageDecision });\n    } else if (/^(Adaptar text-heavy|Conservar texto) — (LinkedIn|Instagram)/.test(item.node)) {\n      if (v.error) continue;\n      const network = item.node.includes('LinkedIn') ? 'LinkedIn' : 'Instagram';\n      const text = textOf(parse(v.output));\n      add(key, item.node.endsWith('1') ? 'opiniao' : 'educativo', { [network]: 'single_text' }, [text].filter(Boolean), { mediaPending: true });\n    } else if (item.node.startsWith('Conservar título e ensaio para conclusão')) {\n      if (!v.essayBody) continue;\n      const heading = parse(v.headline) ?? {};\n      add(key, 'ensaio', { Twitter: 'article', LinkedIn: 'article', Blog: 'article' }, [v.essayBody], { title: heading.title, subtitle: heading.subtitle ?? '' });\n      const suffix = item.node.endsWith('1') ? '1' : '';\n      const cta = (result.outputsDosAgents ?? []).find(a => a.agent === 'SOFT CTA PARA O PROPRIO TEXTO' + suffix && a.run === item.run && a.item === item.item);\n      if (cta && !cta.erro) add(key + ':chamada', 'chamada-ensaio', { Instagram: 'thumbnail' }, [textOf(parse(cta.output))].filter(Boolean), { articleContentKey: key, mediaPending: true });\n    }\n  }\n  return { posts, errors };\n}\nfunction centralizePosts(posts) {\n  const contents=[], warnings=[];\n  const platforms=new Set(['Twitter','LinkedIn','Instagram','Blog']);\n  for(const post of posts) {\n    if(!platforms.has(post.platform)||!post.contentKey||typeof post.body!=='string'||!post.body.trim())throw new Error('Post sem rede, identidade ou texto válido.');\n    const parts=Array.isArray(post.parts)&&post.parts.length?post.parts:[post.body];\n    if(parts.some(p=>typeof p!=='string'||!p.trim()))throw new Error('Blocos textuais inválidos.');\n    let key=post.baseContentKey??post.contentKey.replace(/(?::(?:Twitter|LinkedIn|Instagram|Blog))+$/,'');\n    // Só relaciona os antigos terminais de adaptação às suas etapas-base conhecidas.\n    key=key.replace(/^(?:Adaptar text-heavy|Conservar texto) — (?:LinkedIn|Instagram)(1?):/,(_,suffix)=>'Conservar decisão — imagem-post'+suffix+':');\n    const content={contentKey:key,contentType:post.contentType,title:post.title??'',subtitle:post.subtitle??'',parts:[...parts],caption:post.caption??'',\n      variant:post.variant??null,articleContentKey:post.articleContentKey??null};\n    const signature=v=>JSON.stringify([v.title,v.subtitle,v.parts,v.caption,v.variant]);\n    const siblings=contents.filter(c=>c.baseContentKey===key&&c.contentType===post.contentType);\n    let target=siblings.find(c=>signature(c)===signature(content));\n    if(!target) {\n      if(siblings.length){content.contentKey=key+':variante-'+(siblings.length+1);content.legacyTextVariant=true;warnings.push({contentKey:key,message:'Saída antiga possui texto diferente por rede; preservada como variante, sem sobrescrever.'});}\n      target={...content,baseContentKey:key,destinations:[],mediaPending:!!post.mediaPending};contents.push(target);\n    }\n    const destination={platform:post.platform,format:post.platform==='Twitter'&&post.format==='carousel'?'thread':post.format,\n      ...(post.platform==='LinkedIn'&&post.format==='carousel'?{renderTarget:'pdf'}:{}),\n      ...(post.caption?{captionPlacement:post.platform==='Twitter'?'first_tweet':post.platform==='LinkedIn'?'post_text':'caption'}:{}),\n      ...(post.imageDecisions!==undefined?{imageDecisions:post.imageDecisions}:{}),\n      ...(post.twitterImagesPerTweet?{imagesPerTweet:post.twitterImagesPerTweet}:{}),\n      ...(post.linkedinPdfPending?{pdfPending:true}:{})};\n    if(!target.destinations.some(d=>d.platform===destination.platform&&d.format===destination.format))target.destinations.push(destination);\n    target.mediaPending ||= !!post.mediaPending;\n  }\n  return {contents,warnings};\n}\nfunction normalizeCentralEditorial(result) {\n  const isAdaptation=name=>/^(?:Adaptar text-heavy|Conservar texto) — (?:LinkedIn|Instagram)/.test(name??'');\n  const normalized=normalizeEditorial({...result,\n    resultadosFinais:(result.resultadosFinais??[]).filter(item=>!isAdaptation(item.node)),\n    erros:(result.erros??[]).filter(item=>!isAdaptation(item.node))});\n  const central=centralizePosts(normalized.posts);\n  return {...central,errors:normalized.errors};\n}\nfunction validEditorialCheckpoint(name, values) {\n  const parse = value => { if (typeof value !== 'string') return value; try { return JSON.parse(value.trim().replace(/^```(?:json)?\\s*\\n?([\\s\\S]*?)\\n?```$/i, '$1')); } catch { return value; } };\n  const text = value => typeof value === 'string' ? value.trim() : typeof value?.text === 'string' ? value.text.trim() : typeof value?.body === 'string' ? value.body.trim() : '';\n  return Array.isArray(values) && values.length > 0 && values.every(v => {\n    if (v.error) return false;\n    if (name.startsWith('Jev')) return v.answers && Object.values(v.answers).length && Object.values(v.answers).every(a => a.type === 'noul' && Number.isFinite(a.noul) && a.noul >= 0 && a.noul <= 1);\n    const o = parse(v.output);\n    if (name.startsWith('título')) return typeof o?.title === 'string' && !!o.title.trim();\n    if (/carrossel|thread|Sequência/.test(name)) {\n      const parts = o?.parts ?? o?.slides ?? (typeof o === 'string' ? o.split(/^\\s*---\\s*$/m) : null);\n      return Array.isArray(parts) && parts.length > 0 && parts.every(p => !!text(p));\n    }\n    if (/Tweets\\/Stories|Interação/.test(name)) return Array.isArray(o?.posts) && o.posts.length > 0 && o.posts.every(p => !!text(p));\n    if (name.startsWith('Angulos')) return typeof o === 'string' && !!o.trim() || Array.isArray(o) && o.length > 0 || Array.isArray(o?.angles) && o.angles.length > 0;\n    return !!text(o);\n  });\n}\nconst result=$input.first().json;const normalized=normalizeCentralEditorial(result);const cache={};\nfor(const name of [\"Interação com seguidores\",\"SOFT CTA PARA O PROPRIO TEXTO\",\"carrossel - linguagem flesch 8-9 ano\",\"Angulos para long-form 3200+\",\"Jev — Lista carrossel1\",\"Jev — Checklist carrossel\",\"Jev — tutorial/how-to carrossel\",\"Legenda completa instagram\",\"carrossel - linguagem flesch 8-9 ano1\",\"text-heavy\",\"ensaio com angulo\",\"ensaio sem angulo\",\"título e subtítulo\",\"Tweets/Stories sem angulo\",\"Sequência de pensamentos rápidos\",\"carrossel - linguagem flesch 8-9 ano3\",\"Jev — CABE google imagens? (para cada tweet)1\",\"Jev — CABE google imagens? (para cada tweet)2\",\"thread1\",\"Legenda completa instagram1\",\"carrossel - linguagem flesch 8-9 ano4\",\"text-heavy1\",\"Jev — CABE google imagens? (para cada tweet)\",\"SOFT CTA PARA O PROPRIO TEXTO1\",\"ensaio sem angulo1\",\"título e subtítulo1\",\"Jev — Continuidade entre inputs\"]){if(!$(name).isExecuted)continue;cache[name]=[];for(let run=0;run<256;run++){try{const values=$(name).all(0,run).map(i=>i.json);cache[name][run]=validEditorialCheckpoint(name,values)&&!normalized.errors.some(e=>e.node===name)?values:null;}catch{break;}}}\nfor(const name of Object.keys(cache))cache[name]=Object.fromEntries(cache[name].flatMap((v,i)=>v?[[i,v]]:[]));\nreturn [{json:{ok:true,contentSchemaVersion:1,...normalized,cache,workflowId:$workflow.id,executionId:$execution.id,diagnostics:result}}];"
     }
   },
   {
@@ -4015,8 +3514,8 @@
     "type": "n8n-nodes-base.respondToWebhook",
     "typeVersion": 1.5,
     "position": [
-      4000,
-      0
+      -5344,
+      13408
     ],
     "parameters": {
       "respondWith": "firstIncomingItem",

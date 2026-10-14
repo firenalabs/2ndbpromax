@@ -8,6 +8,7 @@ import { organizeAtlas } from './atlas-organizado.mjs';
 import { fixAtlasTitle } from './titulo-atlas.mjs';
 import { bragBySegments } from './brag-por-segmentos.mjs';
 import { fixImageJevBodies } from './jevs-imagens-validos.mjs';
+import { withoutNetworkAdaptations } from './conteudo-sem-adaptacoes.mjs';
 
 const read = async name => JSON.parse(await readFile(new URL(name, import.meta.url), 'utf8'));
 const prune = (w, names) => {
@@ -51,7 +52,7 @@ export function sdkCode(w) {
   for (const [from, c] of Object.entries(w.connections)) for (const [out, batch] of (c.main ?? []).entries()) for (const e of batch) lines.push(`w.add(${index.get(from)}.output(${out}).to(${index.get(e.node)}.input(${e.index})));`);
   lines.push('export default w;'); return lines.join('\n');
 }
-export async function buildModular({ simplify = true, atlasLayout = true, bragSegments = true } = {}) {
+export async function buildModular({ simplify = true, atlasLayout = true, bragSegments = true, centralize = true } = {}) {
   const original = await read('modular-originais.json');
   const prep = structuredClone(original.prep), atlas = structuredClone(original.atlas), diary = structuredClone(original.diary), test = structuredClone(original.test);
   prep.name = 'Protótipo local — 01 Preparar KeyTopics e Recortes';
@@ -155,7 +156,8 @@ return [{json:{ok:true,...normalized,cache,workflowId:$workflow.id,executionId:$
     }
   }
   const organizedDiary=diaryWithoutLoop(diary);
-  return { prep, atlas: fixAtlasTitle(atlasLayout ? organizeAtlas(atlas) : atlas), diary: bragSegments ? bragBySegments(organizedDiary) : organizedDiary, generation: fixImageJevBodies(simplify ? simplifyEditorial(test) : test) };
+  const generation=fixImageJevBodies(simplify ? simplifyEditorial(test) : test);
+  return { prep, atlas: fixAtlasTitle(atlasLayout ? organizeAtlas(atlas) : atlas), diary: bragSegments ? bragBySegments(organizedDiary) : organizedDiary, generation: centralize ? withoutNetworkAdaptations(generation) : generation };
 }
 export async function writeModular() {
   const all = await buildModular();

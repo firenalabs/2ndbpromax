@@ -1,10 +1,14 @@
 # Conteúdos Gerados
 
-Conteúdos automáticos de duas origens:
+Use a opção 2 para os recortes pendentes ou a opção 3 para os grupos dos registros originais do Diário. Cada pedido tem uma pasta `gen-[data-hora]-[origem]`.
 
-- **Atlas:** cada recorte aceito pelo Jev pode gerar um conteúdo.
-- **Diário:** cada grupo fechado, após os seis Jevs retornarem respostas válidas, pode gerar um conteúdo.
+- `índice.md`: fontes, estado de cada grupo/recorte e links para seus resultados.
+- `R01 — assunto/` ou `G01 — assunto/`: resultados de um recorte ou grupo.
+- Dentro dessa pasta, `opiniao/`, `educativo/`, `utilidade/`, `resumo/`, `storytelling/`, etc.: cada tipo tem um único `conteudo.md` com todos os seus posts independentes, numerados P01, P02...
+- `metadados.json`: identidades de cada post, redes e formatos previstos, referência ao Markdown, decisões de imagens e rastreamento da execução. Não repete o corpo textual.
+- `origem.json`: origem, IDs dos inputs/digestões e limites dos segmentos ou decisões de continuidade do grupo.
+- `Fontes/`: textos usados e respostas das execuções, preservados para auditoria e retomada.
 
-Abra o `.md` para ler. O `.json` guarda título, texto, origem, referência ao recorte/grupo, IDs, datas e quantidades de palavras. Os nomes começam com a data e Atlas ou Diário. A mesma referência reutiliza seus arquivos ao tentar novamente.
+Redes são destinos do mesmo conteúdo-base. Não há redução por limites de LinkedIn/Instagram nesta etapa. Threads, slides e sequências preservam seus blocos ordenados no mesmo documento; legendas-base e chamadas de ensaio são conservadas.
 
-As faixas iniciais são 0–150, 151–600, 601–1499 e 1500+ palavras. Edite o Switch e cada Agent/modelo no respectivo workflow para personalizar. O conteúdo retorna na mesma chamada do Atlas/Diário. Erros nessa geração aparecem no terminal e não impedem o processamento original.
+Ao iniciar uma opção de geração, o programa reorganiza também resultados antigos que possuem resposta salva, sem chamar IA. Copias antigas por rede são removidas somente quando seus IDs comprovam que pertencem ao mesmo pedido; arquivos de execução e arquivos manuais são preservados. Se uma resposta antiga não permite recuperar um texto-base comum, os textos diferentes permanecem como variantes dentro do Markdown.

@@ -11,7 +11,7 @@ export function normalizeEditorial(result) {
     if (!parts.length) { errors.push({ node: key, erro: { message: 'Conteúdo final vazio.' } }); return; }
     for (const [platform, format] of Object.entries(networks)) {
       const body = platform === 'LinkedIn' && type === 'sequencia' ? parts.join('\n\n') : parts.map((p, i) => parts.length > 1 ? `### Parte ${i + 1}\n\n${p}` : p).join('\n\n---\n\n');
-      posts.push({ contentKey: key + ':' + platform, platform, format, contentType: type, parts,
+      posts.push({ contentKey: key + ':' + platform, baseContentKey: key, platform, format, contentType: type, parts,
         title: extra.title || parts[0].split('\n')[0].replace(/^#+\s*/, '').slice(0, 150), body,
         ...extra });
     }
@@ -35,14 +35,13 @@ export function normalizeEditorial(result) {
       add(key, item.node.endsWith('1') ? 'storytelling' : 'utilidade', { Twitter: 'carousel', LinkedIn: 'carousel', Instagram: 'carousel' }, parts,
         { caption: v.caption ?? '', variant: v.carouselVariant ?? null, mediaPending: true, twitterImagesPerTweet: 4, linkedinPdfPending: true });
     } else if (item.node === 'Organizar thread completa por rede1') {
-      for (const c of v.generatedContents ?? []) add(key + ':' + c.socialNetwork, 'resumo', { [c.socialNetwork]: c.socialNetwork === 'Twitter' ? 'thread' : 'carousel' }, c.parts ?? [], { mediaPending: true, imageDecisions: c.media?.sourceDecision ?? null });
+      for (const c of v.generatedContents ?? []) add(key, 'resumo', { [c.socialNetwork]: c.socialNetwork === 'Twitter' ? 'thread' : 'carousel' }, c.parts ?? [], { mediaPending: true, imageDecisions: c.media?.sourceDecision ?? null });
     } else if (item.node.startsWith('Conservar decisão — imagem-post')) {
-      if (!v.error && v.baseText) add(key, item.node.endsWith('1') ? 'opiniao' : 'educativo', { Twitter: 'single_text' }, [v.baseText], { mediaPending: true, imageDecisions: v.imageDecision });
+      if (!v.error && v.baseText) add(key, item.node.endsWith('1') ? 'opiniao' : 'educativo', { Twitter: 'single_text', LinkedIn: 'single_text', Instagram: 'single_text' }, [v.baseText], { mediaPending: true, imageDecisions: v.imageDecision });
     } else if (/^(Adaptar text-heavy|Conservar texto) — (LinkedIn|Instagram)/.test(item.node)) {
       if (v.error) continue;
       const network = item.node.includes('LinkedIn') ? 'LinkedIn' : 'Instagram';
       const text = textOf(parse(v.output));
-      if (text.length > (network === 'LinkedIn' ? 3000 : 2200)) { errors.push({node:item.node,erro:{message:'Texto adaptado excede limite de caracteres.'}}); continue; }
       add(key, item.node.endsWith('1') ? 'opiniao' : 'educativo', { [network]: 'single_text' }, [text].filter(Boolean), { mediaPending: true });
     } else if (item.node.startsWith('Conservar título e ensaio para conclusão')) {
       if (!v.essayBody) continue;

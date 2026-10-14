@@ -1,11 +1,12 @@
 import { randomUUID, createHash } from 'node:crypto';
-import { mkdir, writeFile, readdir } from 'node:fs/promises';
+import { mkdir, writeFile, readdir, unlink, rmdir } from 'node:fs/promises';
 import { join } from 'node:path';
 import { readJson, writeJson } from './arquivos.mjs';
 import { listMaterials } from './materiais.mjs';
 import { localDay } from './diario-registros.mjs';
 import { validateDecision } from './contratos-diario.mjs';
 import { terminalLog } from './terminal.mjs';
+import {centralizePosts,normalizeCentralEditorial} from './conteudo-centralizado.mjs';
 
 const identity = text => createHash('sha256').update(text).digest('hex').slice(0, 24);
 const safe = s => String(s).normalize('NFC').replace(/[\u0000-\u001f\\/:*?"<>|]/g, '-').slice(0, 65);
@@ -18,6 +19,7 @@ export class EditorialGeneration {
     if (this.state.schemaVersion !== 1 || !this.state.units || !Array.isArray(this.state.batches)) throw new Error('Estado editorial incompatível.');
     for (const unit of Object.values(this.state.units)) if (unit.status === 'processing') unit.status = 'pending';
     await this.save();
+    await this.reorganizeSavedOutputs();
   }
   async save() { await writeJson(this.path, this.state); }
   async call(payload) {
@@ -105,33 +107,89 @@ export class EditorialGeneration {
       try {
         if (source.text.length > (this.config.maxGroupCharacters ?? 120000)) throw new Error('Fonte acima do limite de caracteres configurado; texto integral conservado, sem truncamento.');
         const result = await this.call({ operation: 'generate', sourceKind: source.kind, source, cache: unit.cache, generationId: unit.id, generationBatchId: batch.id });
-        if (!Array.isArray(result.posts) || !Array.isArray(result.errors) || !result.cache || typeof result.cache !== 'object') throw new Error('Resposta editorial incompleta; não marcar como concluída.');
+        if ((!Array.isArray(result.contents)&&!Array.isArray(result.posts)) || !Array.isArray(result.errors) || !result.cache || typeof result.cache !== 'object') throw new Error('Resposta editorial incompleta; não marcar como concluída.');
         unit.cache = result.cache; unit.errors = result.errors;
         await this.save();
-        for (const post of result.posts) await this.writePost(batch, unit, post, result);
+        const previous=await readJson(join(this.root,'Conteúdos Gerados',batch.folder,'Fontes',code+'-execucao.json'),null);
+        const getContents=value=>Array.isArray(value?.contents)?value.contents:value?.diagnostics?normalizeCentralEditorial(value.diagnostics).contents:centralizePosts(value?.posts??[]).contents;
+        // Novas tentativas atualizam somente as saídas retornadas; conservam as anteriores.
+        const merged=new Map(getContents(previous).map(c=>[c.contentKey,{...c,provenance:c.provenance??{workflowId:previous.workflowId,executionId:previous.executionId}}]));
+        for(const c of getContents(result)) {
+          const old=merged.get(c.contentKey),textSignature=value=>JSON.stringify([value?.parts,value?.title,value?.subtitle,value?.caption]);
+          merged.set(c.contentKey,{...c,provenance:old&&textSignature(old)===textSignature(c)?old.provenance:{workflowId:result.workflowId,executionId:result.executionId}});
+        }
+        result.contents=[...merged.values()];
+        await this.writeContents(batch,unit,result.contents,result);
         unit.status = unit.errors.length ? 'partial' : 'completed';
         unit.executionId = result.executionId; unit.workflowId = result.workflowId;
         await writeJson(join(this.root, 'Conteúdos Gerados', batch.folder, 'Fontes', code + '-execucao.json'), result);
       } catch (error) { unit.status = 'failed'; unit.errors = [{ message: error.message }]; }
       await this.save(); await this.manifest(batch); this.log(`${code}: ${unit.status}.`, unit.status==='completed'?'success':unit.status==='partial'?'warning':'error');
-      for(const error of unit.errors??[])this.log(`Pendência de ${code}: ${error.message??String(error)}`, 'error');
+      for(const error of unit.errors??[])this.log(`Pendência de ${code}: ${error.message??error.erro?.message??JSON.stringify(error)}`, 'error');
     }
     batch.status = batch.sources.length && batch.sources.every(s => this.state.units[s.kind + ':' + s.id]?.status === 'completed') ? 'completed' : 'partial';
     await this.save(); await this.manifest(batch);
     this.log(`Resultados: Conteúdos Gerados/${batch.folder}`);
   }
-  async writePost(batch, unit, post, execution) {
-    if (!['LinkedIn', 'Twitter', 'Instagram', 'Blog'].includes(post.platform) || !post.contentKey || typeof post.body !== 'string' || !post.body.trim()) throw new Error('Post sem rede, identidade ou texto válido.');
-    const id = identity(unit.id + ':' + post.contentKey), folder = join(this.root, 'Conteúdos Gerados', batch.folder, post.platform);
-    await mkdir(folder, { recursive: true });
-    const name = `${unit.code} - ${safe(post.contentType)} - ${safe(post.format)} - ${id.slice(0, 8)}`;
-    const record = { ...post, id, source: { kind: unit.source.kind, id: unit.source.id, sourceIds: unit.source.sourceIds, digestIds: unit.source.digestIds }, generationId: unit.id,
-      generationBatchId: batch.id, workflowId: execution.workflowId, executionId: execution.executionId, createdAt: batch.createdAt };
-    await writeJson(join(folder, name + '.json'), record);
-    const sourceLink = `../Fontes/${unit.code}.md`;
-    await writeFile(join(folder, name + '.md'), `# ${post.title}\n\nRede: ${post.platform}\nFormato: ${post.format}\nTipo: ${post.contentType}\nFonte: [${unit.code}](${sourceLink})\nOriginais: ${unit.source.sourceIds.join(', ')}\nPedido: ${batch.id}\n${post.mediaPending ? '\nImagens/PDF ainda não produzidos.\n' : ''}\n${post.subtitle ?? ''}\n\n${post.body}${post.caption ? '\n\n## Legenda\n\n' + post.caption : ''}\n`, 'utf8');
-    const relative = `${post.platform}/${name}.md`; if (!unit.files.includes(relative)) unit.files.push(relative);
-    await this.save();
+  async reorganizeSavedOutputs() {
+    for(const batch of this.state.batches)for(const source of batch.sources??[]) {
+      const unit=this.state.units[source.kind+':'+source.id];
+      if(!unit||unit.contentLayoutVersion===1||!unit.code)continue;
+      const result=await readJson(join(this.root,'Conteúdos Gerados',batch.folder,'Fontes',unit.code+'-execucao.json'),null);
+      if(!result)continue;
+      const normalized=result.diagnostics?normalizeCentralEditorial(result.diagnostics):Array.isArray(result.contents)?result:centralizePosts(result.posts??[]);
+      unit.layoutWarnings=normalized.warnings??[];
+      await this.writeContents(batch,unit,normalized.contents,result);
+      await this.manifest(batch);
+    }
+  }
+  async writeContents(batch,unit,contents,execution) {
+    const byType=new Map();
+    for(const c of contents) {
+      if(!/^[a-z][a-z0-9-]*$/.test(c.contentType)||!c.contentKey||!Array.isArray(c.parts)||!c.parts.length||c.parts.some(p=>typeof p!=='string'||!p.trim())||!Array.isArray(c.destinations)||c.destinations.some(d=>!['LinkedIn','Twitter','Instagram','Blog'].includes(d.platform)||typeof d.format!=='string'))throw new Error('Conteúdo-base inválido.');
+      if(!byType.has(c.contentType))byType.set(c.contentType,[]);
+      byType.get(c.contentType).push(c);
+    }
+    const directory=join(this.root,'Conteúdos Gerados',batch.folder);
+    const unitFolder=unit.contentFolder??=unit.code+' — '+safe(unit.source.keytopic||unit.source.id);
+    const folder=join(directory,unitFolder);await mkdir(folder,{recursive:true});
+    const {text,keytopics,bulletpoints,...origin}=unit.source;
+    await writeJson(join(folder,'origem.json'),{...origin,materialFile:'../Fontes/'+unit.code+'.json',generationId:unit.id,generationBatchId:batch.id});
+    const oldFiles=[...unit.files],files=[];
+    const index=['# '+unit.code+' — '+unit.source.keytopic,'','Fonte: [texto e composição](../Fontes/'+unit.code+'.md)','', '## Tipos de conteúdo',''];
+    for(const[type,posts]of byType) {
+      const typeFolder=join(folder,type);await mkdir(typeFolder,{recursive:true});
+      const lines=['# '+type,'','Fonte: ['+unit.code+'](../../Fontes/'+unit.code+'.md)','','Texto-base integral. Redes e formatos são destinos previstos; limites de publicação não são aplicados nesta etapa.',''];
+      const metadata=[];
+      for(const[i,post]of posts.entries()) {
+        const code='P'+String(i+1).padStart(2,'0'),id=identity(unit.id+':'+post.contentKey);
+        lines.push('<a id="'+id+'"></a>','', '## '+code+' — '+post.title,'');
+        if(post.variant)lines.push('Variação editorial: '+post.variant,'');
+        if(post.legacyTextVariant)lines.push('Variante antiga com texto diferente por rede, preservada para revisão.','');
+        if(post.subtitle)lines.push(post.subtitle,'');
+        post.parts.forEach((part,partIndex)=>{if(post.parts.length>1)lines.push('### Bloco '+(partIndex+1),'');lines.push(part,'');if(partIndex<post.parts.length-1)lines.push('---','');});
+        if(post.caption)lines.push('### Legenda-base','',post.caption,'');
+        lines.push('***','');
+        metadata.push({id,code,contentKey:post.contentKey,baseContentKey:post.baseContentKey??post.contentKey,variant:post.variant??null,
+          contentFile:'conteudo.md#'+id,blockCount:post.parts.length,hasCaption:!!post.caption,characterCount:post.parts.join('\n\n').length,
+          destinations:post.destinations,mediaPending:!!post.mediaPending,articleContentKey:post.articleContentKey??null,
+          legacyTextVariant:!!post.legacyTextVariant,workflowId:post.provenance?.workflowId??execution.workflowId,executionId:post.provenance?.executionId??execution.executionId,lastCollectedExecutionId:execution.executionId});
+      }
+      await writeFile(join(typeFolder,'conteudo.md'),lines.join('\n'),'utf8');
+      await writeJson(join(typeFolder,'metadados.json'),{schemaVersion:1,contentType:type,source:{kind:unit.source.kind,id:unit.source.id,sourceIds:unit.source.sourceIds,digestIds:unit.source.digestIds},originFile:'../origem.json',generationId:unit.id,generationBatchId:batch.id,createdAt:batch.createdAt,posts:metadata});
+      const relative=unitFolder+'/'+type+'/conteudo.md';files.push(relative);
+      index.push('- ['+type+' — '+posts.length+' post(s)]('+type+'/conteudo.md)');
+    }
+    await writeFile(join(folder,'índice.md'),index.join('\n')+'\n','utf8');
+    unit.files=files;unit.contentLayoutVersion=1;await this.save();
+    // Remove apenas arquivos antigos que o próprio estado e seus IDs comprovam.
+    for(const path of oldFiles.filter(p=>/^(Twitter|LinkedIn|Instagram|Blog)\/[^/]+\.md$/.test(p))) {
+      const jsonPath=path.replace(/\.md$/,'.json'),record=await readJson(join(directory,jsonPath),null);
+      if(record?.generationId!==unit.id||record?.generationBatchId!==batch.id)continue;
+      await unlink(join(directory,path)).catch(e=>{if(e.code!=='ENOENT')throw e;});
+      await unlink(join(directory,jsonPath)).catch(e=>{if(e.code!=='ENOENT')throw e;});
+      await rmdir(join(directory,path.split('/')[0])).catch(e=>{if(!['ENOTEMPTY','ENOENT'].includes(e.code))throw e;});
+    }
   }
   async manifest(batch) {
     const directory = join(this.root, 'Conteúdos Gerados', batch.folder);
@@ -145,5 +203,6 @@ export class EditorialGeneration {
       if (unit?.status === 'completed' && !unit.files.length) lines.push('Sem saídas previstas ou selecionadas para esta rota.', '');
     }
     await writeFile(join(directory, 'LEIA-ME.md'), lines.join('\n'), 'utf8');
+    await writeFile(join(directory, 'índice.md'), lines.join('\n'), 'utf8');
   }
 }

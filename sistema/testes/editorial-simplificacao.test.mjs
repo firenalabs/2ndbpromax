@@ -22,7 +22,7 @@ const context = { text:'Texto original', texto:'Texto original', referenceId:'so
   baseText:'Um post', output:{parts:['Parte 1','Parte 2']}, stageErrors:[], decision:{accepted:true}, imageDecision:{accepted:false} };
 
 test('simplificação conserva configuração de chamadas, layout e todas as rotas', async () => {
-  const before = (await buildModular({simplify:false})).generation;
+  const before = (await buildModular({simplify:false,centralize:false})).generation;
   const after = simplifyEditorial(before);
   const names = new Set(after.nodes.map(n => n.name));
   assert.equal(before.nodes.length-after.nodes.length,16);
@@ -53,7 +53,7 @@ test('simplificação conserva configuração de chamadas, layout e todas as rot
 });
 
 test('helpers limpos e referências substituídas conservam posts, erros e pareamento', async () => {
-  const before = (await buildModular({simplify:false})).generation, after=simplifyEditorial(before);
+  const before = (await buildModular({simplify:false,centralize:false})).generation, after=simplifyEditorial(before);
   const scenarios = [
     [{json:{output:JSON.stringify({parts:['Parte 1','Parte 2'],text:'Ensaio',posts:[{text:'A'},{text:'B'}]}), answers:{tutorial:{type:'noul',noul:.9},checklist:{type:'noul',noul:.9},lista:{type:'noul',noul:.9},imagem:{type:'noul',noul:.9}}}}],
     [{json:{output:'Texto simples',answers:{imagem:{type:'noul',noul:.1}}}}, {json:{output:'Outro texto'}}],
@@ -72,7 +72,7 @@ test('helpers limpos e referências substituídas conservam posts, erros e parea
 });
 
 test('faixas unidas à contagem conservam metadados nos limites e fora deles', async () => {
-  const before=(await buildModular({simplify:false})).generation,after=simplifyEditorial(before);
+  const before=(await buildModular({simplify:false,centralize:false})).generation,after=simplifyEditorial(before);
   const bands=['0 a 100','101 a 200','201 a 400','401 a 800','801 a 1600','1601 a 3200','3200+'];
   for (const words of [0,1,100,101,200,201,400,401,800,801,1600,1601,3200,3201]) {
     const input=[{json:{...context,block:{id:'cut',text:Array(words).fill('palavra').join(' ')}}}];
@@ -85,7 +85,7 @@ test('faixas unidas à contagem conservam metadados nos limites e fora deles', a
 });
 
 test('adaptadores de texto unidos ao cache conservam dados e retomada por execução', async () => {
-  const before=(await buildModular({simplify:false})).generation,after=simplifyEditorial(before);
+  const before=(await buildModular({simplify:false,centralize:false})).generation,after=simplifyEditorial(before);
   for (const [removed,next] of Object.entries(editorialAdapters)) {
     const input=[{json:{...context,texto:'Valor anterior'}},{json:{...context,text:'Texto dois'}}];
     for (const cache of [{}, {0:[{output:'Resposta salva'}]}, {1:[{output:'Outra execução'}]}]) {
