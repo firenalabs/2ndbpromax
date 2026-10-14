@@ -1,4 +1,4 @@
-// O parser verifica a estrutura; o Code aplica o limite de armazenamento.
+// O parser e o Code validam títulos não vazios, sem limite de comprimento.
 export const atlasTitleSchema = {
   type: 'object', additionalProperties: false, required: ['title'],
   properties: { title: { type: 'string', minLength: 1 } },
@@ -7,7 +7,6 @@ export const atlasTitleSchema = {
 export function prepareAtlasTitle(value) {
   if (typeof value !== 'string' || !value.trim()) throw new Error('Título de nota ausente ou vazio.');
   const normalized = value.trim().replace(/\s+/g, ' ');
-  if (normalized.length > 170) throw new Error('Título de nota com '+normalized.length+' caracteres; máximo permitido: 170. O título completo foi preservado para revisão.');
   return { title: normalized };
 }
 
@@ -37,8 +36,8 @@ export function fixAtlasTitle(workflow) {
   const agent=w.nodes.find(n=>n.name==='Agent: Preparador de Notas');
   if(!agent)throw new Error('Agent: Preparador de Notas ausente.');
   if(!agent.parameters.options.systemMessage.includes(atlasTitleInstruction))agent.parameters.options.systemMessage+='\n\n'+atlasTitleInstruction;
-  // A árvore devolvida pelo programa também pode conter títulos entre 151 e 170.
+  // Títulos completos também precisam ser aceitos na árvore recebida do programa.
   for(const n of w.nodes)if(n.parameters.jsCode?.includes('function validateZettelTree('))
-    n.parameters.jsCode=n.parameters.jsCode.replace('n.title.length > 150','n.title.length > 170');
+    n.parameters.jsCode=n.parameters.jsCode.replace(/n\.title\.length\s*>\s*(?:150|170)\s*\|\|\s*/g,'');
   return w;
 }
