@@ -1,12 +1,12 @@
-# Versão 1.1.9
+# Versão 1.1.10
 
-- Remove quatro agentes de redução para LinkedIn/Instagram e seus desvios de limite, cache e repasses: 24 nodes a menos. Mantém textos-base integrais, mesmo acima dos limites de publicação.
-- Prompts, modelos, chamadas e layout dos agentes editoriais restantes permanecem iguais. Sticky notes de Opinião/Educativo indicam a nova regra.
-- Workflow retorna contents: uma unidade editorial com blocos, legenda e destinos por rede, sem cópias textuais por plataforma.
-- Organiza pedidos em grupo/recorte > contentType > conteudo.md + metadados.json. Um Markdown por tipo reúne P01, P02…; posts independentes não são fundidos. Redes, formatos e decisões de imagens ficam nos metadados.
-- Ao iniciar opções 2 ou 3, reorganiza resultados existentes com resposta salva sem chamar IA. Preserva execuções para auditoria e arquivos manuais; remove somente cópias antigas cujo pedido e geração sejam comprovados.
-- Retomadas conservam saídas válidas anteriores e checkpoints. Pendências agora mostram a mensagem real em vez de [object Object].
+- Opção 2 cria um pedido e uma pasta por insumo original, identificados pelos IDs do insumo e da digestão. Recortes de entradas diferentes não compartilham pedidos, mesmo com o mesmo nome de arquivo.
+- Continua chamando o n8n uma vez por recorte. Os textos não eram concatenados anteriormente; o problema estava no pedido/pasta comum.
+- Novas pastas de recortes incluem o nome do insumo, e pedido.json/índice.md identificam a origem.
+- Pedidos antigos misturados são separados automaticamente, preservando IDs das gerações, estados, respostas salvas e checkpoints. Apenas recortes pendentes são retomados.
+- O pedido original é conservado em Histórico de pedidos reorganizados. A migração persiste seu plano e termina após interrupções sem duplicar pedidos.
+- Não altera workflows, prompts, modelos, chamadas ou agrupamento editorial do Diário.
 
-Workflow 03 local já atualizado e publicado. Atualize o programa pela opção 9 e reinicie antes de gerar. Em produção, a opção 9 não altera workflows: use o JSON 03-editorial ou as instruções 03 - CONTEÚDO CENTRALIZADO.txt e os dois Codes do pacote Codes-n8n.zip. Preserve credenciais e evite webhooks duplicados.
+Use opção 9, reinicie e escolha opção 2. A separação dos pedidos existentes acontece ao inicializar geração (opção 2 ou 3), sem chamadas de IA. Não é necessário atualizar nenhum node no n8n de produção.
 
-Verificação: 137 testes automatizados; cinco execuções locais de cópia temporária com Agents/Jevs simulados, cobrindo grupos, recortes, texto >3000 caracteres, falha parcial e retomada com cache. Sem consumo de tokens de IA. Cópia temporária despublicada e arquivada.
+143 testes passaram. Casos incluem origens com mesmo nome, vários recortes por origem, proibição de pedidos misturados, migração com retomada parcial e duas interrupções em etapas distintas. Os testes usam respostas simuladas, sem consumo de tokens de IA.

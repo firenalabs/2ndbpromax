@@ -2,6 +2,8 @@
 
 Use a opção 2 para os recortes pendentes ou a opção 3 para os grupos dos registros originais do Diário. Cada pedido tem uma pasta `gen-[data-hora]-[origem]`.
 
+**Recortes:** um pedido por insumo original, com o nome dele na pasta. Recortes de insumos ou digestões diferentes nunca compartilham um pedido. Cada recorte é enviado separadamente ao n8n. Pedidos antigos misturados são separados automaticamente; o original fica identificado em `Histórico de pedidos reorganizados`, e os checkpoints são conservados.
+
 - `índice.md`: fontes, estado de cada grupo/recorte e links para seus resultados.
 - `R01 — assunto/` ou `G01 — assunto/`: resultados de um recorte ou grupo.
 - Dentro dessa pasta, `opiniao/`, `educativo/`, `utilidade/`, `resumo/`, `storytelling/`, etc.: cada tipo tem um único `conteudo.md` com todos os seus posts independentes, numerados P01, P02...

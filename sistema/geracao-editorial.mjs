@@ -1,5 +1,5 @@
 import { randomUUID, createHash } from 'node:crypto';
-import { mkdir, writeFile, readdir, unlink, rmdir } from 'node:fs/promises';
+import { mkdir, writeFile, readdir, unlink, rmdir, cp, rename, access } from 'node:fs/promises';
 import { join } from 'node:path';
 import { readJson, writeJson } from './arquivos.mjs';
 import { listMaterials } from './materiais.mjs';
@@ -7,6 +7,7 @@ import { localDay } from './diario-registros.mjs';
 import { validateDecision } from './contratos-diario.mjs';
 import { terminalLog } from './terminal.mjs';
 import {centralizePosts,normalizeCentralEditorial} from './conteudo-centralizado.mjs';
+import {cutsByOrigin,assertSingleCutOrigin} from './recortes-por-origem.mjs';
 
 const identity = text => createHash('sha256').update(text).digest('hex').slice(0, 24);
 const safe = s => String(s).normalize('NFC').replace(/[\u0000-\u001f\\/:*?"<>|]/g, '-').slice(0, 65);
@@ -19,9 +20,80 @@ export class EditorialGeneration {
     if (this.state.schemaVersion !== 1 || !this.state.units || !Array.isArray(this.state.batches)) throw new Error('Estado editorial incompatível.');
     for (const unit of Object.values(this.state.units)) if (unit.status === 'processing') unit.status = 'pending';
     await this.save();
+    await this.isolateCutBatches();
     await this.reorganizeSavedOutputs();
   }
   async save() { await writeJson(this.path, this.state); }
+  cutBatchFolder(date,origin,id) {
+    let label='';
+    for(const c of safe(origin.inputName.replace(/\.txt$/i,''))) {if(Buffer.byteLength(label+c,'utf8')>90)break;label+=c;}
+    return `gen-${date.replace(/[:.]/g,'-').replace('T','_').replace('Z','')}-recortes-${label||'insumo'}-${id.slice(0,8)}`;
+  }
+  async finishCutArchives() {
+    for(const migration of this.state.originMigrations??[]) {
+      if(migration.archived)continue;
+      const root=join(this.root,'Conteúdos Gerados'),old=join(root,migration.oldFolder),archive=join(root,migration.archiveFolder);
+      const exists=async path=>access(path).then(()=>true).catch(e=>{if(e.code==='ENOENT')return false;throw e;});
+      await mkdir(join(root,'Histórico de pedidos reorganizados'),{recursive:true});
+      if(await exists(old)) {if(await exists(archive))throw new Error('Destino do histórico já existe; pedido original preservado.');await rename(old,archive);}
+      await mkdir(archive,{recursive:true});
+      await writeFile(join(archive,'PEDIDO REORGANIZADO.md'),'# Pedido antigo separado por insumo\n\nEste pedido misturava origens. Seu histórico foi preservado; use os pedidos separados:\n\n'+migration.children.map(id=>{
+        const child=this.state.batches.find(b=>b.id===id);return '- ['+child.origin.inputName+'](../../'+encodeURIComponent(child.folder)+'/índice.md)';
+      }).join('\n')+'\n','utf8');
+      migration.archived=true;await this.save();
+    }
+  }
+  async isolateCutBatches() {
+    await this.finishCutArchives();
+    for(const batch of [...this.state.batches].filter(b=>b.kind==='recortes'&&b.sources?.length)) {
+      const groups=cutsByOrigin(batch.sources);
+      if(groups.length===1){batch.origin=groups[0].origin;await this.manifest(batch);continue;}
+      if(!/^gen-[^\\/]+$/.test(batch.folder))throw new Error('Pasta do pedido antigo inválida; não foi movida.');
+      // Plano persistido antes de copiar: uma interrupção reutiliza os mesmos destinos.
+      if(!batch.originSplitPlan) {
+        batch.originSplitPlan=groups.map(({origin,sources})=>{
+          const id=randomUUID();return {id,kind:'recortes',createdAt:batch.createdAt,status:'partial',folder:this.cutBatchFolder(batch.createdAt,origin,id),sources,records:[],origin,migratedFromBatchId:batch.id,
+            sourceCodes:Object.fromEntries(sources.map(s=>[s.id,this.state.units['recorte:'+s.id]?.code??'R'+String(batch.sources.findIndex(v=>v.id===s.id)+1).padStart(2,'0')]))};
+        });
+        await this.save();
+      }
+      const root=join(this.root,'Conteúdos Gerados'),oldDirectory=join(root,batch.folder);
+      await mkdir(oldDirectory,{recursive:true});
+      const snapshot=join(oldDirectory,'estado-original-antes-da-separação.json');
+      if(!await readJson(snapshot,null))await writeJson(snapshot,{batch,units:Object.fromEntries(batch.sources.map(s=>['recorte:'+s.id,this.state.units['recorte:'+s.id]??null]))});
+      const copy=async(from,to,recursive=false)=>{
+        try{await access(from);}catch(e){if(e.code==='ENOENT')return;throw e;}
+        await cp(from,to,{recursive,force:true});
+      };
+      for(const child of batch.originSplitPlan) {
+        const directory=join(root,child.folder);await mkdir(join(directory,'Fontes'),{recursive:true});
+        for(const source of child.sources) {
+          const unit=this.state.units['recorte:'+source.id],code=child.sourceCodes[source.id];
+          for(const suffix of ['.json','.md','-execucao.json'])await copy(join(oldDirectory,'Fontes',code+suffix),join(directory,'Fontes',code+suffix));
+          if(unit?.contentFolder&&/^[^\\/]+$/.test(unit.contentFolder)&&!['.','..'].includes(unit.contentFolder))await copy(join(oldDirectory,unit.contentFolder),join(directory,unit.contentFolder),true);
+          for(const path of unit?.files??[])if(/^(Twitter|LinkedIn|Instagram|Blog)\/[^/]+\.md$/.test(path)) {
+            const record=await readJson(join(oldDirectory,path.replace(/\.md$/,'.json')),null);
+            if(record?.generationId!==unit.id||record?.generationBatchId!==batch.id)continue;
+            await mkdir(join(directory,path.split('/')[0]),{recursive:true});
+            await copy(join(oldDirectory,path),join(directory,path));await copy(join(oldDirectory,path.replace(/\.md$/,'.json')),join(directory,path.replace(/\.md$/,'.json')));
+          }
+        }
+      }
+      // Só troca a associação após copiar. IDs da geração, cache e estados são conservados.
+      for(const child of batch.originSplitPlan)for(const source of child.sources) {
+        const unit=this.state.units['recorte:'+source.id];if(!unit)continue;
+        unit.originalGenerationBatchId??=unit.batchId??batch.id;unit.batchId=child.id;delete unit.contentLayoutVersion;
+      }
+      const children=batch.originSplitPlan;
+      for(const child of children)child.status=child.sources.every(s=>this.state.units['recorte:'+s.id]?.status==='completed')?'completed':'partial';
+      this.state.batches.splice(this.state.batches.findIndex(b=>b.id===batch.id),1,...children);
+      this.state.originMigrations??=[];this.state.originMigrations.push({oldBatchId:batch.id,oldFolder:batch.folder,archiveFolder:'Histórico de pedidos reorganizados/'+batch.folder,children:children.map(b=>b.id),archived:false});
+      await this.save();for(const child of children)await this.manifest(child);
+      await this.finishCutArchives();
+      this.log(`Pedido antigo separado em ${children.length} pedido(s), um por insumo original. Resultados e checkpoints preservados.`, 'warning');
+    }
+    await this.save();
+  }
   async call(payload) {
     if (!this.config.generationWebhook) throw new Error('Configure o webhook de geração de conteúdos.');
     const response = await this.request(this.config.generationWebhook, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(payload), signal: AbortSignal.timeout(this.config.generationRequestTimeoutMs ?? 1800000) });
@@ -41,7 +113,7 @@ export class EditorialGeneration {
   }
   async runCuts() {
     const materials = await listMaterials(this.root), legacy = await this.legacyReferences();
-    const selected = materials.flatMap(m => (m.blocks ?? []).map(block => ({ ...block, kind: 'recorte', sourceIds: [block.sourceId], digestIds: [m.id], inputFiles: [m.sourceFile ?? null] })));
+    const selected = materials.flatMap(m => (m.blocks ?? []).map(block => ({ ...block, kind: 'recorte', sourceIds: [block.sourceId], digestIds: [m.id], inputFiles: [m.sourceFile ?? null],inputName:m.inputName })));
     const pending = [];
     for (const source of selected) {
       const unit = this.state.units['recorte:' + source.id];
@@ -53,7 +125,7 @@ export class EditorialGeneration {
     const old = this.state.batches.filter(b => b.kind === 'recortes' && b.status !== 'completed');
     for (const batch of old) { if (this.stop()) break; await this.executeBatch(batch); }
     const fresh = pending.filter(s => !this.state.units['recorte:' + s.id]);
-    if (fresh.length && !this.stop()) await this.executeBatch(await this.createBatch('recortes', fresh));
+    for(const {sources} of cutsByOrigin(fresh)) {if(this.stop())break;await this.executeBatch(await this.createBatch('recortes',sources));}
     if (!old.length && !fresh.length) this.log('Nenhum recorte novo ou com geração pendente.');
     const reviews = Object.values(this.state.units).filter(u => u.status === 'legacy_review');
     if (reviews.length) {
@@ -75,6 +147,10 @@ export class EditorialGeneration {
   async createBatch(kind, sources, extra = {}) {
     const now = new Date().toISOString(), id = randomUUID();
     const batch = { id, kind, createdAt: now, status: 'pending', folder: `gen-${now.replace(/[:.]/g, '-').replace('T', '_').replace('Z', '')}-${kind}-${id.slice(0, 8)}`, sources, records: [], ...extra };
+    if(kind==='recortes') {
+      batch.origin=assertSingleCutOrigin(batch.sources);
+      batch.folder=this.cutBatchFolder(batch.createdAt,batch.origin,batch.id);
+    }
     this.state.batches.push(batch);
     await mkdir(join(this.root, 'Conteúdos Gerados', batch.folder, 'Fontes'), { recursive: true });
     await this.save(); await this.manifest(batch); return batch;
@@ -97,12 +173,17 @@ export class EditorialGeneration {
     await this.save(); await this.manifest(batch);
   }
   async executeBatch(batch) {
+    if(batch.kind==='recortes') {
+      const origin=assertSingleCutOrigin(batch.sources);
+      const pending=batch.sources.filter(s=>this.state.units['recorte:'+s.id]?.status!=='completed').length;
+      if(pending)this.log(`Gerando recortes de ${origin.inputName}: ${pending} recorte(s) pendente(s).`);
+    }
     for (const [index, source] of batch.sources.entries()) {
       if (this.stop()) break;
       const key = source.kind + ':' + source.id;
       const unit = this.state.units[key] ??= { id: identity(key), source, batchId: batch.id, status: 'pending', cache: {}, files: [], errors: [] };
       if (unit.status === 'completed') continue;
-      const code = (source.kind === 'recorte' ? 'R' : 'G') + String(index + 1).padStart(2, '0');
+      const code = batch.sourceCodes?.[source.id]??(source.kind === 'recorte' ? 'R' : 'G') + String(index + 1).padStart(2, '0');
       unit.code = code; unit.status = 'processing'; await this.save(); await this.manifest(batch);
       try {
         if (source.text.length > (this.config.maxGroupCharacters ?? 120000)) throw new Error('Fonte acima do limite de caracteres configurado; texto integral conservado, sem truncamento.');
@@ -134,7 +215,7 @@ export class EditorialGeneration {
   async reorganizeSavedOutputs() {
     for(const batch of this.state.batches)for(const source of batch.sources??[]) {
       const unit=this.state.units[source.kind+':'+source.id];
-      if(!unit||unit.contentLayoutVersion===1||!unit.code)continue;
+      if(!unit||unit.batchId!==batch.id||unit.contentLayoutVersion===1||!unit.code)continue;
       const result=await readJson(join(this.root,'Conteúdos Gerados',batch.folder,'Fontes',unit.code+'-execucao.json'),null);
       if(!result)continue;
       const normalized=result.diagnostics?normalizeCentralEditorial(result.diagnostics):Array.isArray(result.contents)?result:centralizePosts(result.posts??[]);
@@ -154,7 +235,7 @@ export class EditorialGeneration {
     const unitFolder=unit.contentFolder??=unit.code+' — '+safe(unit.source.keytopic||unit.source.id);
     const folder=join(directory,unitFolder);await mkdir(folder,{recursive:true});
     const {text,keytopics,bulletpoints,...origin}=unit.source;
-    await writeJson(join(folder,'origem.json'),{...origin,materialFile:'../Fontes/'+unit.code+'.json',generationId:unit.id,generationBatchId:batch.id});
+    await writeJson(join(folder,'origem.json'),{...origin,materialFile:'../Fontes/'+unit.code+'.json',generationId:unit.id,generationBatchId:batch.id,originalGenerationBatchId:unit.originalGenerationBatchId??batch.id});
     const oldFiles=[...unit.files],files=[];
     const index=['# '+unit.code+' — '+unit.source.keytopic,'','Fonte: [texto e composição](../Fontes/'+unit.code+'.md)','', '## Tipos de conteúdo',''];
     for(const[type,posts]of byType) {
@@ -176,7 +257,7 @@ export class EditorialGeneration {
           legacyTextVariant:!!post.legacyTextVariant,workflowId:post.provenance?.workflowId??execution.workflowId,executionId:post.provenance?.executionId??execution.executionId,lastCollectedExecutionId:execution.executionId});
       }
       await writeFile(join(typeFolder,'conteudo.md'),lines.join('\n'),'utf8');
-      await writeJson(join(typeFolder,'metadados.json'),{schemaVersion:1,contentType:type,source:{kind:unit.source.kind,id:unit.source.id,sourceIds:unit.source.sourceIds,digestIds:unit.source.digestIds},originFile:'../origem.json',generationId:unit.id,generationBatchId:batch.id,createdAt:batch.createdAt,posts:metadata});
+      await writeJson(join(typeFolder,'metadados.json'),{schemaVersion:1,contentType:type,source:{kind:unit.source.kind,id:unit.source.id,sourceIds:unit.source.sourceIds,digestIds:unit.source.digestIds},originFile:'../origem.json',generationId:unit.id,generationBatchId:batch.id,originalGenerationBatchId:unit.originalGenerationBatchId??batch.id,createdAt:batch.createdAt,posts:metadata});
       const relative=unitFolder+'/'+type+'/conteudo.md';files.push(relative);
       index.push('- ['+type+' — '+posts.length+' post(s)]('+type+'/conteudo.md)');
     }
@@ -185,7 +266,7 @@ export class EditorialGeneration {
     // Remove apenas arquivos antigos que o próprio estado e seus IDs comprovam.
     for(const path of oldFiles.filter(p=>/^(Twitter|LinkedIn|Instagram|Blog)\/[^/]+\.md$/.test(p))) {
       const jsonPath=path.replace(/\.md$/,'.json'),record=await readJson(join(directory,jsonPath),null);
-      if(record?.generationId!==unit.id||record?.generationBatchId!==batch.id)continue;
+      if(record?.generationId!==unit.id||![batch.id,unit.originalGenerationBatchId].includes(record?.generationBatchId))continue;
       await unlink(join(directory,path)).catch(e=>{if(e.code!=='ENOENT')throw e;});
       await unlink(join(directory,jsonPath)).catch(e=>{if(e.code!=='ENOENT')throw e;});
       await rmdir(join(directory,path.split('/')[0])).catch(e=>{if(!['ENOTEMPTY','ENOENT'].includes(e.code))throw e;});
@@ -193,10 +274,12 @@ export class EditorialGeneration {
   }
   async manifest(batch) {
     const directory = join(this.root, 'Conteúdos Gerados', batch.folder);
+    await mkdir(join(directory,'Fontes'),{recursive:true});
     await writeJson(join(directory, 'pedido.json'), batch);
     const lines = [`# Pedido de geração — ${batch.kind}`, '', `Estado: ${batch.status}`, `Criado em: ${batch.createdAt}`, '', '## Fontes e resultados', ''];
+    if(batch.origin)lines.splice(6,0,'Insumo original: '+batch.origin.inputName,'Identidade: '+batch.origin.sourceId,'Digestão: '+batch.origin.digestId,'');
     for (const [index, source] of batch.sources.entries()) {
-      const code = (source.kind === 'recorte' ? 'R' : 'G') + String(index + 1).padStart(2, '0'), unit = this.state.units[source.kind + ':' + source.id];
+      const code = batch.sourceCodes?.[source.id]??(source.kind === 'recorte' ? 'R' : 'G') + String(index + 1).padStart(2, '0'), unit = this.state.units[source.kind + ':' + source.id];
       await writeJson(join(directory, 'Fontes', code + '.json'), source);
       await writeFile(join(directory, 'Fontes', code + '.md'), `# ${source.keytopic}\n\nTipo: ${source.kind}\nIdentidade: ${source.id}\n\n## Originais\n\n` + source.sourceIds.map((id,i) => `- [${id}](../../../${(source.inputFiles?.[i] ?? 'Recortes por Assunto/' + id).split('/').map(encodeURIComponent).join('/')})`).join('\n') + '\n\n## Texto utilizado\n\n' + source.text + '\n', 'utf8');
       lines.push(`### [${code} — ${source.keytopic}](Fontes/${code}.md)`, '', `Estado: ${unit?.status ?? 'pending'}`, '', ...(unit?.files ?? []).map(path => `- [${path}](${path.split('/').map(encodeURIComponent).join('/')})`), ...(unit?.errors ?? []).map(e => `- Pendência: ${e.message ?? e.erro?.message ?? JSON.stringify(e)}`), '');

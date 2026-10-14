@@ -29,6 +29,8 @@ Abra o `índice.md` de um pedido para navegar por fonte e tipo de conteúdo. Cad
 
 Ao iniciar a opção 2 ou 3, o programa reorganiza também resultados já salvos, sem chamar IA. As respostas originais em `Fontes` são preservadas para auditoria. Remove somente as cópias por rede cujos IDs comprovem pertencer ao mesmo pedido. Retomadas conservam conteúdos válidos anteriores e seus checkpoints.
 
+Na opção 2, cada insumo original tem seu próprio pedido e sua própria pasta `gen-...-recortes-<nome-do-insumo>-<id>`. Todos os recortes daquele insumo ficam nesse pedido; o n8n é chamado separadamente para cada recorte. IDs do insumo e da digestão determinam a origem, mesmo quando arquivos têm o mesmo nome. Pedidos antigos que misturavam origens são separados sem regenerar conteúdos, e seus arquivos originais ficam em `Conteúdos Gerados/Histórico de pedidos reorganizados`.
+
 ## Retomadas e histórico
 
 Os pedidos usam uma seleção fixa de fontes. Inputs recebidos depois ficam para o próximo pedido. Grupos do Diário são fechados dentro da seleção, incluindo o último, e não são reabertos automaticamente.
