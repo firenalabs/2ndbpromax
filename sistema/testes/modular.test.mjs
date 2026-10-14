@@ -42,7 +42,7 @@ test('fila de recortes ignora datas, preserva concluídos e retoma com checkpoin
  assert.equal(calls.length,2);assert.equal(g.state.batches[0].status,'completed');assert.equal(g.state.batches[1].status,'partial');assert.equal(Object.values(g.state.units).filter(u=>u.status==='completed').length,1);
  await g.runCuts();assert.equal(calls.length,3);assert.equal(calls[2].source.sourceId,'b');assert.ok(calls[2].cache.agent);assert.equal(g.state.batches.length,2);
  await g.runCuts();assert.equal(calls.length,3);assert.equal(g.state.batches[1].status,'completed');
- const folder=join(root,'Conteúdos Gerados',g.state.batches[0].folder);assert.ok((await readdir(folder)).some(n=>n.startsWith('R01 — ')));assert.equal(Object.values(g.state.units)[0].files[0].endsWith('/pensamento/conteudo.md'),true);
+ const folder=join(root,'Conteúdos Gerados',g.state.batches[0].folder);assert.ok((await readdir(join(root,'Conteúdos Gerados','Acervo'))).length>0);assert.equal(Object.values(g.state.units)[0].files[0].endsWith('/pensamento/conteudo.md'),true);
 });
 test('agrupamento do Diário usa originais A+B e C, encerra último grupo e não regenera ao repetir',async t=>{
  const root=await rootFor(t);for(const id of ['a','b','c'])await saveMaterials(root,digest(id,'Original '+id+'.'),id);

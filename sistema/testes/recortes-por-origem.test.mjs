@@ -78,8 +78,8 @@ test('separa pedido antigo misturado, preserva conteúdo, códigos, status e cac
     assert.equal(unit.status,source.id==='A-2'?'partial':'completed');
     assert.equal(unit.originalGenerationBatchId,batch.id);
     const directory=join(root,'Conteúdos Gerados',child.folder);
-    assert.match(await readFile(join(directory,unit.contentFolder,'opiniao/conteudo.md'),'utf8'),new RegExp(source.text));
-    const metadata=JSON.parse(await readFile(join(directory,unit.contentFolder,'opiniao/metadados.json')));
+    assert.match(await readFile(join(root,'Conteúdos Gerados',unit.contentFolder,'opiniao/conteudo.md'),'utf8'),new RegExp(source.text));
+    const metadata=JSON.parse(await readFile(join(root,'Conteúdos Gerados',unit.contentFolder,'opiniao/metadados.json')));
     assert.equal(metadata.generationBatchId,child.id);assert.equal(metadata.originalGenerationBatchId,batch.id);
     assert.equal(child.sourceCodes[source.id],unit.code);
   }
@@ -102,7 +102,7 @@ test('interrupção da separação reutiliza o plano e não cria pedidos duplica
 test('proteção de execução rejeita pedido com duas origens antes de qualquer chamada',async t=>{
   const root=await rootFor(t),g=generation(root);await g.initialize();
   await assert.rejects(g.executeBatch({kind:'recortes',sources:[cut('A',1),cut('B',1)]}),/único insumo/);
-  assert.equal((await readdir(join(root,'Conteúdos Gerados'))).length,0);
+  assert.equal((await readdir(join(root,'Conteúdos Gerados','Pedidos'))).length,0);
 });
 test('interrupção após associar os pedidos termina o arquivamento na próxima inicialização',async t=>{
   const root=await rootFor(t),{g,batch}=await mixedBatch(root);

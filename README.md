@@ -5,7 +5,7 @@ Coloque arquivos `.txt` em `Entrada` e execute `./iniciar.sh` (Linux/macOS) ou `
 1. **Iniciar:** tenta pendências uma vez, recebe textos existentes e aguarda novos. Prepara KeyTopics e recortes, organiza o Atlas e registra cada input no Diário imediatamente. Não gera posts automaticamente.
 2. **Gerar conteúdos dos recortes pendentes:** seleciona recortes de qualquer data cuja geração não terminou. Retoma pedidos parciais antes de criar um pedido com novos recortes.
 3. **Gerar conteúdos dos registros do Diário:** solicita um dia (`AAAA-MM-DD`, padrão hoje no fuso configurado), forma grupos por continuidade e gera uma execução por grupo. Usa originais e KeyTopics; não usa resumos do Diário.
-4. **Ver o andamento.**
+4. **Ver o andamento:** atualiza a organização e os índices por família, sem chamadas de IA, e mostra pendências.
 5. **Ignorar o primeiro texto com erro e seguir.**
 6. **Configurar endereço do n8n.**
 7. **Limpar dados e começar de novo:** exige confirmação explícita, apaga dados e subpastas geradas, incluindo redes soltas, pedidos e subpastas de recortes. Remove as pastas antigas `Digestões` e `Geração de Conteúdos`. Preserva código, configuração e pastas pessoais.
@@ -22,14 +22,17 @@ Também existem comandos `npm run gerar-recortes` e `npm run gerar-diario -- 202
 - `Diário/Registros`: um registro por input, sem aguardar o próximo.
 - `Diário/Dias`: índice diário determinístico, sem síntese por IA.
 - `Conquistas`: extrações com trecho literal que comprova a conquista.
-- `Conteúdos Gerados/gen-<data-hora>-<origem>-<id>`: um pedido com `índice.md`, `pedido.json`, `Fontes` e pastas por grupo/recorte (`G01 — assunto` ou `R01 — assunto`). Dentro de cada fonte, os resultados são separados por `contentType`.
+- `Conteúdos Gerados/índice.md`: entrada principal para navegar pelas famílias de input.
+- `Conteúdos Gerados/Famílias/<nome — inputId>`: reúne todos os tipos gerados a partir daquele input, tanto por recortes quanto por grupos do Diário. Cada tipo possui um índice com links para os posts.
+- `Conteúdos Gerados/Acervo/<generationId>/<contentType>/conteudo.md`: arquivo único do material e tipo, com seus posts independentes em seções P01, P02…; metadados e origem ficam ao lado.
+- `Conteúdos Gerados/Pedidos/gen-...`: seleções, agrupamentos, fontes e respostas de execução para rastreamento e retomada.
 - `Conteúdos Gerados/Conteúdos antigos para revisão.md`: avisos de revisão de conteúdos antigos.
 
-Abra o `índice.md` de um pedido para navegar por fonte e tipo de conteúdo. Cada tipo tem um único `conteudo.md`, com seções P01, P02… para posts independentes; `metadados.json` guarda destinos, formatos e rastreabilidade sem repetir o corpo textual. Threads, sequências, carrosséis e legendas preservam seus blocos. Opinião e educativo não são mais reduzidos para limites de LinkedIn/Instagram. Imagens, thumbnails e PDFs são indicações; não são produzidos nesta versão.
+Abra `Conteúdos Gerados/índice.md` e escolha um input. Seus resultados chegam progressivamente na mesma família. Um conteúdo gerado pelo grupo A+B aparece nos índices de A e de B, identificado como compartilhado, apontando para o mesmo arquivo no Acervo. Ensaios de recortes e de grupos permanecem independentes, mesmo quando têm o mesmo tipo ou texto.
 
-Ao iniciar a opção 2 ou 3, o programa reorganiza também resultados já salvos, sem chamar IA. As respostas originais em `Fontes` são preservadas para auditoria. Remove somente as cópias por rede cujos IDs comprovem pertencer ao mesmo pedido. Retomadas conservam conteúdos válidos anteriores e seus checkpoints.
+Na opção 4 (ou ao iniciar 2/3), o programa reorganiza resultados já salvos sem chamar IA. Os pedidos e respostas são preservados em Pedidos; cópias da apresentação anterior ficam nesses pedidos para revisão. Limites de redes não são aplicados ao texto-base; imagens/PDFs continuam como indicações.
 
-Na opção 2, cada insumo original tem seu próprio pedido e sua própria pasta `gen-...-recortes-<nome-do-insumo>-<id>`. Todos os recortes daquele insumo ficam nesse pedido; o n8n é chamado separadamente para cada recorte. IDs do insumo e da digestão determinam a origem, mesmo quando arquivos têm o mesmo nome. Pedidos antigos que misturavam origens são separados sem regenerar conteúdos, e seus arquivos originais ficam em `Conteúdos Gerados/Histórico de pedidos reorganizados`.
+A seleção, as decisões de continuidade do Diário e as chamadas individuais por recorte/grupo permanecem iguais. As famílias são uma visão por origem, independente do pedido e do momento da geração.
 
 ## Retomadas e histórico
 
@@ -50,6 +53,6 @@ Os JSONs de importação ficam em `sistema/workflows`. O workflow `NOVO TESTE 09
 
 ## Agrupamento dos registros do Diário
 
-Ao selecionar a opção 3, o programa forma os grupos e salva cada um em `Conteúdos Gerados/gen-<data-hora>-diario-<id>/Fontes/G01.md`, `G02.md` etc. O Markdown mostra os originais e o texto integral utilizado; o JSON correspondente guarda identidades, ordem e decisões de continuidade. `pedido.json` registra o conjunto completo e `LEIA-ME.md` oferece links para grupos e posts.
+Ao selecionar a opção 3, o programa forma os grupos e salva cada um em `Conteúdos Gerados/Pedidos/gen-<data-hora>-diario-<id>/Fontes/G01.md`, `G02.md` etc. O Markdown mostra os originais e o texto integral utilizado; o JSON correspondente guarda identidades, ordem e decisões de continuidade. `pedido.json` registra o conjunto completo e `LEIA-ME.md` oferece links para grupos e posts.
 
 Esses arquivos são gravados pelo programa local durante o pedido de geração. Executar apenas o workflow no editor do n8n não grava as pastas do programa.

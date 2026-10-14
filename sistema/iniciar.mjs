@@ -75,7 +75,7 @@ try {
     process.once('SIGINT', stop);
     process.once('SIGTERM', stop);
     console.log(`\nArquivos e resultados: ${root}\n`);
-    if (mode === '--status') executor.showStatus();
+    if (mode === '--status') {const generation=new EditorialGeneration(root,config);await generation.initialize();executor.showStatus();terminalLog('Conteúdos por família: Conteúdos Gerados/índice.md.');}
     else if (mode === '--ignorar-erro') await executor.ignoreFirstError();
     else if (mode === '--escutar') await executor.watch();
     else await executor.batch({ retry: mode === '--tentar-novamente' });

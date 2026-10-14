@@ -8,6 +8,7 @@ import { validateDecision } from './contratos-diario.mjs';
 import { terminalLog } from './terminal.mjs';
 import {centralizePosts,normalizeCentralEditorial} from './conteudo-centralizado.mjs';
 import {cutsByOrigin,assertSingleCutOrigin} from './recortes-por-origem.mjs';
+import {fileLink,rebuildFamilyIndices} from './familias-editoriais.mjs';
 
 const identity = text => createHash('sha256').update(text).digest('hex').slice(0, 24);
 const safe = s => String(s).normalize('NFC').replace(/[\u0000-\u001f\\/:*?"<>|]/g, '-').slice(0, 65);
@@ -21,7 +22,10 @@ export class EditorialGeneration {
     for (const unit of Object.values(this.state.units)) if (unit.status === 'processing') unit.status = 'pending';
     await this.save();
     await this.isolateCutBatches();
+    await this.organizeRequestFolders();
+    await this.finishCutArchives();
     await this.reorganizeSavedOutputs();
+    await rebuildFamilyIndices(this.root,this.state);
   }
   async save() { await writeJson(this.path, this.state); }
   cutBatchFolder(date,origin,id) {
@@ -31,16 +35,16 @@ export class EditorialGeneration {
   }
   async finishCutArchives() {
     for(const migration of this.state.originMigrations??[]) {
-      if(migration.archived)continue;
+
       const root=join(this.root,'Conteúdos Gerados'),old=join(root,migration.oldFolder),archive=join(root,migration.archiveFolder);
       const exists=async path=>access(path).then(()=>true).catch(e=>{if(e.code==='ENOENT')return false;throw e;});
       await mkdir(join(root,'Histórico de pedidos reorganizados'),{recursive:true});
-      if(await exists(old)) {if(await exists(archive))throw new Error('Destino do histórico já existe; pedido original preservado.');await rename(old,archive);}
+      if(!migration.archived&&await exists(old)) {if(await exists(archive))throw new Error('Destino do histórico já existe; pedido original preservado.');await rename(old,archive);}
       await mkdir(archive,{recursive:true});
       await writeFile(join(archive,'PEDIDO REORGANIZADO.md'),'# Pedido antigo separado por insumo\n\nEste pedido misturava origens. Seu histórico foi preservado; use os pedidos separados:\n\n'+migration.children.map(id=>{
-        const child=this.state.batches.find(b=>b.id===id);return '- ['+child.origin.inputName+'](../../'+encodeURIComponent(child.folder)+'/índice.md)';
+        const child=this.state.batches.find(b=>b.id===id);return '- ['+child.origin.inputName+']('+fileLink(archive,join(root,child.folder,'índice.md'))+')';
       }).join('\n')+'\n','utf8');
-      migration.archived=true;await this.save();
+      if(!migration.archived){migration.archived=true;await this.save();}
     }
   }
   async isolateCutBatches() {
@@ -151,6 +155,7 @@ export class EditorialGeneration {
       batch.origin=assertSingleCutOrigin(batch.sources);
       batch.folder=this.cutBatchFolder(batch.createdAt,batch.origin,batch.id);
     }
+    batch.folder='Pedidos/'+batch.folder;
     this.state.batches.push(batch);
     await mkdir(join(this.root, 'Conteúdos Gerados', batch.folder, 'Fontes'), { recursive: true });
     await this.save(); await this.manifest(batch); return batch;
@@ -215,14 +220,15 @@ export class EditorialGeneration {
   async reorganizeSavedOutputs() {
     for(const batch of this.state.batches)for(const source of batch.sources??[]) {
       const unit=this.state.units[source.kind+':'+source.id];
-      if(!unit||unit.batchId!==batch.id||unit.contentLayoutVersion===1||!unit.code)continue;
+      if(!unit||unit.batchId!==batch.id||unit.contentLayoutVersion===2||!unit.code)continue;
       const result=await readJson(join(this.root,'Conteúdos Gerados',batch.folder,'Fontes',unit.code+'-execucao.json'),null);
       if(!result)continue;
-      const normalized=result.diagnostics?normalizeCentralEditorial(result.diagnostics):Array.isArray(result.contents)?result:centralizePosts(result.posts??[]);
+      const normalized=Array.isArray(result.contents)?result:result.diagnostics?normalizeCentralEditorial(result.diagnostics):centralizePosts(result.posts??[]);
       unit.layoutWarnings=normalized.warnings??[];
       await this.writeContents(batch,unit,normalized.contents,result);
       await this.manifest(batch);
     }
+    for(const batch of this.state.batches)for(const source of batch.sources??[]){const unit=this.state.units[source.kind+':'+source.id];if(unit?.batchId===batch.id&&unit.legacyFiles?.length)await this.cleanupLegacyContent(batch,unit);}
   }
   async writeContents(batch,unit,contents,execution) {
     const byType=new Map();
@@ -232,15 +238,18 @@ export class EditorialGeneration {
       byType.get(c.contentType).push(c);
     }
     const directory=join(this.root,'Conteúdos Gerados',batch.folder);
-    const unitFolder=unit.contentFolder??=unit.code+' — '+safe(unit.source.keytopic||unit.source.id);
-    const folder=join(directory,unitFolder);await mkdir(folder,{recursive:true});
+    if(!/^[a-zA-Z0-9_-]+$/.test(unit.id))throw new Error('Identidade de geração inválida.');
+    const unitFolder='Acervo/'+unit.id;
+    if(unit.contentLayoutVersion!==2){unit.legacyFiles??=[...unit.files];if(unit.contentFolder&&!unit.contentFolder.includes('/'))unit.legacyContentFolder=unit.contentFolder;}
+    unit.contentFolder=unitFolder;
+    const folder=join(this.root,'Conteúdos Gerados',unitFolder);await mkdir(folder,{recursive:true});
     const {text,keytopics,bulletpoints,...origin}=unit.source;
-    await writeJson(join(folder,'origem.json'),{...origin,materialFile:'../Fontes/'+unit.code+'.json',generationId:unit.id,generationBatchId:batch.id,originalGenerationBatchId:unit.originalGenerationBatchId??batch.id});
-    const oldFiles=[...unit.files],files=[];
-    const index=['# '+unit.code+' — '+unit.source.keytopic,'','Fonte: [texto e composição](../Fontes/'+unit.code+'.md)','', '## Tipos de conteúdo',''];
+    await writeJson(join(folder,'origem.json'),{...origin,materialFile:fileLink(folder,join(directory,'Fontes',unit.code+'.json')),generationId:unit.id,generationBatchId:batch.id,originalGenerationBatchId:unit.originalGenerationBatchId??batch.id});
+    const files=[],publicFiles=[];
+    const index=['# '+unit.code+' — '+unit.source.keytopic,'','Fonte: [texto e composição]('+fileLink(folder,join(directory,'Fontes',unit.code+'.md'))+')','', '## Tipos de conteúdo',''];
     for(const[type,posts]of byType) {
       const typeFolder=join(folder,type);await mkdir(typeFolder,{recursive:true});
-      const lines=['# '+type,'','Fonte: ['+unit.code+'](../../Fontes/'+unit.code+'.md)','','Texto-base integral. Redes e formatos são destinos previstos; limites de publicação não são aplicados nesta etapa.',''];
+      const lines=['# '+type,'','Fonte: ['+unit.code+']('+fileLink(typeFolder,join(directory,'Fontes',unit.code+'.md'))+')','','Texto-base integral. Redes e formatos são destinos previstos; limites de publicação não são aplicados nesta etapa.',''];
       const metadata=[];
       for(const[i,post]of posts.entries()) {
         const code='P'+String(i+1).padStart(2,'0'),id=identity(unit.id+':'+post.contentKey);
@@ -258,20 +267,45 @@ export class EditorialGeneration {
       }
       await writeFile(join(typeFolder,'conteudo.md'),lines.join('\n'),'utf8');
       await writeJson(join(typeFolder,'metadados.json'),{schemaVersion:1,contentType:type,source:{kind:unit.source.kind,id:unit.source.id,sourceIds:unit.source.sourceIds,digestIds:unit.source.digestIds},originFile:'../origem.json',generationId:unit.id,generationBatchId:batch.id,originalGenerationBatchId:unit.originalGenerationBatchId??batch.id,createdAt:batch.createdAt,posts:metadata});
-      const relative=unitFolder+'/'+type+'/conteudo.md';files.push(relative);
+      const contentFile=unitFolder+'/'+type+'/conteudo.md';files.push(fileLink(directory,join(this.root,'Conteúdos Gerados',contentFile)));publicFiles.push({contentType:type,contentFile,metadataFile:unitFolder+'/'+type+'/metadados.json'});
       index.push('- ['+type+' — '+posts.length+' post(s)]('+type+'/conteudo.md)');
     }
     await writeFile(join(folder,'índice.md'),index.join('\n')+'\n','utf8');
-    unit.files=files;unit.contentLayoutVersion=1;await this.save();
-    // Remove apenas arquivos antigos que o próprio estado e seus IDs comprovam.
-    for(const path of oldFiles.filter(p=>/^(Twitter|LinkedIn|Instagram|Blog)\/[^/]+\.md$/.test(p))) {
-      const jsonPath=path.replace(/\.md$/,'.json'),record=await readJson(join(directory,jsonPath),null);
+    unit.files=files;unit.publicFiles=publicFiles;unit.contentLayoutVersion=2;await this.save();
+    await this.cleanupLegacyContent(batch,unit);
+    await rebuildFamilyIndices(this.root,this.state);
+  }
+  async cleanupLegacyContent(batch,unit) {
+    const directory=join(this.root,'Conteúdos Gerados',batch.folder);
+    for(const path of unit.legacyFiles??[]) {
+      const network=/^(Twitter|LinkedIn|Instagram|Blog)\/[^/]+\.md$/.test(path);
+      const editorial=/^[^/\\]+\/[a-z][a-z0-9-]*\/conteudo\.md$/.test(path);
+      if(!network&&!editorial)continue;
+      const metadataPath=network?path.replace(/\.md$/,'.json'):path.replace(/conteudo\.md$/,'metadados.json');
+      const record=await readJson(join(directory,metadataPath),null);
       if(record?.generationId!==unit.id||![batch.id,unit.originalGenerationBatchId].includes(record?.generationBatchId))continue;
-      await unlink(join(directory,path)).catch(e=>{if(e.code!=='ENOENT')throw e;});
-      await unlink(join(directory,jsonPath)).catch(e=>{if(e.code!=='ENOENT')throw e;});
-      await rmdir(join(directory,path.split('/')[0])).catch(e=>{if(!['ENOTEMPTY','ENOENT'].includes(e.code))throw e;});
+      const backup=join(directory,'Apresentação anterior',path.split('/').slice(0,-1).join('/'));await mkdir(backup,{recursive:true});
+      for(const file of [path,metadataPath])try{await cp(join(directory,file),join(directory,'Apresentação anterior',file),{force:false});}catch(e){if(e.code!=='ENOENT')throw e;}
+      for(const file of [path,metadataPath])await unlink(join(directory,file)).catch(e=>{if(e.code!=='ENOENT')throw e;});
+      await rmdir(join(directory,path.split('/').slice(0,-1).join('/'))).catch(e=>{if(!['ENOTEMPTY','ENOENT'].includes(e.code))throw e;});
+    }
+    if(unit.legacyContentFolder){const old=join(directory,unit.legacyContentFolder);const origin=await readJson(join(old,'origem.json'),null);if(origin?.generationId===unit.id)await writeFile(join(old,'índice.md'),'# Conteúdos reorganizados\n\n[Abrir conteúdo único no Acervo]('+fileLink(old,join(this.root,'Conteúdos Gerados',unit.contentFolder,'índice.md'))+')\n','utf8');}
+    delete unit.legacyFiles;delete unit.legacyContentFolder;await this.save();
+  }
+  async organizeRequestFolders() {
+    const root=join(this.root,'Conteúdos Gerados');await mkdir(join(root,'Pedidos'),{recursive:true});
+    const exists=async path=>access(path).then(()=>true).catch(e=>{if(e.code==='ENOENT')return false;throw e;});
+    for(const batch of this.state.batches) {
+      if(batch.folder.startsWith('Pedidos/')&&!batch.requestFolderMove)continue;
+      if(!batch.requestFolderMove){if(!/^gen-[^\\/]+$/.test(batch.folder))throw new Error('Pasta de pedido inválida.');batch.requestFolderMove={from:batch.folder,to:'Pedidos/'+batch.folder};await this.save();}
+      const move=batch.requestFolderMove,from=join(root,move.from),to=join(root,move.to);
+      if(await exists(from)){if(await exists(to))throw new Error('Destino do pedido já existe; original preservado.');await rename(from,to);}
+      batch.originalRequestFolder??=move.from;batch.folder=move.to;delete batch.requestFolderMove;
+      for(const unit of Object.values(this.state.units))if(unit.batchId===batch.id&&unit.publicFiles)unit.files=unit.publicFiles.map(f=>fileLink(to,join(root,f.contentFile)));
+      await this.save();await this.manifest(batch);
     }
   }
+
   async manifest(batch) {
     const directory = join(this.root, 'Conteúdos Gerados', batch.folder);
     await mkdir(join(directory,'Fontes'),{recursive:true});
@@ -281,11 +315,12 @@ export class EditorialGeneration {
     for (const [index, source] of batch.sources.entries()) {
       const code = batch.sourceCodes?.[source.id]??(source.kind === 'recorte' ? 'R' : 'G') + String(index + 1).padStart(2, '0'), unit = this.state.units[source.kind + ':' + source.id];
       await writeJson(join(directory, 'Fontes', code + '.json'), source);
-      await writeFile(join(directory, 'Fontes', code + '.md'), `# ${source.keytopic}\n\nTipo: ${source.kind}\nIdentidade: ${source.id}\n\n## Originais\n\n` + source.sourceIds.map((id,i) => `- [${id}](../../../${(source.inputFiles?.[i] ?? 'Recortes por Assunto/' + id).split('/').map(encodeURIComponent).join('/')})`).join('\n') + '\n\n## Texto utilizado\n\n' + source.text + '\n', 'utf8');
+      await writeFile(join(directory, 'Fontes', code + '.md'), `# ${source.keytopic}\n\nTipo: ${source.kind}\nIdentidade: ${source.id}\n\n## Originais\n\n` + source.sourceIds.map((id,i) => `- [${id}](${fileLink(join(directory,'Fontes'),join(this.root,source.inputFiles?.[i] ?? 'Recortes por Assunto/' + id))})`).join('\n') + '\n\n## Texto utilizado\n\n' + source.text + '\n', 'utf8');
       lines.push(`### [${code} — ${source.keytopic}](Fontes/${code}.md)`, '', `Estado: ${unit?.status ?? 'pending'}`, '', ...(unit?.files ?? []).map(path => `- [${path}](${path.split('/').map(encodeURIComponent).join('/')})`), ...(unit?.errors ?? []).map(e => `- Pendência: ${e.message ?? e.erro?.message ?? JSON.stringify(e)}`), '');
       if (unit?.status === 'completed' && !unit.files.length) lines.push('Sem saídas previstas ou selecionadas para esta rota.', '');
     }
     await writeFile(join(directory, 'LEIA-ME.md'), lines.join('\n'), 'utf8');
     await writeFile(join(directory, 'índice.md'), lines.join('\n'), 'utf8');
+    if(this.state)await rebuildFamilyIndices(this.root,this.state);
   }
 }

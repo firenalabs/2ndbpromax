@@ -1,16 +1,13 @@
-# Conteúdos Gerados
+# Conteúdos por família de input
 
-Use a opção 2 para os recortes pendentes ou a opção 3 para os grupos dos registros originais do Diário. Cada pedido tem uma pasta `gen-[data-hora]-[origem]`.
+Abra **índice.md** e escolha o input original. A família reúne todos os contentTypes produzidos pelos seus recortes e pelos grupos editoriais do Diário que o utilizaram, mesmo em gerações realizadas em momentos diferentes.
 
-**Recortes:** um pedido por insumo original, com o nome dele na pasta. Recortes de insumos ou digestões diferentes nunca compartilham um pedido. Cada recorte é enviado separadamente ao n8n. Pedidos antigos misturados são separados automaticamente; o original fica identificado em `Histórico de pedidos reorganizados`, e os checkpoints são conservados.
+- **Famílias/<nome — inputId>/índice.md**: todos os tipos e andamento desse input.
+- **Famílias/<nome — inputId>/<contentType>/índice.md**: posts e links para os arquivos únicos; referencias.json e familia.json permitem consultar os IDs, materiais e destinos.
+- **Acervo/<generationId>/<contentType>/conteudo.md**: texto único, com todos os posts independentes daquele material/tipo em seções P01, P02…; preserva blocos, sequências, slides e legendas.
+- **Acervo/<generationId>/origem.json**: inputs, recorte/grupo, segmentos/composição e referência às fontes do pedido.
+- **Pedidos/gen-...**: pedido.json, índices técnicos, Fontes e respostas de execução para auditoria/retomada.
 
-- `índice.md`: fontes, estado de cada grupo/recorte e links para seus resultados.
-- `R01 — assunto/` ou `G01 — assunto/`: resultados de um recorte ou grupo.
-- Dentro dessa pasta, `opiniao/`, `educativo/`, `utilidade/`, `resumo/`, `storytelling/`, etc.: cada tipo tem um único `conteudo.md` com todos os seus posts independentes, numerados P01, P02...
-- `metadados.json`: identidades de cada post, redes e formatos previstos, referência ao Markdown, decisões de imagens e rastreamento da execução. Não repete o corpo textual.
-- `origem.json`: origem, IDs dos inputs/digestões e limites dos segmentos ou decisões de continuidade do grupo.
-- `Fontes/`: textos usados e respostas das execuções, preservados para auditoria e retomada.
+Se um grupo usa A+B, os conteúdos aparecem nas famílias A e B com a indicação da composição, mas os links apontam ao mesmo arquivo. Conteúdos diferentes do mesmo tipo permanecem separados pelos materiais e pelas identidades dos posts.
 
-Redes são destinos do mesmo conteúdo-base. Não há redução por limites de LinkedIn/Instagram nesta etapa. Threads, slides e sequências preservam seus blocos ordenados no mesmo documento; legendas-base e chamadas de ensaio são conservadas.
-
-Ao iniciar uma opção de geração, o programa reorganiza também resultados antigos que possuem resposta salva, sem chamar IA. Copias antigas por rede são removidas somente quando seus IDs comprovam que pertencem ao mesmo pedido; arquivos de execução e arquivos manuais são preservados. Se uma resposta antiga não permite recuperar um texto-base comum, os textos diferentes permanecem como variantes dentro do Markdown.
+Use a opção 4 para atualizar esta organização sem gerar conteúdos. Opções 2 e 3 também atualizam os índices conforme os resultados chegam. A migração conserva caches, estados e cópias da apresentação anterior nos pedidos; arquivos manuais e configurações são preservados. Não exige alterações no n8n.
